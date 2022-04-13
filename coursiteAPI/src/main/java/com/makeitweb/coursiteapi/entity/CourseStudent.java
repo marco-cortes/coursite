@@ -49,15 +49,3 @@ public class CourseStudent {
     }
 }
 
-
-@Embeddable
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-class CourseStudentPK implements Serializable {
-    @Column(name="student_id")
-    private Long studentId;
-
-    @Column(name="course_id")
-    private Long courseId;
-}
