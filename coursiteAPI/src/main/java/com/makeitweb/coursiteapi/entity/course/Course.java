@@ -1,6 +1,7 @@
 package com.makeitweb.coursiteapi.entity.course;
 
-import com.makeitweb.coursiteapi.entity.CourseStudent;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.makeitweb.coursiteapi.entity.UserCourse;
 import com.makeitweb.coursiteapi.entity.users.Teacher;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -32,6 +33,7 @@ public class Course {
     @Column(nullable = false)
     private Integer status;
 
+    @JsonBackReference
     @JoinColumn(nullable = false)
     @ManyToOne
     private Teacher teacher;
@@ -43,7 +45,7 @@ public class Course {
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<CourseStudent> courseStudents;
+    private List<UserCourse> userCourses;
 
     @OneToMany(mappedBy = "course")
     @ToString.Exclude

@@ -24,14 +24,8 @@ public class Teacher {
     @OneToOne
     private User user;
 
-    @Column(nullable = false)
     private String phone;
-    @Column(nullable = false)
     private Integer status;
-
-    @OneToMany
-    @ToString.Exclude
-    private List<Notification> notifications;
 
     @OneToMany(mappedBy = "teacher")
     @ToString.Exclude

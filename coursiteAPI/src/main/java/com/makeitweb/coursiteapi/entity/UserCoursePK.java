@@ -12,8 +12,8 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseStudentPK implements Serializable {
-    @Column(name="student_id")
+public class UserCoursePK implements Serializable {
+    @Column(name="user_id")
     private Long studentId;
 
     @Column(name="course_id")

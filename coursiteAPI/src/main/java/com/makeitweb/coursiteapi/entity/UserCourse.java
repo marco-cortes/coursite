@@ -1,12 +1,11 @@
 package com.makeitweb.coursiteapi.entity;
 
 import com.makeitweb.coursiteapi.entity.course.Course;
-import com.makeitweb.coursiteapi.entity.users.Student;
+import com.makeitweb.coursiteapi.entity.users.User;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
@@ -15,20 +14,17 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-public class CourseStudent {
+public class UserCourse {
     @EmbeddedId
-    private CourseStudentPK id;
+    private UserCoursePK id;
 
-    @Column(nullable = false)
     private Float progress;
-
-    @Column(nullable = false)
     private Float score;
 
-    @JoinColumn(name="student_id")
+    @JoinColumn(name="user_id")
     @MapsId("studentId")
     @ManyToOne
-    private Student student;
+    private User user;
 
     @JoinColumn(name="course_id")
     @MapsId("courseId")
@@ -39,7 +35,7 @@ public class CourseStudent {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        CourseStudent that = (CourseStudent) o;
+        UserCourse that = (UserCourse) o;
         return id != null && Objects.equals(id, that.id);
     }
 

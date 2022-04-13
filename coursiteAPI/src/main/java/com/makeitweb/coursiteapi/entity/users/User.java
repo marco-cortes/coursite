@@ -1,11 +1,14 @@
 package com.makeitweb.coursiteapi.entity.users;
 
+import com.makeitweb.coursiteapi.entity.UserCourse;
+import com.makeitweb.coursiteapi.entity.Notification;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -26,6 +29,15 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String password;
+
+    @OneToMany
+    @ToString.Exclude
+    private List<Notification> notifications;
+
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<UserCourse> userCourses;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
