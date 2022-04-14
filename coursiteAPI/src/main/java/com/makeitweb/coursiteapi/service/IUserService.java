@@ -3,8 +3,10 @@ package com.makeitweb.coursiteapi.service;
 import com.makeitweb.coursiteapi.entity.UserCourse;
 import com.makeitweb.coursiteapi.entity.UserCoursePK;
 import com.makeitweb.coursiteapi.entity.course.Course;
+import com.makeitweb.coursiteapi.entity.users.Role;
 import com.makeitweb.coursiteapi.entity.users.User;
 import com.makeitweb.coursiteapi.repository.CourseRepository;
+import com.makeitweb.coursiteapi.repository.RoleRepository;
 import com.makeitweb.coursiteapi.repository.UserCourseRepository;
 import com.makeitweb.coursiteapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,16 +25,30 @@ public class IUserService implements UserService {
     private final UserRepository userRepository;
     private final CourseRepository courseRepository;
     private final UserCourseRepository userCourseRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     public User saveUser(User user) {
-        /*ADD ROLES*/
+        //add roles
+        Role r = roleRepository.findById(1L).orElse(null);
+        user.getRoles().add(r);
         return userRepository.save(user);
     }
 
     @Override
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Boolean deleteUser(Long id) {
+        User u = getUserById(id);
+        if(u == null)
+            return false;
+        //delete notifications and roles
+        userCourseRepository.deleteUserCoursesByUser(u);
+        userRepository.delete(u);
+        return true;
     }
 
     @Override

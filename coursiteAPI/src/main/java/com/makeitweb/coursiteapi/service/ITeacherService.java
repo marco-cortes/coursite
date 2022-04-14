@@ -1,9 +1,11 @@
 package com.makeitweb.coursiteapi.service;
 
 import com.makeitweb.coursiteapi.entity.Document;
+import com.makeitweb.coursiteapi.entity.users.Role;
 import com.makeitweb.coursiteapi.entity.users.Teacher;
 import com.makeitweb.coursiteapi.entity.users.User;
 import com.makeitweb.coursiteapi.repository.DocumentRepository;
+import com.makeitweb.coursiteapi.repository.RoleRepository;
 import com.makeitweb.coursiteapi.repository.TeacherRepository;
 import com.makeitweb.coursiteapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +24,17 @@ public class ITeacherService implements TeacherService {
     private final TeacherRepository teacherRepository;
     private final UserRepository userRepository;
     private final DocumentRepository documentRepository;
+    private final RoleRepository roleRepository;
 
 
     @Override
     public List<Teacher> getTeachers() {
         return teacherRepository.findAll();
+    }
+
+    @Override
+    public List<Teacher> pendingTeachers() {
+        return teacherRepository.getPendingTeachers();
     }
 
     @Override
@@ -39,6 +47,8 @@ public class ITeacherService implements TeacherService {
         Teacher t = new Teacher();
         t.setStatus(0);
         t.setPhone("##########");
+        Role r = roleRepository.findById(2L).orElse(null);
+        user.getRoles().add(r);
         t.setUser(userRepository.save(user));
         return teacherRepository.save(t);
     }

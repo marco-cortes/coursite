@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface TeacherService {
     List<Teacher> getTeachers();
+    List<Teacher> pendingTeachers();
     Teacher getTeacherById(Long id);
     Teacher saveTeacher(User user);
     Teacher updateTeacher(Teacher teacher);

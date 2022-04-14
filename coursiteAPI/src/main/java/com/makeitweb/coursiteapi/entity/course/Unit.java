@@ -1,5 +1,6 @@
 package com.makeitweb.coursiteapi.entity.course;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -22,6 +23,7 @@ public class Unit {
     @Column(nullable = false)
     private String description;
 
+    @JsonBackReference
     @JoinColumn(nullable = false)
     @ManyToOne
     private Course course;

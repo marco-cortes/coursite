@@ -1,7 +1,15 @@
 package com.makeitweb.coursiteapi;
-
+/* *
+import com.makeitweb.coursiteapi.entity.course.Category;
+import com.makeitweb.coursiteapi.entity.users.Role;
+import com.makeitweb.coursiteapi.repository.CategoryRepository;
+import com.makeitweb.coursiteapi.repository.RoleRepository;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+*/
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 
 @SpringBootApplication
 public class CoursiteApiApplication {
@@ -12,26 +20,28 @@ public class CoursiteApiApplication {
 
 	/* *
 	@Bean
-	CommandLineRunner run(UserService userService){
+	CommandLineRunner run(CategoryRepository cr, RoleRepository rr){
 		return args -> {
-			userService.saveRole(new Role(null, "ROLE_USER"));
-			userService.saveRole(new Role(null, "ROLE_MANAGER"));
-			userService.saveRole(new Role(null, "ROLE_ADMIN"));
-			userService.saveRole(new Role(null, "ROLE_SUPER_ADMIN"));
+			Category aux = new Category();
+			aux.setName("TECHNOLOGY");
+			cr.save(aux);
+			aux = new Category();
+			aux.setName("SCIENCE");
+			cr.save(aux);
+			//define categories
 
-			userService.saveUser(new User(null, "John Travolta", "john", "1234", new ArrayList<>()));
-			userService.saveUser(new User(null, "Will Smith", "will", "1234", new ArrayList<>()));
-			userService.saveUser(new User(null, "Jim Carry", "jim", "1234", new ArrayList<>()));
-			userService.saveUser(new User(null, "Arnold Schwarzenegger", "arnold", "1234", new ArrayList<>()));
+			Role role = new Role();
+			role.setName("ROLE_USER");
+			rr.save(role);
 
-			userService.addRoleToUser("john", "ROLE_USER");
-			userService.addRoleToUser("john", "ROLE_MANAGER");
-			userService.addRoleToUser("will", "ROLE_MANAGER");
-			userService.addRoleToUser("jim", "ROLE_ADMIN");
-			userService.addRoleToUser("arnold", "ROLE_SUPER_ADMIN");
-			userService.addRoleToUser("arnold", "ROLE_ADMIN");
-			userService.addRoleToUser("arnold", "ROLE_USER");
+			role = new Role();
+			role.setName(("ROLE_TEACHER"));
+			rr.save(role);
+
+			role = new Role();
+			role.setName("ROLE_ADMIN");
+			rr.save(role);
 		};
 	}
-	* */
+	 */
 }
