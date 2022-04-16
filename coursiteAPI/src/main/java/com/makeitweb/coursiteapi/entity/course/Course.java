@@ -1,6 +1,5 @@
 package com.makeitweb.coursiteapi.entity.course;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.makeitweb.coursiteapi.entity.UserCourse;
 import com.makeitweb.coursiteapi.entity.users.Teacher;
 import lombok.*;
@@ -33,7 +32,6 @@ public class Course {
     @Column(nullable = false)
     private Integer status;
 
-    @JsonBackReference
     @JoinColumn(nullable = false)
     @ManyToOne
     private Teacher teacher;
@@ -43,13 +41,15 @@ public class Course {
     @ToString.Exclude
     private Category category;
 
+    /* *
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<UserCourse> userCourses;
 
-    @OneToMany(mappedBy = "course")
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<Unit> units;
+    private List<Unit> units;*/
 
     @Override
     public boolean equals(Object o) {

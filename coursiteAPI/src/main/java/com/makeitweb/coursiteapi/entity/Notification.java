@@ -1,5 +1,6 @@
 package com.makeitweb.coursiteapi.entity;
 
+import com.makeitweb.coursiteapi.entity.users.User;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -23,6 +24,10 @@ public class Notification {
     private String body;
     @Column(nullable = false)
     private Date date;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private User user;
 
     @Override
     public boolean equals(Object o) {

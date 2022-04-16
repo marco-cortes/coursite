@@ -1,12 +1,12 @@
 package com.makeitweb.coursiteapi;
-/* *
+
 import com.makeitweb.coursiteapi.entity.course.Category;
 import com.makeitweb.coursiteapi.entity.users.Role;
 import com.makeitweb.coursiteapi.repository.CategoryRepository;
 import com.makeitweb.coursiteapi.repository.RoleRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-*/
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

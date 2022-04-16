@@ -1,6 +1,5 @@
 package com.makeitweb.coursiteapi.entity.course;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -23,14 +22,13 @@ public class Unit {
     @Column(nullable = false)
     private String description;
 
-    @JsonBackReference
-    @JoinColumn(nullable = false)
     @ManyToOne
     private Course course;
 
-    @OneToMany(mappedBy = "unit")
+    /* *
+    @OneToMany(mappedBy = "unit", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<Lesson> lessons;
+    private List<Lesson> lessons;*/
 
     @Override
     public boolean equals(Object o) {

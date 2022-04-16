@@ -1,8 +1,9 @@
 package com.makeitweb.coursiteapi.entity.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.makeitweb.coursiteapi.entity.Document;
 import com.makeitweb.coursiteapi.entity.course.Course;
-import com.makeitweb.coursiteapi.entity.Notification;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -21,19 +22,20 @@ public class Teacher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @JoinColumn(nullable = false, unique = true)
+    @OneToOne(cascade = CascadeType.ALL)
     private User user;
 
     private String phone;
     private Integer status;
 
-    @OneToMany(mappedBy = "teacher")
+    /* *@OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Course> courses;
 
-    @OneToMany(mappedBy = "teacher")
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<Document> documents;
+    private List<Document> documents;*/
 
     @Override
     public boolean equals(Object o) {

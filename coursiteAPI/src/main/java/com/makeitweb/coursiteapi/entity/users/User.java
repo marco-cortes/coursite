@@ -30,17 +30,17 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @OneToMany
+    /* *@OneToMany
     @ToString.Exclude
-    private List<Notification> notifications;
+    private List<Notification> notifications;*/
 
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    /* * @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<UserCourse> userCourses;
+    private List<UserCourse> userCourses;*/
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Collection<Role> roles = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Role role;
 
     @Override
     public boolean equals(Object o) {

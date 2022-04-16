@@ -1,6 +1,5 @@
 package com.makeitweb.coursiteapi.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.makeitweb.coursiteapi.entity.users.Teacher;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -23,7 +22,7 @@ public class Document {
     @Column(nullable = false)
     private String name;
 
-    @JsonBackReference
+
     @JoinColumn(nullable = false)
     @ManyToOne
     private Teacher teacher;

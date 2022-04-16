@@ -1,17 +1,12 @@
 package com.makeitweb.coursiteapi.service;
 
-import com.makeitweb.coursiteapi.entity.Document;
-import com.makeitweb.coursiteapi.entity.users.Teacher;
-import com.makeitweb.coursiteapi.entity.users.User;
-
+import com.makeitweb.coursiteapi.dto.TeacherDTO;
 import java.util.List;
 
 public interface TeacherService {
-    List<Teacher> getTeachers();
-    List<Teacher> pendingTeachers();
-    Teacher getTeacherById(Long id);
-    Teacher saveTeacher(User user);
-    Teacher updateTeacher(Teacher teacher);
-    Document addDocument(Document document);
+    //List<TeacherDTO> getTeachers();
+    List<TeacherDTO> pendingTeachers();
+    TeacherDTO getTeacherById(Long id);
+    TeacherDTO saveTeacher(TeacherDTO teacher);
     Boolean deleteTeacher(Long id);
 }

@@ -1,18 +1,19 @@
 package com.makeitweb.coursiteapi.service;
 
-import com.makeitweb.coursiteapi.entity.Document;
+import com.makeitweb.coursiteapi.dto.TeacherDTO;
 import com.makeitweb.coursiteapi.entity.users.Role;
 import com.makeitweb.coursiteapi.entity.users.Teacher;
 import com.makeitweb.coursiteapi.entity.users.User;
-import com.makeitweb.coursiteapi.repository.DocumentRepository;
 import com.makeitweb.coursiteapi.repository.RoleRepository;
 import com.makeitweb.coursiteapi.repository.TeacherRepository;
 import com.makeitweb.coursiteapi.repository.UserRepository;
+import com.makeitweb.coursiteapi.helpers.Validation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,56 +24,90 @@ public class ITeacherService implements TeacherService {
 
     private final TeacherRepository teacherRepository;
     private final UserRepository userRepository;
-    private final DocumentRepository documentRepository;
+    //private final DocumentRepository documentRepository;
     private final RoleRepository roleRepository;
 
 
+    /* *@Override
+    public List<TeacherDTO> getTeachers() {
+        return setTeachersDTO(teacherRepository.findAll());
+    }*/
+
     @Override
-    public List<Teacher> getTeachers() {
-        return teacherRepository.findAll();
+    public List<TeacherDTO> pendingTeachers() {
+        return setTeachersDTO(teacherRepository.getPendingTeachers());
     }
 
     @Override
-    public List<Teacher> pendingTeachers() {
-        return teacherRepository.getPendingTeachers();
+    public TeacherDTO getTeacherById(Long id) {
+        Teacher t = teacherRepository.findById(id).orElse(null);
+        if(t == null)
+            return null;
+        TeacherDTO teacherDTO = new TeacherDTO();
+        teacherDTO.setId(t.getId());
+        teacherDTO.setName(t.getUser().getName());
+        teacherDTO.setLastName(t.getUser().getLastName());
+        teacherDTO.setEmail(t.getUser().getEmail());
+        teacherDTO.setStatus(t.getStatus());
+        teacherDTO.setPhone(t.getPhone());
+        teacherDTO.setRole(t.getUser().getRole().getId());
+        return teacherDTO;
     }
 
     @Override
-    public Teacher getTeacherById(Long id) {
-        return teacherRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public Teacher saveTeacher(User user) {
+    public TeacherDTO saveTeacher(TeacherDTO teacher) {
         Teacher t = new Teacher();
-        t.setStatus(0);
-        t.setPhone("##########");
-        Role r = roleRepository.findById(2L).orElse(null);
-        user.getRoles().add(r);
-        t.setUser(userRepository.save(user));
-        return teacherRepository.save(t);
-    }
+        User u = new User();
 
-    @Override
-    public Teacher updateTeacher(Teacher teacher) {
-        return teacherRepository.save(teacher);
-    }
+        if(teacher.getId() != null && teacher.getId() >= 1) {
+            t = teacherRepository.findById(teacher.getId()).orElse(null);
+            if(t == null)
+                return null;
+            //t.setId(teacher.getId());
+            u = t.getUser();
+        }
 
-    @Override
-    public Document addDocument(Document document) {
-        return documentRepository.save(document);
+        Validation.validateUser(u, teacher.getName(), teacher.getLastName(), teacher.getEmail(), teacher.getPassword());
+
+        if(u.getRole() == null) {
+            Role r = roleRepository.findById(2L).orElse(null);
+            u.setRole(r);
+        }
+
+        Validation.validateTeacher(t, teacher.getPhone(), teacher.getStatus());
+
+        t.setUser(userRepository.save(u));
+        teacher.setId(teacherRepository.save(t).getId());
+        teacher.setPassword(null);
+        return teacher;
     }
 
     @Override
     public Boolean deleteTeacher(Long id) {
-        Teacher t = getTeacherById(id);
+        Teacher t = teacherRepository.findById(id).orElse(null);
         if(t == null)
-            return false;
-
-        userRepository.delete(t.getUser());
-        documentRepository.deleteDocumentsByTeacher(t);
+            return Boolean.FALSE;
         teacherRepository.delete(t);
-        return true;
+        return Boolean.TRUE;
     }
+
+    private List<TeacherDTO> setTeachersDTO(List<Teacher> teachers) {
+        TeacherDTO aux = new TeacherDTO();
+        List<TeacherDTO> list = new ArrayList<>();
+        for (Teacher teacher : teachers) {
+            aux.setId(teacher.getId());
+            aux.setName(teacher.getUser().getName());
+            aux.setLastName(teacher.getUser().getLastName());
+            aux.setEmail(teacher.getUser().getEmail());
+            aux.setRole(teacher.getUser().getRole().getId());
+            aux.setPhone(teacher.getPhone());
+            aux.setStatus(teacher.getStatus());
+            list.add(aux);
+            aux = new TeacherDTO();
+        }
+        return list;
+    }
+
+
 }
 

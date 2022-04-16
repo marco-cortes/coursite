@@ -1,16 +1,21 @@
 package com.makeitweb.coursiteapi.service;
 
+import com.makeitweb.coursiteapi.dto.CourseDTO;
+import com.makeitweb.coursiteapi.dto.LessonDTO;
+import com.makeitweb.coursiteapi.dto.UnitDTO;
 import com.makeitweb.coursiteapi.entity.course.Category;
 import com.makeitweb.coursiteapi.entity.course.Course;
 import com.makeitweb.coursiteapi.entity.course.Lesson;
 import com.makeitweb.coursiteapi.entity.course.Unit;
 import com.makeitweb.coursiteapi.entity.users.Teacher;
 import com.makeitweb.coursiteapi.repository.*;
+import com.makeitweb.coursiteapi.helpers.Validation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,80 +31,164 @@ public class ICourseService implements CourseService {
     private final LessonRepository lessonRepository;
 
     @Override
-    public Course saveCourse(Course course) {
-        List<Unit> units = course.getUnits();
-        for(Unit u: units) {
-            if(u.getId() == null || u.getId() <= 0) {
-                u.setCourse(course);
-            }
-            unitRepository.save(u);
-            System.out.println(u);
-            List<Lesson> lessons = u.getLessons();
-            for (Lesson l: lessons) {
-                if(l.getId() == null || l.getId() <= 0) {
-                    l.setUnit(u);
-                }
-                lessonRepository.save(l);
-                System.out.println(l);
-            }
+    public CourseDTO saveCourse(CourseDTO course) {
+        Course c = new Course();
+        if(course.getId() != null && course.getId() >= 1) {
+            c = courseRepository.findById(course.getId()).orElse(null);
+            if(c == null)
+                return null;
+            course.setId(c.getId());
         }
-        //return null;
-        return courseRepository.save(course);
-    }
 
-    @Override
-    public Unit saveUnit(Unit unit) {
-        return null;
-    }
+        if(course.getTeacher() != null && course.getTeacher() >= 1) {
+            Teacher t = teacherRepository.findById(course.getTeacher()).orElse(null);
+            if(t == null)
+                return null;
+            c.setTeacher(t);
+        }
 
-    @Override
-    public Unit saveLesson(Lesson lesson) {
-        return null;
+        if(course.getCategory() != null && course.getCategory() >= 1) {
+            Category ca = categoryRepository.findById(course.getCategory()).orElse(null);
+            if(ca == null)
+                return null;
+            c.setCategory(ca);
+        }
+
+        Validation.validateCourse(c, course.getTitle(), course.getDescription(), course.getImage(), course.getPrice(), course.getStatus(), course.getScore());
+
+        c = courseRepository.save(c);
+        course.setId(c.getId());
+
+        if(course.getUnits() != null && course.getUnits().size() > 0)
+            saveUnits(course.getUnits(), c);
+        return course;
     }
 
     @Override
     public Boolean deleteCourse(Long course) {
-        Course c = courseById(course);
+        Course c = courseRepository.findById(course).orElse(null);
         if(c == null)
-            return false;
-        //delete units, lessons and relations with users
+            return Boolean.FALSE;
         courseRepository.delete(c);
-        return true;
+        return Boolean.TRUE;
     }
 
     @Override
-    public Course courseById(Long id) {
-        return courseRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public List<Course> allCourses() {
-        return courseRepository.findAll();
-    }
-
-    @Override
-    public List<Course> coursesByCategory(Long category) {
-        Category c = categoryRepository.findById(category).orElse(null);
+    public CourseDTO courseById(Long id) {
+        Course c = courseRepository.findById(id).orElse(null);
         if(c == null)
             return null;
-        return courseRepository.getCoursesByCategory(c);
+        CourseDTO course = new CourseDTO();
+        course.setId(c.getId());
+        course.setTitle(c.getTitle());
+        course.setDescription(c.getDescription());
+        course.setImage(c.getImage());
+        course.setPrice(c.getPrice());
+        course.setScore(c.getScore());
+        course.setCategory(c.getCategory().getId());
+        course.setTeacher(c.getTeacher().getId());
+        course.setStatus(c.getStatus());
+        List<Unit> units = unitRepository.getUnitsByCourse_Id(id);
+
+        if(units == null || units.size() <= 0)
+            return course;
+
+        List<UnitDTO> unitDTOS = new ArrayList<>();
+        UnitDTO unitDTO = new UnitDTO();
+        for (Unit u: units) {
+            unitDTO.setId(u.getId());
+            unitDTO.setTitle(u.getTitle());
+            unitDTO.setDescription(u.getDescription());
+            List<Lesson> lessons = lessonRepository.getLessonsByUnit_Id(u.getId());
+            if(lessons != null && units.size() > 0) {
+                LessonDTO lessonDTO = new LessonDTO();
+                List<LessonDTO> lessonDTOS = new ArrayList<>();
+                for (Lesson l: lessons) {
+
+                    lessonDTO.setId(l.getId());
+                    lessonDTO.setTitle(l.getTitle());
+                    lessonDTO.setDescription(l.getDescription());
+                    lessonDTO.setLinkDoc(l.getLinkDoc());
+                    lessonDTO.setLinkVideo(l.getLinkVideo());
+                    lessonDTOS.add(lessonDTO);
+                    lessonDTO = new LessonDTO();
+                }
+                unitDTO.setLessons(lessonDTOS);
+            }
+            unitDTOS.add(unitDTO);
+            unitDTO = new UnitDTO();
+        }
+        course.setUnits(unitDTOS);
+        return course;
     }
 
     @Override
-    public List<Course> coursesByTeacher(Long teacher) {
-        Teacher t = teacherRepository.findById(teacher).orElse(null);
-        if(t == null)
-            return null;
-        return courseRepository.getCoursesByTeacher(t);
+    public List<CourseDTO> allCourses() {
+        return getCourseDTOS(courseRepository.findAll());
     }
 
     @Override
-    public List<Course> coursesByUser(Long user) {
-        return courseRepository.getCoursesByUserId(user);
+    public List<CourseDTO> coursesByCategory(Long category) {
+        return getCourseDTOS(courseRepository.getCoursesByCategory_Id(category));
     }
 
     @Override
-    public List<Course> pendingCourses() {
-        return courseRepository.getPendingCourses();
+    public List<CourseDTO> coursesByTeacher(Long teacher) {
+        return getCourseDTOS(courseRepository.getCoursesByTeacher_Id(teacher));
+    }
+
+    @Override
+    public List<CourseDTO> coursesByUser(Long user) {
+        return getCourseDTOS(courseRepository.getCoursesByUserId(user));
+    }
+
+    @Override
+    public List<CourseDTO> pendingCourses() {
+        return getCourseDTOS(courseRepository.getPendingCourses());
+    }
+
+    private void saveUnits(List<UnitDTO> units, Course c) {
+        Unit aux = new Unit();
+        for (UnitDTO unit: units) {
+            aux.setCourse(c);
+            unit.setCourse(c.getId());
+            Validation.validateUnit(aux, unit.getTitle(), unit.getDescription());
+            aux = unitRepository.save(aux);
+            unit.setId(aux.getId());
+            if(unit.getLessons() != null && unit.getLessons().size() > 0)
+                saveLessons(unit.getLessons(), aux);
+            aux = new Unit();
+        }
+    }
+
+    private void saveLessons(List<LessonDTO> lessons, Unit u) {
+        Lesson aux = new Lesson();
+        for (LessonDTO lesson: lessons) {
+            aux.setUnit(u);
+            lesson.setUnit(u.getId());
+            Validation.validateLesson(aux, lesson.getTitle(), lesson.getDescription(), lesson.getLinkDoc(), lesson.getLinkVideo());
+            lesson.setId(lessonRepository.save(aux).getId());
+            aux = new Lesson();
+        }
+    }
+
+    private List<CourseDTO> getCourseDTOS(List<Course> courses) {
+        List<CourseDTO> courseDTOS = new ArrayList<>();
+        CourseDTO aux = new CourseDTO();
+        for (Course c: courses) {
+            aux.setId(c.getId());
+            aux.setTitle(c.getTitle());
+            aux.setDescription(c.getDescription());
+            aux.setCategory(c.getCategory().getId());
+            aux.setTeacher(c.getTeacher().getId());
+            aux.setImage(c.getImage());
+            aux.setScore(c.getScore());
+            aux.setPrice(c.getPrice());
+            aux.setStatus(c.getStatus());
+            courseDTOS.add(aux);
+            aux = new CourseDTO();
+        }
+
+        return courseDTOS;
     }
 }
