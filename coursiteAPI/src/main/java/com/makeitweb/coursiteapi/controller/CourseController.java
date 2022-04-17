@@ -1,7 +1,6 @@
 package com.makeitweb.coursiteapi.controller;
 
 import com.makeitweb.coursiteapi.dto.CourseDTO;
-import com.makeitweb.coursiteapi.entity.course.Course;
 import com.makeitweb.coursiteapi.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,18 +10,17 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/course")
 @CrossOrigin("*")
 public class CourseController {
 
     private final CourseService courseService;
 
-    @PostMapping("/new")
+    @PostMapping("/api/course/new")
     public ResponseEntity<CourseDTO> newCourse(@RequestBody CourseDTO course) {
         return ResponseEntity.ok(courseService.saveCourse(course));
     }
 
-    @PutMapping("/update")
+    @PutMapping("/api/course/update")
     public ResponseEntity<CourseDTO> updateCourse(@RequestBody CourseDTO course) {
         if(course.getId() == null || course.getId() <= 0)
             return ResponseEntity.badRequest().build();
@@ -32,7 +30,7 @@ public class CourseController {
         return ResponseEntity.ok(courseService.saveCourse(course));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/api/course/{id}")
     public ResponseEntity<CourseDTO> courseById(@PathVariable Long id) {
         CourseDTO c = courseService.courseById(id);
         if(c == null)
@@ -40,19 +38,19 @@ public class CourseController {
         return ResponseEntity.ok(c);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/api/course/delete/{id}")
     public ResponseEntity<Boolean> deleteCourse(@PathVariable Long id) {
         if(!courseService.deleteCourse(id))
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(Boolean.TRUE);
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<CourseDTO>> getAll() {
-        return ResponseEntity.ok(courseService.allCourses());
+    @GetMapping("/api/course/")
+    public ResponseEntity<List<CourseDTO>> getEnabledCourses() {
+        return ResponseEntity.ok(courseService.enabledCourses());
     }
 
-    @GetMapping("/category/{category}")
+    @GetMapping("/api/course/category/{category}")
     public ResponseEntity<List<CourseDTO>> getByCategory(@PathVariable  Long category) {
         List<CourseDTO> list = courseService.coursesByCategory(category);
         if(list == null)
@@ -60,7 +58,12 @@ public class CourseController {
         return ResponseEntity.ok(list);
     }
 
-    @GetMapping("/pending")
+    @GetMapping("/api/admin/course/all")
+    public ResponseEntity<List<CourseDTO>> getAll() {
+        return ResponseEntity.ok(courseService.allCourses());
+    }
+
+    @GetMapping("/api/admin/course/pending")
     public ResponseEntity<List<CourseDTO>> getPending(){
         List<CourseDTO> list = courseService.pendingCourses();
         if(list == null)
@@ -68,7 +71,7 @@ public class CourseController {
         return ResponseEntity.ok(list);
     }
 
-    @GetMapping("/user/{user}")
+    @GetMapping("/api/course/user/{user}")
     public ResponseEntity<List<CourseDTO>> getUserCourses(@PathVariable  Long user) {
         List<CourseDTO> list = courseService.coursesByUser(user);
         if(list == null)
@@ -76,7 +79,7 @@ public class CourseController {
         return ResponseEntity.ok(list);
     }
 
-    @GetMapping("/teacher/{teacher}")
+    @GetMapping("/api/course/teacher/{teacher}")
     public ResponseEntity<List<CourseDTO>> getTeacherCourses(@PathVariable  Long teacher) {
         List<CourseDTO> list = courseService.coursesByTeacher(teacher);
         if(list == null)

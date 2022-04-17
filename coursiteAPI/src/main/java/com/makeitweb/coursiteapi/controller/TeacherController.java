@@ -10,20 +10,17 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api/teacher")
 @RequiredArgsConstructor
 public class TeacherController {
 
     private final TeacherService teacherService;
 
-    @GetMapping("/")
+    @GetMapping("/api/admin/teacher/")
     public ResponseEntity<List<TeacherDTO>> getPendingTeachers() {
         return ResponseEntity.ok(teacherService.pendingTeachers());
     }
 
-
-
-    @GetMapping("/{id}")
+    @GetMapping("/api/teacher/{id}")
     public ResponseEntity<TeacherDTO> getTeacherById(@PathVariable Long id) {
         TeacherDTO t = teacherService.getTeacherById(id);
         if(t == null)
@@ -31,12 +28,12 @@ public class TeacherController {
         return ResponseEntity.ok(t);
     }
 
-    @PostMapping("/new")
+    @PostMapping("/api/teacher/new")
     public ResponseEntity<TeacherDTO> newTeacher(@RequestBody TeacherDTO user) {
         return ResponseEntity.ok(teacherService.saveTeacher(user));
     }
 
-    @PutMapping("/update")
+    @PutMapping("/api/teacher/update")
     public ResponseEntity<TeacherDTO> updateTeacher(@RequestBody TeacherDTO teacher) {
         if(teacher.getId() == null || teacher.getId() <= 0)
             return ResponseEntity.badRequest().build();
@@ -45,7 +42,7 @@ public class TeacherController {
         return ResponseEntity.ok(teacherService.saveTeacher(teacher));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/api/teacher/delete/{id}")
     public ResponseEntity<Boolean> deleteTeacher(@PathVariable Long id) {
         if(!teacherService.deleteTeacher(id))
             return ResponseEntity.notFound().build();

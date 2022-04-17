@@ -1,7 +1,6 @@
 package com.makeitweb.coursiteapi.controller;
 
 import com.makeitweb.coursiteapi.dto.UnitDTO;
-import com.makeitweb.coursiteapi.entity.course.Unit;
 import com.makeitweb.coursiteapi.service.UnitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

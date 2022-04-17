@@ -3,9 +3,7 @@ package com.makeitweb.coursiteapi.service;
 import com.makeitweb.coursiteapi.dto.UserDTO;
 import com.makeitweb.coursiteapi.entity.users.Role;
 import com.makeitweb.coursiteapi.entity.users.User;
-import com.makeitweb.coursiteapi.repository.CourseRepository;
 import com.makeitweb.coursiteapi.repository.RoleRepository;
-import com.makeitweb.coursiteapi.repository.UserCourseRepository;
 import com.makeitweb.coursiteapi.repository.UserRepository;
 import com.makeitweb.coursiteapi.helpers.Validation;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +19,6 @@ import javax.transaction.Transactional;
 public class IUserService implements UserService {
 
     private final UserRepository userRepository;
-    private final CourseRepository courseRepository;
-    private final UserCourseRepository userCourseRepository;
     private final RoleRepository roleRepository;
 
     @Override
@@ -32,17 +28,16 @@ public class IUserService implements UserService {
             u = userRepository.findById(user.getId()).orElse(null);
             if(u == null)
                 return null;
-            u.setId(user.getId());
         }
-        if(user.getAdmin())
-            user.setRole(3L);
-
         Validation.validateUser(u, user.getName(), user.getLastName(), user.getEmail(), user.getPassword());
-
-        Role r = roleRepository.findById(user.getRole()).orElse(null);
-        if(r == null)
-            return null;
-        u.setRole(r);
+        if(u.getRole() == null) {
+            if(user.getAdmin())
+                user.setRole(3L);
+            Role r = roleRepository.findById(user.getRole()).orElse(null);
+            if(r == null)
+                return null;
+            u.setRole(r);
+        }
         user.setId(userRepository.save(u).getId());
         user.setPassword(null);
         return user;

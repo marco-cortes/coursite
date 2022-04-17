@@ -13,4 +13,5 @@ public interface CourseService {
     List<CourseDTO> coursesByTeacher(Long teacher);
     List<CourseDTO> coursesByUser(Long user);
     List<CourseDTO> pendingCourses();
+    List<CourseDTO> enabledCourses();
 }

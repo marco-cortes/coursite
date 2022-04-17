@@ -1,5 +1,6 @@
 package com.makeitweb.coursiteapi.helpers;
 
+import com.makeitweb.coursiteapi.entity.Document;
 import com.makeitweb.coursiteapi.entity.course.Course;
 import com.makeitweb.coursiteapi.entity.course.Lesson;
 import com.makeitweb.coursiteapi.entity.course.Unit;
@@ -107,6 +108,13 @@ public class Validation {
             l.setLinkDoc(linkDoc);
         if(text(linkVideo))
             l.setLinkVideo(linkVideo);
+    }
+
+    public static void validateDocument(Document d, String name, String url) {
+        if(text(name))
+            d.setName(name);
+        if(text(url))
+            d.setUrl(url);
     }
 
 }

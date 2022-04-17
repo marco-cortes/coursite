@@ -147,6 +147,11 @@ public class ICourseService implements CourseService {
         return getCourseDTOS(courseRepository.getPendingCourses());
     }
 
+    @Override
+    public List<CourseDTO> enabledCourses() {
+        return getCourseDTOS(courseRepository.getCourses());
+    }
+
     private void saveUnits(List<UnitDTO> units, Course c) {
         Unit aux = new Unit();
         for (UnitDTO unit: units) {

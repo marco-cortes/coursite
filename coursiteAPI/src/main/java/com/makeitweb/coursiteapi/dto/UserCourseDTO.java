@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DocumentDTO {
-    private Long id;
-    private String name;
-    private String url;
-    private Long teacher;
+public class UserCourseDTO {
+    private Long courseId;
+    private Long userId;
+    private Float progress;
+    private Float score;
 }

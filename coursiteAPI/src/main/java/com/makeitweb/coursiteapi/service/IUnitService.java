@@ -2,9 +2,11 @@ package com.makeitweb.coursiteapi.service;
 
 import com.makeitweb.coursiteapi.dto.LessonDTO;
 import com.makeitweb.coursiteapi.dto.UnitDTO;
+import com.makeitweb.coursiteapi.entity.course.Course;
 import com.makeitweb.coursiteapi.entity.course.Lesson;
 import com.makeitweb.coursiteapi.entity.course.Unit;
 import com.makeitweb.coursiteapi.helpers.Validation;
+import com.makeitweb.coursiteapi.repository.CourseRepository;
 import com.makeitweb.coursiteapi.repository.LessonRepository;
 import com.makeitweb.coursiteapi.repository.UnitRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class IUnitService implements UnitService {
 
     private final UnitRepository unitRepository;
     private final LessonRepository lessonRepository;
+    private final CourseRepository courseRepository;
 
     @Override
     public List<UnitDTO> getUnitsByCourse(Long course) {
@@ -59,7 +62,14 @@ public class IUnitService implements UnitService {
             u = unitRepository.findById(unit.getId()).orElse(null);
             if(u == null)
                 return null;
-            unit.setId(u.getId());
+        }
+        if(u.getCourse() != null && !unit.getCourse().equals(u.getCourse().getId()))
+            return null;
+        if(u.getCourse() == null) {
+            Course c = courseRepository.findById(unit.getCourse()).orElse(null);
+            if(c == null)
+                return null;
+            u.setCourse(c);
         }
         Validation.validateUnit(u, unit.getTitle(), unit.getDescription());
         unit.setId(unitRepository.save(u).getId());

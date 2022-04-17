@@ -2,14 +2,10 @@ package com.makeitweb.coursiteapi.controller;
 
 import com.makeitweb.coursiteapi.dto.UserDTO;
 import com.makeitweb.coursiteapi.entity.UserCourse;
-import com.makeitweb.coursiteapi.entity.course.Course;
-import com.makeitweb.coursiteapi.entity.users.User;
 import com.makeitweb.coursiteapi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @CrossOrigin("*")

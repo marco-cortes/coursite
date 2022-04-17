@@ -24,15 +24,7 @@ public class ITeacherService implements TeacherService {
 
     private final TeacherRepository teacherRepository;
     private final UserRepository userRepository;
-    //private final DocumentRepository documentRepository;
     private final RoleRepository roleRepository;
-
-
-    /* *@Override
-    public List<TeacherDTO> getTeachers() {
-        return setTeachersDTO(teacherRepository.findAll());
-    }*/
-
     @Override
     public List<TeacherDTO> pendingTeachers() {
         return setTeachersDTO(teacherRepository.getPendingTeachers());
@@ -63,7 +55,6 @@ public class ITeacherService implements TeacherService {
             t = teacherRepository.findById(teacher.getId()).orElse(null);
             if(t == null)
                 return null;
-            //t.setId(teacher.getId());
             u = t.getUser();
         }
 

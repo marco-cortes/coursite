@@ -4,12 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DocumentDTO {
+public class NotificationDTO {
     private Long id;
-    private String name;
-    private String url;
-    private Long teacher;
+    private String title;
+    private String body;
+    private Date date;
+    private Long user;
 }
