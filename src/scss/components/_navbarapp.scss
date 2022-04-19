@@ -1,0 +1,31 @@
+.course-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    padding: 1.5rem 3rem;
+    border-radius: 30px;
+    background-color: $light;
+}
+
+.app-link {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-weight: bold;
+    color: $gray;
+    padding: 0.5rem 1rem;
+    border-bottom: transparent solid 5px;
+    cursor: pointer;
+}
+
+.app-link:hover {
+    color: $primary;
+}
+
+.app-active {
+    color: $primary;
+    border-bottom: $primary solid 5px;
+}

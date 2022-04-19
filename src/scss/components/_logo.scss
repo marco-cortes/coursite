@@ -1,0 +1,14 @@
+.logo {
+    font-size: 48px;
+    font-weight: 600;
+    margin: 2rem auto;
+    .t1 {
+        color: $info;
+    }
+    .t2 {
+        color: $dark;
+    }
+}
+.dark .t2 {
+    color: $primary;
+}

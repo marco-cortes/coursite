@@ -1,0 +1,45 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.app-container {
+    display: flex;
+    max-width: calc(100% - 500px);
+    max-height: calc(100vh - 3rem);
+    margin: auto;
+    margin-top: 1.5rem;
+}
+
+.container {
+    width: calc(100vw - 3rem - 271px);
+    border-radius: 0 30px 30px 0;
+    background-color: $info;
+}
+
+.app {
+    height: calc(100% - 3rem);
+    width: calc(100% - 3rem);
+    margin: auto;
+    margin-top: 1.5rem;
+    border-radius: 30px;
+    background-color: $white;
+}
+.course-view {
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+body {
+    background-color: $light;
+}
+
+a {
+    text-decoration: none;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}

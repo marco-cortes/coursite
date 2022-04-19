@@ -1,0 +1,32 @@
+.search {
+    display: flex;
+    margin: 2rem auto;
+    margin-top: 2rem;
+    justify-content: flex-end;
+}
+
+.btn-search {
+    background-color: $secondary;
+    color: $white;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.btn-search:hover {
+    background-color: $info;
+}
+
+.input-search {
+    background-color: $blue-dark;
+    margin-right: 1rem;
+    border: none;
+    outline: none;
+    padding: 0 1rem;
+    color: $white;
+    font-size: 17px;
+    font-weight: 400;
+    max-width: 300px;
+    width: 100%;
+    text-align: center;
+    border-radius: 30px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}

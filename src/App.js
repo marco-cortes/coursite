@@ -1,10 +1,16 @@
-function App() {
+import { Provider } from "react-redux"
+
+import { AppRouter } from "./routers/AppRouter";
+import { store } from "./redux/store/store";
+
+
+import "./scss/styles.scss";
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        
-      </header>
-    </div>
+    <Provider store={store}>
+      <AppRouter />
+    </Provider>
   );
 }
 
