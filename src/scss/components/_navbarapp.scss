@@ -1,10 +1,11 @@
 .course-links {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
     margin: 0 auto;
-    padding: 1.5rem 3rem;
+    padding: 1.5rem 0;
     border-radius: 30px;
     background-color: $light;
 }
@@ -17,6 +18,7 @@
     font-weight: bold;
     color: $gray;
     padding: 0.5rem 1rem;
+    margin: 0 2rem;
     border-bottom: transparent solid 5px;
     cursor: pointer;
 }

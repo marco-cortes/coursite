@@ -40,19 +40,24 @@ public class ICourseService implements CourseService {
             course.setId(c.getId());
         }
 
-        if(course.getTeacher() != null && course.getTeacher() >= 1) {
-            Teacher t = teacherRepository.findById(course.getTeacher()).orElse(null);
+        if(course.getIdTeacher() != null && course.getIdTeacher() >= 1) {
+            Teacher t = teacherRepository.findById(course.getIdTeacher()).orElse(null);
             if(t == null)
                 return null;
             c.setTeacher(t);
+            course.setTeacher(t.getUser().getName() + " " + t.getUser().getLastName());
         }
 
-        if(course.getCategory() != null && course.getCategory() >= 1) {
-            Category ca = categoryRepository.findById(course.getCategory()).orElse(null);
+        if(course.getIdCategory() != null && course.getIdCategory() >= 1) {
+            Category ca = categoryRepository.findById(course.getIdCategory()).orElse(null);
             if(ca == null)
                 return null;
             c.setCategory(ca);
+            course.setCategory(ca.getName());
         }
+
+        if(course.getStatus() == 0 && c.getStatus() != null && c.getStatus() == 1)
+            course.setStatus(1);
 
         Validation.validateCourse(c, course.getTitle(), course.getDescription(), course.getImage(), course.getPrice(), course.getStatus(), course.getScore());
 
@@ -85,8 +90,10 @@ public class ICourseService implements CourseService {
         course.setImage(c.getImage());
         course.setPrice(c.getPrice());
         course.setScore(c.getScore());
-        course.setCategory(c.getCategory().getId());
-        course.setTeacher(c.getTeacher().getId());
+        course.setIdCategory(c.getCategory().getId());
+        course.setCategory(c.getCategory().getName());
+        course.setIdTeacher(c.getTeacher().getId());
+        course.setTeacher(c.getTeacher().getUser().getName() + " " + c.getTeacher().getUser().getLastName());
         course.setStatus(c.getStatus());
         List<Unit> units = unitRepository.getUnitsByCourse_Id(id);
 
@@ -184,8 +191,10 @@ public class ICourseService implements CourseService {
             aux.setId(c.getId());
             aux.setTitle(c.getTitle());
             aux.setDescription(c.getDescription());
-            aux.setCategory(c.getCategory().getId());
-            aux.setTeacher(c.getTeacher().getId());
+            aux.setIdCategory(c.getCategory().getId());
+            aux.setCategory(c.getCategory().getName());
+            aux.setIdTeacher(c.getTeacher().getId());
+            aux.setTeacher(c.getTeacher().getUser().getName() + " " + c.getTeacher().getUser().getLastName());
             aux.setImage(c.getImage());
             aux.setScore(c.getScore());
             aux.setPrice(c.getPrice());

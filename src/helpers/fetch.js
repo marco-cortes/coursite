@@ -1,6 +1,6 @@
-const baseUrl = process.env.REACT_APP_API_URL;
+const baseUrl = "http://localhost:8080/api";
 
-const fetchSinToken = (endpoint, data, method = "GET") => {
+const noAuthFetch = (endpoint, data, method = "GET") => {
     const url = `${baseUrl}/${endpoint}`;
     if (method === "GET") {
         return fetch(url);
@@ -15,7 +15,7 @@ const fetchSinToken = (endpoint, data, method = "GET") => {
     }
 }
 
-const fetchConToken = (endpoint, data, method = "GET") => {
+const authFetch = (endpoint, data, method = "GET") => {
     const url = `${baseUrl}/${endpoint}`;
     if (method === "GET") {
         return fetch(url, {
@@ -37,6 +37,6 @@ const fetchConToken = (endpoint, data, method = "GET") => {
 }
 
 export {
-    fetchSinToken,
-    fetchConToken
+    noAuthFetch,
+    authFetch
 }

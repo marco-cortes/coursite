@@ -7,5 +7,31 @@
     font-size: 17px;
     font-weight: 500;
     cursor: pointer;
-    transition: all .3s ease;
+    transition: all .1s ease;
+    text-align: center;
+    margin-bottom: 1rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.btn-light {
+    background-color: $light;
+    color: $dark;
+    margin-bottom: 1rem;
+}
+
+.btn-light:hover {
+    background-color: darken($color: $light, $amount: 4);
+}
+
+.btn-primary {
+    background-color: $primary;
+    color: $white;
+}
+
+.btn-primary:hover {
+    background-color: darken($color: $primary, $amount: 4);
+}
+
+.btn-large {
+    padding: 1rem 0;
 }

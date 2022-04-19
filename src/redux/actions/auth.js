@@ -1,11 +1,11 @@
 import Swal from "sweetalert2";
-import { fetchConToken, fetchSinToken } from "../helpers/fetch";
+import { authFetch, noAuthFetch } from "../helpers/fetch";
 import { types } from "../type/types";
 
 
 export const startLogin = (email, password) => {
     return async (dispatch) => {
-        const resp = await fetchSinToken("auth", { email, password }, "POST");
+        const resp = await noAuthFetch("auth", { email, password }, "POST");
         const body = await resp.json();
         if (body.ok) {
             localStorage.setItem("token", body.user.token);
@@ -35,7 +35,7 @@ export const login = (user) => ({
 
 export const startRegister = (email, password, name) => {
     return async (dispatch) => {
-        const resp = await fetchSinToken("auth/new", { email, password, name }, "POST");
+        const resp = await noAuthFetch("auth/new", { email, password, name }, "POST");
         const body = await resp.json();
         if (body.ok) {
             localStorage.setItem("token", body.user.token);
@@ -62,7 +62,7 @@ export const startRegister = (email, password, name) => {
 export const startChecking = () => {
     return async (dispatch) => {
         if (localStorage.getItem("token")) {
-            const resp = await fetchConToken("auth/renew", {});
+            const resp = await authFetch("auth/renew", {});
             const body = await resp.json();
             if (body.ok) {
                 localStorage.setItem("token", body.user.token);

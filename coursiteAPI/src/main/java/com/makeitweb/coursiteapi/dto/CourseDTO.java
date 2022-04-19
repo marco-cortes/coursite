@@ -18,7 +18,9 @@ public class CourseDTO {
     private Float price;
     private Integer score;
     private Integer status = 0;
-    private Long teacher;
-    private Long category;
+    private Long idTeacher;
+    private String teacher;
+    private String category;
+    private Long idCategory;
     private List<UnitDTO> units;
 }
