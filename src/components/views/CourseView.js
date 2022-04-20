@@ -41,19 +41,22 @@ export const CourseView = () => {
                     <h3 className="text-title">Descripción</h3>
                     <p className="text-body">Es un hecho establecido hace demasiado tiempo que un lector se distraerá con el contenido del texto de un sitio mientras que mira su diseño. {active.description}</p>
                 </div>
-                <div className="course-units">
-                    <div>
-                        <h3 className="text-title">Temario</h3>
-                        {
-                            active.units &&
-                            active.units.map((unit, index) => (
-                                <Accordion title={"Unidad " + (index+1) + ": " + unit.title} lessons={unit.lessons} key={unit.id}/>
-                            ))
-                        }
-                    </div>
-                    <div className="course-btns">
-                        <Link className="btn btn-large btn-primary" to={"/courses/buy/"+id}>Inscribirme por $ {active.price}</Link>
-                        <button className="btn btn-large btn-light" onClick={back}>Regresar</button>
+                <div>
+                    <h3 className="text-title">Temario</h3>
+                    <div className="course-units">
+                        <div>
+
+                            {
+                                active.units &&
+                                active.units.map((unit, index) => (
+                                    <Accordion title={"Unidad " + (index + 1) + ": " + unit.title} lessons={unit.lessons} key={unit.id} />
+                                ))
+                            }
+                        </div>
+                        <div className="course-btns">
+                            <Link className="btn btn-large btn-primary" to={"/student/courses/buy/" + id}>Inscribirme por $ {active.price}</Link>
+                            <button className="btn btn-large btn-light" onClick={back}>Regresar</button>
+                        </div>
                     </div>
                 </div>
             </div>

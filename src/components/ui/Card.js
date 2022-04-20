@@ -16,10 +16,10 @@ export const Card = ({ id, title, category, teacher, price, score, image }) => {
                 </p>
             </div>
             <div className="card-btns">
-                <Link className="btn btn-info" to={"/courses/" + id}>
+                <Link className="btn btn-info" to={"/student/courses/" + id}>
                     Detalles
                 </Link>
-                <Link className="btn btn-primary" to={"/courses/buy/" + id}>
+                <Link className="btn btn-primary" to={"/student/courses/buy/" + id}>
                     Inscribirse
                 </Link>
             </div>

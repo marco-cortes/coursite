@@ -10,10 +10,10 @@ export const NavBar = () => {
     <div className="navbar">
         <Logo dark />
         <div className="nav-links">
-          <Link text="Cursos" link="/courses" />
-          <Link text="Mi aprendizaje" link="/learning" />
-          <Link text="Mi perfil" link="/profile" />
-          <Link text="Notificaciones" link="/" />
+          <Link text="Cursos" link="/student/courses" />
+          <Link text="Mi aprendizaje" link="/student/learning" />
+          <Link text="Mi perfil" link="/student/profile" />
+          <Link text="Notificaciones" link="/student/" />
         </div>
         <h2 className="logout">Cerrar sesión</h2>
     </div>

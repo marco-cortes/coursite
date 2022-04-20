@@ -13,9 +13,19 @@ import { NavBar } from "../components/NavBar";
 import { PublicRoute } from "./PublicRoute";
 import { CourseView } from "../components/views/CourseView";
 import { PayView } from "../components/views/PayView";
+import { StudentCoursesView } from "../components/views/StudentCoursesView";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { getUser } from "../redux/actions/auth";
 //import { PrivateRoute } from "./PrivateRoute"
 
 export const AppRouter = () => {
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getUser());
+    }, [dispatch]);
 
     /*const dispatch = useDispatch();
     const { checking } = useSelector(state => state.auth);
@@ -33,26 +43,32 @@ export const AppRouter = () => {
                 <div className="container">
                     <div className="app">
                         <Routes>
-                            <Route path="/login" element={
+                            <Route path="/student/login" element={
                                 <PublicRoute>
                                     <CoursesView />
                                 </PublicRoute>
                             } />
 
-                            <Route path="/courses" element={
+                            <Route path="/student/courses" element={
                                 <PublicRoute>
                                     <CoursesView />
                                 </PublicRoute>
                             } />
-                            <Route path="/courses/:id" element={
+                            <Route path="/student/courses/:id" element={
                                 <PublicRoute>
                                     <CourseView />
                                 </PublicRoute>
                             }
                             />
-                            <Route path="/courses/buy/:id" element={
+                            <Route path="/student/courses/buy/:id" element={
                                 <PublicRoute>
                                     <PayView />
+                                </PublicRoute>
+                            }
+                            />
+                            <Route path="/student/learning" element={
+                                <PublicRoute>
+                                    <StudentCoursesView />
                                 </PublicRoute>
                             }
                             />

@@ -1,6 +1,22 @@
 import Swal from "sweetalert2";
-import { authFetch, noAuthFetch } from "../helpers/fetch";
-import { types } from "../type/types";
+import { authFetch, noAuthFetch } from "../../helpers/fetch";
+import { types } from "../types/types";
+
+export const getUser = () => {
+    return async (dispatch) => {
+        try {
+            const response = await noAuthFetch("user/1");
+            const body = await response.json();
+            console.log(body);
+            /*dispatch({
+                type: types.authUser,
+                payload: user
+            });*/
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
 
 
 export const startLogin = (email, password) => {
@@ -15,10 +31,10 @@ export const startLogin = (email, password) => {
                 name: body.user.name
             }));
         } else {
-            if(body.errors){
-                if(body.errors.password)
-                    Swal.fire("Error", body.errors.password.msg, "error");    
-                if(body.errors.email)
+            if (body.errors) {
+                if (body.errors.password)
+                    Swal.fire("Error", body.errors.password.msg, "error");
+                if (body.errors.email)
                     Swal.fire("Error", body.errors.email.msg, "error");
             } else {
                 Swal.fire("Error", body.message, "error");
@@ -45,12 +61,12 @@ export const startRegister = (email, password, name) => {
                 name: body.user.name
             }));
         } else {
-            if(body.errors){
-                if(body.errors.password)
-                    Swal.fire("Error", body.errors.password.msg, "error");    
-                if(body.errors.email)
+            if (body.errors) {
+                if (body.errors.password)
+                    Swal.fire("Error", body.errors.password.msg, "error");
+                if (body.errors.email)
                     Swal.fire("Error", body.errors.email.msg, "error");
-                if(body.errors.name)
+                if (body.errors.name)
                     Swal.fire("Error", body.errors.name.msg, "error");
             } else {
                 Swal.fire("Error", body.message, "error");
