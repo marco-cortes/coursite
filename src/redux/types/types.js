@@ -12,6 +12,9 @@ export const types = {
     
     coursesLoaded: "[course] courses Loaded",
     coursesClear: "[course] courses Clear",
+
+    myCoursesLoaded: "[course] myCourses Loaded",
+    myCoursesClear: "[course] myCourses Clear",
     
 
     authChecking: "[auth] Checking",

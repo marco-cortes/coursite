@@ -14,9 +14,10 @@ import { PublicRoute } from "./PublicRoute";
 import { CourseView } from "../components/views/CourseView";
 import { PayView } from "../components/views/PayView";
 import { StudentCoursesView } from "../components/views/StudentCoursesView";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getUser } from "../redux/actions/auth";
+import { startLoadCoursesStudent } from "../redux/actions/courses";
 //import { PrivateRoute } from "./PrivateRoute"
 
 export const AppRouter = () => {
@@ -27,15 +28,22 @@ export const AppRouter = () => {
         dispatch(getUser());
     }, [dispatch]);
 
-    /*const dispatch = useDispatch();
     const { checking } = useSelector(state => state.auth);
+
+    useEffect(() => {
+        dispatch(startLoadCoursesStudent());
+    },[checking, dispatch]);
+
+    /*const dispatch = useDispatch();
+    
     useEffect(() => {
         dispatch(startChecking());
     }, [dispatch, checking]);
 
+    */
     if (checking) {
         return <h5>Espere...</h5>
-    }*/
+    }
     return (
         <div className="app-container">
             <BrowserRouter>

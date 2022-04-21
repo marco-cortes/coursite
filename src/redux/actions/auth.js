@@ -7,11 +7,11 @@ export const getUser = () => {
         try {
             const response = await noAuthFetch("user/1");
             const body = await response.json();
-            console.log(body);
             /*dispatch({
                 type: types.authUser,
                 payload: user
             });*/
+            dispatch(login(body));
         } catch (error) {
             console.log(error);
         }

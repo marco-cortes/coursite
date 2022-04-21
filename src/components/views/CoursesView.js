@@ -8,39 +8,39 @@ export const CoursesView = () => {
 
   const dispatch = useDispatch();
 
+  const { courses } = useSelector(state => state.courses);
+
   useEffect(() => {
     dispatch(startLoadCourses());
   }, [dispatch]);
 
-  const { courses } = useSelector(state => state.courses);
-
-  return (
-    <div className="courses-view">
-      <NavBarApp>
-        <button className="app-link app-active">
-          Todos los cursos
-        </button>
-        <button className="app-link">
-          Nuevos
-        </button>
-        <button className="app-link">
-          Destacados
-        </button>
-        <button className="app-link">
-          Categorias
-        </button>
-      </NavBarApp>
-      <FormSearch />
-      {
-        courses &&
-        <div className="course-list">
-          {
-            courses.map(course => (
-              <Card {...course} key={course.id} />
-            ))
-          }
-        </div>
-      }
-    </div>
-  )
+return (
+  <div className="courses-view">
+    <NavBarApp>
+      <button className="app-link app-active">
+        Todos los cursos
+      </button>
+      <button className="app-link">
+        Nuevos
+      </button>
+      <button className="app-link">
+        Destacados
+      </button>
+      <button className="app-link">
+        Categorias
+      </button>
+    </NavBarApp>
+    <FormSearch />
+    {
+      courses &&
+      <div className="course-list">
+        {
+          courses.map(course => (
+            <Card {...course} key={course.id} />
+          ))
+        }
+      </div>
+    }
+  </div>
+)
 }

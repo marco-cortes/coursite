@@ -1,6 +1,17 @@
-export const FormPay = () => {
+import { useDispatch } from "react-redux"
+import { startBuyCourse } from "../../redux/actions/courses";
+
+export const FormPay = ({id}) => {
+
+    const dispatch = useDispatch();
+
+    const buyCourse = (e) => {
+        e.preventDefault();
+        dispatch(startBuyCourse(id));
+    }
+
     return (
-        <form className="form-pay">
+        <form className="form-pay" onSubmit={buyCourse}>
             <input type="text" placeholder="Nombre de la tarjeta" className="input-pay" />
             <input type="text" placeholder="Número de la tarjeta" className="input-pay" />
             <div className="form-group">

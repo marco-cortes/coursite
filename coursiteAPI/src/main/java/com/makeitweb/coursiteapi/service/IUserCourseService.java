@@ -51,6 +51,7 @@ public class IUserCourseService implements UserCourseService {
             userCourse.setCourse(course);
             userCourse.setProgress(0F);
             userCourse.setScore(null);
+            userCourse.setId(new UserCoursePK(user.getId(), course.getId()));
             userCourseRepository.save(userCourse);
             return userCourseDTO;
         }
