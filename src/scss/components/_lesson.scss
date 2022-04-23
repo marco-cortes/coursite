@@ -1,0 +1,44 @@
+.div-lesson {
+    background-color: $light;
+    padding: 2rem 3rem;
+    margin-bottom: 1rem;
+    border-radius: 30px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    height: 100%;
+}
+
+.lesson-title {
+    font-size: 20px;
+    font-weight: 300;
+    color: $blue-dark;
+    margin-bottom: 2rem;
+}
+
+.lesson-description {
+    font-size: 14px;
+    font-weight: 400;
+    color: $gray;
+    text-transform: capitalize;
+}
+
+.lesson-text {
+    max-width: 500px;
+}
+
+.lesson-links {
+    .btn {
+        margin-bottom: 0;
+    }
+}
+
+.text-primary {
+    color: $blue;
+}
+
+.mb {
+    margin-bottom: 1rem !important;
+}

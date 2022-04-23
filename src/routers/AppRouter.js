@@ -18,6 +18,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getUser } from "../redux/actions/auth";
 import { startLoadCoursesStudent } from "../redux/actions/courses";
+import { StudentCourseView } from "../components/views/StudentCourseView";
+import { PrivateRoute } from "./PrivateRoute";
 //import { PrivateRoute } from "./PrivateRoute"
 
 export const AppRouter = () => {
@@ -39,11 +41,14 @@ export const AppRouter = () => {
     useEffect(() => {
         dispatch(startChecking());
     }, [dispatch, checking]);
-
     */
+
     if (checking) {
         return <h5>Espere...</h5>
     }
+
+    
+
     return (
         <div className="app-container">
             <BrowserRouter>
@@ -51,33 +56,39 @@ export const AppRouter = () => {
                 <div className="container">
                     <div className="app">
                         <Routes>
-                            <Route path="/student/login" element={
+                            <Route path="/login" element={
                                 <PublicRoute>
                                     <CoursesView />
                                 </PublicRoute>
                             } />
 
-                            <Route path="/student/courses" element={
-                                <PublicRoute>
+                            <Route path="/courses" element={
+                                <PrivateRoute>
                                     <CoursesView />
-                                </PublicRoute>
+                                </PrivateRoute>
                             } />
-                            <Route path="/student/courses/:id" element={
-                                <PublicRoute>
+                            <Route path="/courses/:id" element={
+                                <PrivateRoute>
                                     <CourseView />
-                                </PublicRoute>
+                                </PrivateRoute>
                             }
                             />
-                            <Route path="/student/courses/buy/:id" element={
-                                <PublicRoute>
+                            <Route path="/courses/buy/:id" element={
+                                <PrivateRoute>
                                     <PayView />
-                                </PublicRoute>
+                                </PrivateRoute>
                             }
                             />
-                            <Route path="/student/learning" element={
-                                <PublicRoute>
+                            <Route path="/learning" element={
+                                <PrivateRoute>
                                     <StudentCoursesView />
-                                </PublicRoute>
+                                </PrivateRoute>
+                            }
+                            />
+                            <Route path="/learning/:id" element={
+                                <PrivateRoute>
+                                    <StudentCourseView />
+                                </PrivateRoute>
                             }
                             />
                         </Routes>

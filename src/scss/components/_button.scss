@@ -11,6 +11,9 @@
     text-align: center;
     margin-bottom: 1rem;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1px;
 }
 
 .btn-light {
@@ -42,4 +45,16 @@
     :hover {
         background-color: darken($color: $info, $amount: 4);
     }
+}
+
+.btn-link {
+    border: $primary 2px solid;
+    box-shadow: none;
+    background-color: $white;
+    color: $primary;
+}
+
+.btn-link:hover {
+    background-color: $primary;
+    color: $white;
 }

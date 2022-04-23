@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { startLoadCourse } from "../../redux/actions/courses";
@@ -8,12 +8,19 @@ export const CourseView = () => {
 
     const dispatch = useDispatch();
     const { id } = useParams();
+    const [isBought, setIsBought] = useState(false);
+
+    const { myCourses, active } = useSelector(state => state.courses);
 
     useEffect(() => {
         dispatch(startLoadCourse(id));
     }, [dispatch, id]);
 
-    const { active } = useSelector(state => state.courses);
+    useEffect(() => {
+        if(active) {
+            setIsBought(myCourses.find(course => course.id === active.id));
+        }
+    }, [active, myCourses]);
 
     if (!active) {
         return <div>Loading...</div>
@@ -54,7 +61,12 @@ export const CourseView = () => {
                             }
                         </div>
                         <div className="course-btns">
-                            <Link className="btn btn-large btn-primary" to={"/student/courses/buy/" + id}>Inscribirme por $ {active.price}</Link>
+                            {
+                                isBought ?
+                                    <Link className="btn btn-large btn-primary" to={"/learning/" + id}>Ir al curso</Link>
+                                    :
+                                    <Link className="btn btn-large btn-primary" to={"/courses/buy/" + id}>Inscribirme por $ {active.price}</Link>
+                            }
                             <button className="btn btn-large btn-light" onClick={back}>Regresar</button>
                         </div>
                     </div>

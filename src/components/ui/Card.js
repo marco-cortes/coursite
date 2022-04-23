@@ -1,9 +1,5 @@
 import { Link } from "react-router-dom"
-
 export const Card = ({ id, title, category, teacher, price, score, image, isBought }) => {
-
-
-
     return (
         <div className="card">
             <div className={"card-img a" + id}>
@@ -19,16 +15,16 @@ export const Card = ({ id, title, category, teacher, price, score, image, isBoug
                 </p>
             </div>
             <div className="card-btns">
-                <Link className="btn btn-info" to={"/student/courses/" + id}>
+                <Link className="btn btn-info" to={"/courses/" + id}>
                     Detalles
                 </Link>
                 {
                     isBought ?
-                    <Link className="btn btn-primary" to={"/student/learning/" + id}>
+                    <Link className="btn btn-primary" to={"/learning/" + id}>
                         Ir al Curso
                     </Link>
                     :
-                    <Link className="btn btn-primary" to={"/student/courses/buy/" + id}>
+                    <Link className="btn btn-primary" to={"/courses/buy/" + id}>
                         Inscribirse
                     </Link>
                 }
