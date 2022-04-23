@@ -67,7 +67,7 @@ export const CourseView = () => {
                                     :
                                     <Link className="btn btn-large btn-primary" to={"/courses/buy/" + id}>Inscribirme por $ {active.price}</Link>
                             }
-                            <button className="btn btn-large btn-light" onClick={back}>Regresar</button>
+                            <button className="btn btn-large btn-light" onClick={back}><i className="fa-solid fa-rotate-left"></i> Regresar</button>
                         </div>
                     </div>
                 </div>

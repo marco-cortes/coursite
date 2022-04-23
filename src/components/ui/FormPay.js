@@ -23,7 +23,7 @@ export const FormPay = ({id}) => {
                     <input type="checkbox" id="check" className="check-pay" />
                     <label htmlFor="check"> Guardar tarjeta</label>
                 </div>
-                <button type="submit" className="btn btn-primary" >Realizar pago</button>
+                <button type="submit" className="btn btn-primary"><i className="fa-solid fa-bag-shopping"></i> Realizar pago</button>
             </div>
         </form>
     )

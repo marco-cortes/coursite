@@ -27,7 +27,17 @@ export const startLoadCourse = (id) => {
         dispatch(clearCourse());
         const resp = await noAuthFetch("course/" + id, {});
         const body = await resp.json();
-        dispatch(setCourse(body))
+
+        const tresp = await noAuthFetch("teacher/" + body.idTeacher , {});
+        const tbody = await tresp.json();
+        
+        const course = {
+            ...body,
+            teacherPhone: tbody.phone,
+            teacherEmail: tbody.email
+        }
+
+        dispatch(setCourse(course))
     }
 }
 

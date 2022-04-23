@@ -31,6 +31,7 @@
 .accordion-btn {
     border-radius: 50%;
     width: 32px;
+    height: 32px;
     background-color: $primary;
     display: flex;
     justify-content: center;
@@ -39,8 +40,7 @@
 
 .accordion-icon {
     color: $white;
-    font-size: 20px;
-
+    font-size: 15px;
 }
 
 .accordion-body {

@@ -20,6 +20,7 @@ import { getUser } from "../redux/actions/auth";
 import { startLoadCoursesStudent } from "../redux/actions/courses";
 import { StudentCourseView } from "../components/views/StudentCourseView";
 import { PrivateRoute } from "./PrivateRoute";
+import { ProfileView } from "../components/views/ProfileView";
 //import { PrivateRoute } from "./PrivateRoute"
 
 export const AppRouter = () => {
@@ -88,6 +89,12 @@ export const AppRouter = () => {
                             <Route path="/learning/:id" element={
                                 <PrivateRoute>
                                     <StudentCourseView />
+                                </PrivateRoute>
+                            }
+                            />
+                            <Route path="/profile" element={
+                                <PrivateRoute>
+                                    <ProfileView />
                                 </PrivateRoute>
                             }
                             />

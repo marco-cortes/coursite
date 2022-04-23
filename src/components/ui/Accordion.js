@@ -13,7 +13,7 @@ export const Accordion = ({ title, lessons }) => {
             <div className="accordion-head">
                 <span className="accordion-title">{title}</span>
                 <div className="accordion-btn">
-                    <i className="uil uil-angle-down accordion-icon"></i>
+                    <i className="fa-solid fa-angle-down accordion-icon"></i>
                 </div>
             </div>
             {

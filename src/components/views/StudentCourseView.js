@@ -2,7 +2,9 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { startLoadCourse } from "../../redux/actions/courses";
+import { showModal } from "../../redux/actions/ui";
 import { Lesson } from "../ui/Lesson";
+import { Modal } from "../ui/Modal";
 
 export const StudentCourseView = () => {
     const dispatch = useDispatch();
@@ -22,7 +24,9 @@ export const StudentCourseView = () => {
         window.history.back();
     }
 
-    console.log(active);
+    const openModal = () => {
+        dispatch(showModal());
+    }
 
     return (
         <div className="course-view">
@@ -34,8 +38,8 @@ export const StudentCourseView = () => {
                         <h6 className="student-course-category">{active.category}</h6>
                     </div>
                     <div className="student-course-buttons">
-                        <button className="btn btn-large btn-primary mb">Contacto</button>
-                        <button className="btn btn-large btn-light" onClick={back}>Regresar</button>
+                        <button className="btn btn-large btn-primary mb" onClick={openModal}><i className="fa-solid fa-address-book"></i> Contacto</button>
+                        <button className="btn btn-large btn-light" onClick={back}><i className="fa-solid fa-rotate-left"></i> Regresar</button>
                     </div>
                 </div>
             </div>
@@ -55,6 +59,10 @@ export const StudentCourseView = () => {
                     ))
                 }
             </div>
+            <Modal title={"INFORMACIÓN DE CONTÁCTO"}>
+                <h3 className="text-contact"><span className="text-contact-title">Correo:</span> <br/> {active.teacherEmail}</h3>
+                <h3 className="text-contact"><span className="text-contact-title">Teléfono:</span> <br/> {active.teacherPhone}</h3>
+            </Modal>
         </div>
     )
 }

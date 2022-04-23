@@ -15,7 +15,7 @@
 .app-container {
     display: flex;
     max-width: 1440px;
-    width: 100%;
+    width: calc(100% - 3rem);
     max-height: calc(100vh - 3rem);
 }
 
@@ -66,4 +66,8 @@ a {
 
 ::-webkit-scrollbar {
     display: none;
+}
+
+.i {
+    margin-right: .5rem;
 }

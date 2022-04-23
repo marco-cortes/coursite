@@ -16,16 +16,16 @@ export const Card = ({ id, title, category, teacher, price, score, image, isBoug
             </div>
             <div className="card-btns">
                 <Link className="btn btn-info" to={"/courses/" + id}>
-                    Detalles
+                <i className="fa-solid fa-circle-info"></i> Detalles
                 </Link>
                 {
                     isBought ?
                     <Link className="btn btn-primary" to={"/learning/" + id}>
-                        Ir al Curso
+                        Ir al Curso <i className="fa-solid fa-arrow-up-right-from-square"></i>
                     </Link>
                     :
                     <Link className="btn btn-primary" to={"/courses/buy/" + id}>
-                        Inscribirse
+                        Inscribirse <i className="fa-solid fa-arrow-right-to-bracket"></i>
                     </Link>
                 }
             </div>

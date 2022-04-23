@@ -50,7 +50,7 @@ export const PayView = () => {
         </div>
       </div>
       <div className="back-div">
-        <button className="btn btn-info" onClick={back}>Regresar</button>
+        <button className="btn btn-info" onClick={back}><i className="fa-solid fa-rotate-left"></i> Regresar</button>
         <img src={img} alt="pay" />
       </div>
     </div>
