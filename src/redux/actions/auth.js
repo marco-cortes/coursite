@@ -98,6 +98,18 @@ export const startChecking = () => {
     }
 }
 
+export const saveUser = (user) => {
+    return async (dispatch) => {
+        const resp = await authFetch("user/update", user, "PUT");
+        const body = await resp.json();
+        if (body.ok) {
+            dispatch(login(body.user));
+        } else {
+            Swal.fire("Error", body.message, "error");
+        }
+    }
+};
+
 const checkingFinish = () => ({
     type: types.authCheckingFinish
 })

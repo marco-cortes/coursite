@@ -50,3 +50,57 @@
     font-size: 25px;
     color: $light;
 }
+
+.delete-container, .password-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 1rem;
+}
+
+.delete-user {
+    font-size: 17px;
+    color: $danger-2;
+    font-weight: 400;
+    margin-bottom: 2rem;
+}
+
+.delete-user-text {
+    font-size: 15px;
+    color: $white;
+    font-weight: 300;
+    margin-bottom: 2rem;
+}
+
+.label-password {
+    font-size: 16px;
+    color: $light;
+    font-weight: 300;
+    margin-bottom: 1rem;
+}
+
+.password-div {
+    border: $primary 2px solid;
+    border-radius: 16px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.password-input {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 1rem;
+    font-size: 16px;
+    color: $white;
+}
+
+.icon-password {
+    margin: 0 1.5rem;
+    font-size: 1.5rem;
+    color: $primary;
+}

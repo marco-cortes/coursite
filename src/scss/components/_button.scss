@@ -67,3 +67,58 @@
     font-size: 2rem;
     color: $white;
 }
+
+.btn-secondary {
+    background-color: $light;
+    color: $primary;
+    box-shadow: none;
+    font-size: 1rem;
+}
+
+.btn-secondary:hover {
+    background-color: darken($color: $light, $amount: 4);
+}
+
+.btn-danger-outline {
+    color: $danger-2;
+    background-color: transparent;
+    border: $danger-2 3px solid;
+    padding: 1rem 2rem;
+    margin: 0;
+    align-self: flex-end;
+}
+
+.btn-danger-outline:hover {
+    background-color: $danger-2;
+    color: $white;
+}
+
+.btn-primary-outline {
+    color: $primary;
+    background-color: transparent;
+    border: $primary 3px solid;
+    padding: 1rem 3rem;
+    margin: 0;
+    align-self: flex-end;
+}
+
+.btn-primary-outline:hover {
+    background-color: $primary;
+    color: $white;
+}
+
+.icon {
+    margin-right: .5rem;
+}
+
+.success {
+    color: $success;
+}
+
+.warning {
+    color: $warning;
+}
+
+.danger {
+    color: $danger;
+}

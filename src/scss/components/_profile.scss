@@ -1,6 +1,145 @@
 .profile-container {
     width: 90%;
     max-width: 800px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     margin: 0 auto;
+}
+
+.user-top {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    
+    align-items: center;
+}
+
+.user-top-container {
+    width: 100%;
+    background-color: $light-gray;
+    border-radius: 30px;
+    padding: 1rem 0;
     position: relative;
+}
+
+.user-image-container {
+    position: absolute;
+    left: 0;
+    bottom: -2.5rem;
+}
+
+.user-image {
+    max-width: 150px;
+}
+
+.user-edit-image {
+    position: absolute;
+    bottom: 1rem;
+    right: 0;
+    background-color: $secondary;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    color: $blue-dark;
+    font-size: 1rem;
+    transform: 0.1s ease-in-out;
+}
+
+.user-edit-image:hover {
+    background-color: $blue-dark;
+    color: $white;
+}
+
+.user-names {
+    font-size: 21px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: #000;
+    font-weight: 600;
+    text-align: center;
+    background-color: $white;
+    border-radius: 30px;
+    width: 300px;
+    margin: 0 auto;
+    padding: 0.5rem 2rem;
+}
+
+.user-form {
+    width: 100%;
+    margin-top: 3rem;
+    background-color: $light;
+    padding: 2rem 0;
+    border-radius: 30px;
+}
+
+.user-form-title {
+    margin-left: 10%;
+    color: $info;
+    font-size: 17px;
+    margin-bottom: 1rem;
+}
+
+.input-button {
+    width: 70%;
+    background-color: #b8b4ce;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.enabled {
+    background-color: #d8d1fe;
+}
+
+.user-form-input {
+    width: 60%;
+    border-radius: 30px;
+    padding: 1rem 1.5rem;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: $dark;
+    font-weight: bold;
+    background-color: transparent;
+}
+
+.user-form-button {
+    border-radius: 30px;
+    padding: 1rem 1.5rem;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: $primary;
+    background-color: $white;
+    cursor: pointer;
+    transition: 0.1s ease-in-out;
+}
+
+.user-form-button:hover {
+    background-color: $primary;
+    color: $white;
+}
+
+.user-form-group {
+    display: flex;    
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.profile-btns {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 4rem;
 }
