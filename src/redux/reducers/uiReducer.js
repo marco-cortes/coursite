@@ -16,6 +16,16 @@ export const uiReducer = (state = initialState, action) => {
                 ...state,
                 modalOpen: false,
             }
+        case types.uiShowNotifications:
+            return {
+                ...state,
+                notifications: true,
+            }
+        case types.uiHiddenNotifications:
+            return {
+                ...state,
+                notifications: false,
+            }
         default:
             return state;
     }

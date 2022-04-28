@@ -3,10 +3,10 @@ import { useSelector } from "react-redux";
 
 export const PublicRoute = ({ children }) => {
 
-    const { id } = useSelector(state => state.auth.user);
+    const { user } = useSelector(state => state.auth);
     //const lastPath = localStorage.getItem("lastPath") || "/login";
     //console.log(uid);
-    return !id ?
+    return !user ?
         children
         : <Navigate to={"/courses"} />
 }

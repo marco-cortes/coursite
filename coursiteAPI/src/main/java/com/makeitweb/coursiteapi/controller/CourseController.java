@@ -15,6 +15,19 @@ public class CourseController {
 
     private final CourseService courseService;
 
+    @GetMapping("/api/course/")
+    public ResponseEntity<List<CourseDTO>> getEnabledCourses() {
+        return ResponseEntity.ok(courseService.enabledCourses());
+    }
+
+    @GetMapping("/api/course/{id}")
+    public ResponseEntity<CourseDTO> courseById(@PathVariable Long id) {
+        CourseDTO c = courseService.courseById(id);
+        if(c == null)
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(c);
+    }
+
     @PostMapping("/api/course/new")
     public ResponseEntity<CourseDTO> newCourse(@RequestBody CourseDTO course) {
         return ResponseEntity.ok(courseService.saveCourse(course));
@@ -30,24 +43,11 @@ public class CourseController {
         return ResponseEntity.ok(courseService.saveCourse(course));
     }
 
-    @GetMapping("/api/course/{id}")
-    public ResponseEntity<CourseDTO> courseById(@PathVariable Long id) {
-        CourseDTO c = courseService.courseById(id);
-        if(c == null)
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(c);
-    }
-
     @DeleteMapping("/api/course/delete/{id}")
     public ResponseEntity<Boolean> deleteCourse(@PathVariable Long id) {
         if(!courseService.deleteCourse(id))
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(Boolean.TRUE);
-    }
-
-    @GetMapping("/api/course/")
-    public ResponseEntity<List<CourseDTO>> getEnabledCourses() {
-        return ResponseEntity.ok(courseService.enabledCourses());
     }
 
     @GetMapping("/api/course/category/{category}")

@@ -12,6 +12,9 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, .2);
     border-radius: 40px;
     margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .card-img {
@@ -72,7 +75,10 @@
 }
 
 .card-btns {
-    padding: 0 3rem;
+    align-self: flex-start;
+    width: 80%;
+    margin: 1rem auto;
+    margin-bottom: 1.5rem;
 
     .btn-info {
         background-color: $light;

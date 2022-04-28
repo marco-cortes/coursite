@@ -23,20 +23,16 @@ export const courseReducer = (state = initialState, action) => {
                 ...state,
                 courses: action.payload
             }
-        case types.coursesClear:
+        case types.clearAll:
             return {
                 ...state,
-                courses: []
+                myCourses: [],
+                active: null
             }
         case types.myCoursesLoaded:
             return {
                 ...state,
                 myCourses: action.payload
-            }
-        case types.myCoursesClear:
-            return {
-                ...state,
-                myCourses: []
             }
         default:
             return state

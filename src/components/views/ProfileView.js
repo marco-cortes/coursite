@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { showModal } from "../../redux/actions/ui";
-import { UserForm } from "../profile/UserForm";
+import { useForm } from "../../hooks/useForm";
+import { saveUser } from "../../redux/actions/auth";
+import { ChangePasswordForm } from "../profile/ChangePasswordForm";
+import { DeleteAccount } from "../profile/DeleteAccount";
+import { ProfileButtons } from "../profile/ProfileButtons";
 import { UserImage } from "../profile/UserImage";
 import { Modal } from "../ui/Modal";
 
@@ -11,74 +14,85 @@ export const ProfileView = () => {
 
   const [select, setSelect] = useState(false);
 
+  const [userForm, setUserForm] = useForm(user);
+
+  const { name, email, lastName } = userForm;
+
   const dispatch = useDispatch();
 
-  const showDelete = () => {
-    setSelect(true);
-    dispatch(showModal());
+  const submitUpdate = (e) => {
+    e.preventDefault();
+    dispatch(saveUser(userForm));
+    disable();
   }
 
-  const showPassword = () => {
-    setSelect(false);
-    dispatch(showModal());
+  const enable = (e, i) => {
+    e.preventDefault();
+    switch (i) {
+      case 0:
+        let a = document.getElementById("input-user-name");
+        a.disabled = false;
+        a.parentNode.classList.add("enabled");
+        break;
+      case 1:
+        let b = document.getElementById("input-user-lastname");
+        b.disabled = false;
+        b.parentNode.classList.add("enabled");
+        break;
+      case 2:
+        let c = document.getElementById("input-user-email");
+        c.disabled = false;
+        c.parentNode.classList.add("enabled");
+        break;
+      default:
+        break;
+    }
   }
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
+  const disable = () => {
+    const inputs = document.getElementsByClassName("user-form-input");
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].disabled = true;
+      inputs[i].parentNode.classList.remove("enabled");
+    }
+  }
 
 
   return (
     <div className="course-view">
-      <form className="profile-container">
+      <form className="profile-container" onSubmit={submitUpdate}>
         <UserImage name={user.name} lastname={user.lastName} />
-        <UserForm {...user} />
-        <div className="profile-btns">
-          <button className="btn btn-secondary" type="button" onClick={showDelete}>
-            <i className="fa-solid fa-trash icon danger"></i>
-            Eliminar cuenta
-          </button>
-          <button className="btn btn-secondary" type="button" onClick={showPassword}>
-            <i className="fa-solid fa-pen icon warning"></i>
-            Actualizar contraseña
-          </button>
-          <button className="btn btn-secondary" type="submit">
-            <i className="fa-solid fa-check icon success"></i>
-            Actualizar datos
-          </button>
+        <div className="user-form">
+          <h3 className="user-form-title">Nombre(s):</h3>
+          <div className="user-form-group">
+            <div className="input-button">
+              <input className="user-form-input" onChange={setUserForm} name="name" value={name} disabled id="input-user-name" />
+              <button onClick={e => enable(e, 0)} className="user-form-button"><i className="fa-solid fa-pen"></i> Editar </button>
+            </div>
+          </div>
+          <h3 className="user-form-title">Apellido(s):</h3>
+          <div className="user-form-group">
+            <div className="input-button">
+              <input className="user-form-input" onChange={setUserForm} name="lastName" value={lastName} disabled id="input-user-lastname" />
+              <button onClick={e => enable(e, 1)} className="user-form-button"><i className="fa-solid fa-pen"></i> Editar </button>
+            </div>
+          </div>
+          <h3 className="user-form-title">Correo electrónico:</h3>
+          <div className="user-form-group">
+            <div className="input-button">
+              <input className="user-form-input" onChange={setUserForm} name="email" value={email} disabled id="input-user-email" />
+              <button onClick={e => enable(e, 2)} className="user-form-button"><i className="fa-solid fa-pen"></i> Editar </button>
+            </div>
+          </div>
         </div>
+        <ProfileButtons setSelect={setSelect} />
       </form>
       <Modal title={select ? "ELIMINAR CUENTA" : "CAMBIAR CONTRASEÑA"}>
         {
           select ?
-            <div className="delete-container">
-              <h2 className="delete-user">
-                ¿Estas seguro que deseas eliminar tu cuenta?
-              </h2>
-              <p className="delete-user-text">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
-              </p>
-              <button className="btn btn-danger-outline">ELIMINAR CUENTA</button>
-            </div>
+            <DeleteAccount />
             :
-            <div className="password-container">
-              <h3 className="label-password">Contraseña actual</h3>
-              <div className="password-div">
-                <i className="fa-solid fa-lock icon-password"></i>
-                <input className="password-input" type="password" placeholder="Ingrese su contraseña actual" />
-              </div>
-              <h3 className="label-password">Nueva contraseña</h3>
-              <div className="password-div">
-                <i className="fa-solid fa-lock icon-password"></i>
-                <input className="password-input" type="password" placeholder="Ingrese su nueva contraseña" />
-              </div>
-              <h3 className="label-password">Repetir nueva contraseña</h3>
-              <div className="password-div">
-                <i className="fa-solid fa-lock icon-password"></i>
-                <input className="password-input" type="password" placeholder="Repita su nueva contraseña" />
-              </div>
-              <button className="btn btn-primary-outline">GUARDAR</button>
-            </div>
+            <ChangePasswordForm />
         }
       </Modal>
     </div>

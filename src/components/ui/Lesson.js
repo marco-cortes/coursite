@@ -12,7 +12,7 @@ export const Lesson = ({index, title, description, linkDoc, linkVideo }) => {
             </div>
             <div className="lesson-links">
                 <Link className="btn btn-link mb" to={linkDoc} target="_blank"><i className="fa-solid fa-book"></i> Apuntes</Link>
-                <Link className="btn btn-link" to={linkVideo} target="_blank"><i className="fa-solid fa-video"></i> Grabaciones</Link>
+                <Link className="btn btn-link" to={linkVideo} target="_blank"><i className="fa-solid fa-video"></i> Video</Link>
             </div>
         </div>
     )

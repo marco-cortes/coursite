@@ -1,6 +1,8 @@
 export const types = {
     uiOpenModal: "[ui] Open Modal",
     uiCloseModal: "[ui] Close Modal",
+    uiShowNotifications: "[ui] Show Notifications",
+    uiHiddenNotifications: "[ui] Hidden Notifications",
 
     courseSetActive: "[course] Set Active",
     courseCleanActive: "[course] Clean Active",
@@ -11,10 +13,9 @@ export const types = {
     courseDeleted: "[course] course Deleted",
     
     coursesLoaded: "[course] courses Loaded",
-    coursesClear: "[course] courses Clear",
 
     myCoursesLoaded: "[course] myCourses Loaded",
-    myCoursesClear: "[course] myCourses Clear",
+    clearAll: "[course] clearAll",
     
 
     authChecking: "[auth] Checking",

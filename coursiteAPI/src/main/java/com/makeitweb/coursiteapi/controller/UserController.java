@@ -1,7 +1,6 @@
 package com.makeitweb.coursiteapi.controller;
 
 import com.makeitweb.coursiteapi.dto.UserDTO;
-import com.makeitweb.coursiteapi.entity.UserCourse;
 import com.makeitweb.coursiteapi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +14,9 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
-        UserDTO u = userService.getUserById(id);
+    @GetMapping("/{email}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable String email) {
+        UserDTO u = userService.getUserById(email);
         if(u == null)
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(u);
@@ -32,7 +31,7 @@ public class UserController {
     public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO user) {
         if(user.getId() == null || user.getId() <= 0)
             return ResponseEntity.badRequest().build();
-        if(userService.getUserById(user.getId()) == null)
+        if(userService.getUserById(user.getEmail()) == null)
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(userService.saveUser(user));
     }
@@ -43,14 +42,4 @@ public class UserController {
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(Boolean.TRUE);
     }
-
-    @PostMapping("/{user}/buy/{id}")
-    public ResponseEntity<UserCourse> buyCourse(@PathVariable Long user, @PathVariable Long id) {
-        /* * UserCourse uc = userService.buyCourse(user, id);
-        if(uc == null)
-            return ResponseEntity.notFound().build();*/
-        return ResponseEntity.ok().build();
-    }
-
-
 }

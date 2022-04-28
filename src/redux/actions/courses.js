@@ -1,17 +1,21 @@
 import Swal from "sweetalert2";
-import { noAuthFetch } from "../../helpers/fetch";
+import { authFetch, noAuthFetch } from "../../helpers/fetch";
 import { types } from "../types/types";
 
 export const startLoadCourses = () => {
-    return async (dispatch,getState) => {
-        
-        const resp = await noAuthFetch("course/", {});
-        const body = await resp.json();
-        dispatch(setCourses(body))
-        const { myCourses } = getState().courses;
-        if(myCourses) {
-            body.map(course => myCourses.map(myCourse => course.id === myCourse.id ? course.isBought = true : null));
-            dispatch(setCourses(body));
+    return async (dispatch, getState) => {
+        try {
+            const resp = await noAuthFetch("course/", {});
+            const body = await resp.json();
+            dispatch(setCourses(body))
+
+            /*const { myCourses } = getState().courses;
+            if (myCourses) {
+                body.map(course => myCourses.map(myCourse => course.id === myCourse.id ? course.isBought = true : null));
+                dispatch(setCourses(body));
+            }*/
+        } catch (error) {
+            console.log(error);
         }
     }
 }
@@ -28,9 +32,9 @@ export const startLoadCourse = (id) => {
         const resp = await noAuthFetch("course/" + id, {});
         const body = await resp.json();
 
-        const tresp = await noAuthFetch("teacher/" + body.idTeacher , {});
+        const tresp = await noAuthFetch("teacher/" + body.idTeacher, {});
         const tbody = await tresp.json();
-        
+
         const course = {
             ...body,
             teacherPhone: tbody.phone,
@@ -60,13 +64,13 @@ export const startLoadCoursesStudent = () => {
         const user = getState().auth.user;
         if (user) {
             const { id } = user;
-            const resp = await noAuthFetch("course/user/" + id, {});
+            const resp = await authFetch("course/user/" + id, {});
             const body = await resp.json();
             dispatch(setCoursesStudent(body))
 
-            const { courses } = getState().courses;
+            /*const { courses } = getState().courses;
             courses.map(course => body.map(myCourse => course.id === myCourse.id ? course.isBought = true : null));
-            dispatch(setCourses(courses));
+            dispatch(setCourses(courses));*/
         }
     }
 }
@@ -83,7 +87,7 @@ export const startBuyCourse = (id) => {
         const { id: uid } = getState().auth.user;
         id = parseInt(id);
         if (uid) {
-            const resp = await noAuthFetch("usercourse/save", { courseId: id, userId: uid }, "POST");
+            const resp = await authFetch("usercourse/save", { courseId: id, userId: uid }, "POST");
             const body = await resp.json();
             console.log(body);
             if (body.error) {
@@ -92,5 +96,11 @@ export const startBuyCourse = (id) => {
                 Swal.fire("Success", "¡Curso comprado!", "success");
             }
         }
+    }
+}
+
+export const clearAll = () => {
+    return {
+        type: types.clearAll
     }
 }

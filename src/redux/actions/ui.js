@@ -11,3 +11,15 @@ export const closeModal = () => {
         type: types.uiCloseModal
     }
 }
+
+export const showNotifications = () => {
+    return {
+        type: types.uiShowNotifications
+    }
+}
+
+export const hiddenNotifications = () => {
+    return {
+        type: types.uiHiddenNotifications
+    }
+}

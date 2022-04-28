@@ -21,7 +21,7 @@ const authFetch = (endpoint, data, method = "GET") => {
         return fetch(url, {
             method,
             headers: {
-                "x-token": localStorage.getItem("token") || ""
+                "Authorization": localStorage.getItem("token") || ""
             }
         });
     } else {
@@ -29,7 +29,7 @@ const authFetch = (endpoint, data, method = "GET") => {
             method,
             headers: {
                 "Content-type": "application/json",
-                "x-token": localStorage.getItem("token") || ""
+                "Authorization": localStorage.getItem("token") || ""
             },
             body: JSON.stringify(data)
         })

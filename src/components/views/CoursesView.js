@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { startLoadCourses } from "../../redux/actions/courses";
-import { Card } from "../ui/Card";
+import { CoursesList } from "../ui/CoursesList";
 import { FormSearch } from "../ui/FormSearch";
 import { NavBarApp } from "../ui/NavBarApp";
 export const CoursesView = () => {
@@ -31,16 +31,7 @@ return (
       </button>
     </NavBarApp>
     <FormSearch />
-    {
-      courses &&
-      <div className="course-list">
-        {
-          courses.map(course => (
-            <Card {...course} key={course.id} />
-          ))
-        }
-      </div>
-    }
+    <CoursesList courses={courses} />
   </div>
 )
 }

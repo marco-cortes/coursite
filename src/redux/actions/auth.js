@@ -1,76 +1,64 @@
 import Swal from "sweetalert2";
 import { authFetch, noAuthFetch } from "../../helpers/fetch";
 import { types } from "../types/types";
+import jwtDecode from "jwt-decode";
+import { clearAll } from "./courses";
 
-export const getUser = () => {
+export const getUser = (email) => {
     return async (dispatch) => {
         try {
-            const response = await noAuthFetch("user/1");
+            const response = await authFetch("user/" + email, {});
             const body = await response.json();
-            /*dispatch({
-                type: types.authUser,
-                payload: user
-            });*/
-            dispatch(login(body));
+            dispatch(setUser(body));
         } catch (error) {
             console.log(error);
         }
     }
 }
 
-
-export const startLogin = (email, password) => {
-    return async (dispatch) => {
-        const resp = await noAuthFetch("auth", { email, password }, "POST");
-        const body = await resp.json();
-        if (body.ok) {
-            localStorage.setItem("token", body.user.token);
-            localStorage.setItem("token-init-date", new Date().getTime());
-            dispatch(login({
-                uid: body.user.uid,
-                name: body.user.name
-            }));
-        } else {
-            if (body.errors) {
-                if (body.errors.password)
-                    Swal.fire("Error", body.errors.password.msg, "error");
-                if (body.errors.email)
-                    Swal.fire("Error", body.errors.email.msg, "error");
-            } else {
-                Swal.fire("Error", body.message, "error");
-            }
-        }
-    }
-}
-
-export const login = (user) => ({
+export const setUser = (user) => ({
     type: types.authLogin,
     payload: user
 });
 
 
-export const startRegister = (email, password, name) => {
+export const startLogin = (email, password) => {
     return async (dispatch) => {
-        const resp = await noAuthFetch("auth/new", { email, password, name }, "POST");
-        const body = await resp.json();
-        if (body.ok) {
-            localStorage.setItem("token", body.user.token);
-            localStorage.setItem("token-init-date", new Date().getTime());
-            dispatch(login({
-                uid: body.user.uid,
-                name: body.user.name
-            }));
-        } else {
-            if (body.errors) {
-                if (body.errors.password)
-                    Swal.fire("Error", body.errors.password.msg, "error");
-                if (body.errors.email)
-                    Swal.fire("Error", body.errors.email.msg, "error");
-                if (body.errors.name)
-                    Swal.fire("Error", body.errors.name.msg, "error");
-            } else {
-                Swal.fire("Error", body.message, "error");
+        try {
+            const resp = await noAuthFetch(`login?email=${email}&password=${password}`, {}, "POST");
+            const body = await resp.json();
+
+            if (body.error) {
+                Swal.fire("Error", body.error, "error");
             }
+
+            if (body.access_token) {
+                localStorage.setItem("token", body.access_token);
+                localStorage.setItem("token-refresh", body.refresh_token);
+                localStorage.setItem("token-init-date", new Date().getTime());
+
+                dispatch(getUser(email));
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const startRegister = (email, password, name, lastName) => {
+    return async (dispatch) => {
+        try {
+            const resp = await noAuthFetch("api/register", { email, password, name, lastName }, "POST");
+            const body = await resp.json();
+
+            if (body.error) {
+                Swal.fire("Error", body.error, "error");
+            } else {
+                dispatch(startLogin(email, password));
+                dispatch(getUser(email));
+            }
+        } catch (error) {
+            console.log(error);
         }
     }
 }
@@ -78,17 +66,20 @@ export const startRegister = (email, password, name) => {
 export const startChecking = () => {
     return async (dispatch) => {
         if (localStorage.getItem("token")) {
-            const resp = await authFetch("auth/renew", {});
+            const resp = await authFetch("token/refresh", {});
             const body = await resp.json();
-            if (body.ok) {
-                localStorage.setItem("token", body.user.token);
+            if (body.access_token) {
+                localStorage.setItem("token", body.access_token);
+                localStorage.setItem("token-refresh", body.refresh_token);
                 localStorage.setItem("token-init-date", new Date().getTime());
-                dispatch(login({
-                    uid: body.user.uid,
-                    name: body.user.name
-                }));
+
+                const { sub } = jwtDecode(body.access_token);
+                dispatch(getUser(sub));
+
+                dispatch(checkingFinish()); // para que no se quede en el loading
+
             } else {
-                Swal.fire("Error", body.message, "error");
+                Swal.fire("Error", body.error, "error");
                 dispatch(checkingFinish()); // para que no se quede en el loading
             }
         } else {
@@ -100,12 +91,17 @@ export const startChecking = () => {
 
 export const saveUser = (user) => {
     return async (dispatch) => {
-        const resp = await authFetch("user/update", user, "PUT");
-        const body = await resp.json();
-        if (body.ok) {
-            dispatch(login(body.user));
-        } else {
-            Swal.fire("Error", body.message, "error");
+        try {
+            const resp = await authFetch("user/update", user, "PUT");
+            const body = await resp.json();
+            if (body.error) {
+                Swal.fire("Error", body.error, "error");
+            } else {
+                dispatch(setUser(body));
+                Swal.fire("Exito", "Se actualizo correctamente", "success");
+            }
+        } catch (error) {
+            console.log(error);
         }
     }
 };
@@ -117,16 +113,12 @@ const checkingFinish = () => ({
 export const startLogout = () => {
     return async (dispatch) => {
         localStorage.removeItem("token");
+        localStorage.removeItem("token-refresh");
         localStorage.removeItem("token-init-date");
         dispatch(logout());
-        dispatch(eventsClear());
+        dispatch(clearAll());
     }
 }
-
-const eventsClear = () => ({
-    type: types.eventClear
-});
-
 
 const logout = () => ({
     type: types.authLogout

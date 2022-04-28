@@ -20,7 +20,7 @@
     color: $light;
     border-radius: 10px;
     margin: 0.5rem 0;
-
+    transition: all 0.1s ease-in-out;
     :hover {
         .link-text {
             text-decoration: underline;
@@ -37,6 +37,7 @@
     height: 100%;
     width: 20px;
     background-color: $dark;
+    transition: all 0.1s ease-in-out;
 }
 
 .active {

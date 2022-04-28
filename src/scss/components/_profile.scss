@@ -86,7 +86,7 @@
 
 .input-button {
     width: 70%;
-    background-color: #b8b4ce;
+    background-color: #d8d1fe;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -95,7 +95,7 @@
 }
 
 .enabled {
-    background-color: #d8d1fe;
+    background-color: $secondary;
 }
 
 .user-form-input {

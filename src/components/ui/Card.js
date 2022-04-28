@@ -1,5 +1,9 @@
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom"
 export const Card = ({ id, title, category, teacher, price, score, image, isBought }) => {
+
+    const { user } = useSelector(state => state.auth);
+
     return (
         <div className="card">
             <div className={"card-img a" + id}>
@@ -23,7 +27,7 @@ export const Card = ({ id, title, category, teacher, price, score, image, isBoug
                     <Link className="btn btn-primary" to={"/learning/" + id}>
                         Ir al Curso <i className="fa-solid fa-arrow-up-right-from-square"></i>
                     </Link>
-                    :
+                    : user &&
                     <Link className="btn btn-primary" to={"/courses/buy/" + id}>
                         Inscribirse <i className="fa-solid fa-arrow-right-to-bracket"></i>
                     </Link>
