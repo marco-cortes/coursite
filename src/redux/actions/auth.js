@@ -2,7 +2,7 @@ import Swal from "sweetalert2";
 import { authFetch, noAuthFetch } from "../../helpers/fetch";
 import { types } from "../types/types";
 import jwtDecode from "jwt-decode";
-import { clearAll } from "./courses";
+import { clearAll, startLoadCoursesStudent, startLoadCoursesTeacher } from "./courses";
 
 export const getUser = (email) => {
     return async (dispatch) => {
@@ -10,6 +10,25 @@ export const getUser = (email) => {
             const response = await authFetch("user/" + email, {});
             const body = await response.json();
             dispatch(setUser(body));
+
+            if(body.role === 1) {
+                dispatch(startLoadCoursesStudent());
+            } else if (body.role === 2) {
+                dispatch(getTeacher(body.id));
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const getTeacher = (id) => {
+    return async (dispatch) => {
+        try {
+            const response = await noAuthFetch("teacher/" + id, {});
+            const body = await response.json();
+            dispatch(setUser(body));
+            dispatch(startLoadCoursesTeacher());
         } catch (error) {
             console.log(error);
         }
@@ -21,26 +40,27 @@ export const setUser = (user) => ({
     payload: user
 });
 
-
 export const startLogin = (email, password) => {
     return async (dispatch) => {
-        try {
-            const resp = await noAuthFetch(`login?email=${email}&password=${password}`, {}, "POST");
-            const body = await resp.json();
+        const resp = await noAuthFetch(`login?email=${email}&password=${password}`, {}, "POST");
 
+        if (resp.status === 403) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Correo o contraseña incorrectos',
+            });
+        } else {
+            const body = await resp.json();
             if (body.error) {
                 Swal.fire("Error", body.error, "error");
             }
-
             if (body.access_token) {
                 localStorage.setItem("token", body.access_token);
                 localStorage.setItem("token-refresh", body.refresh_token);
                 localStorage.setItem("token-init-date", new Date().getTime());
-
-                dispatch(getUser(email));
+                dispatch(getUser(body.email));
             }
-        } catch (error) {
-            console.log(error);
         }
     }
 }
@@ -48,11 +68,10 @@ export const startLogin = (email, password) => {
 export const startRegister = (email, password, name, lastName) => {
     return async (dispatch) => {
         try {
-            const resp = await noAuthFetch("api/register", { email, password, name, lastName }, "POST");
+            const resp = await noAuthFetch("register", { email, password, name, lastName }, "POST");
             const body = await resp.json();
-
             if (body.error) {
-                Swal.fire("Error", body.error, "error");
+                Swal.fire("Error", "El correo ya está registrado.", "error");
             } else {
                 dispatch(startLogin(email, password));
                 dispatch(getUser(email));
@@ -75,7 +94,6 @@ export const startChecking = () => {
 
                 const { sub } = jwtDecode(body.access_token);
                 dispatch(getUser(sub));
-
                 dispatch(checkingFinish()); // para que no se quede en el loading
 
             } else {

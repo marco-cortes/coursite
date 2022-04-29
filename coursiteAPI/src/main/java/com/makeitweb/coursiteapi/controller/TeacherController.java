@@ -35,9 +35,9 @@ public class TeacherController {
 
     @PutMapping("/api/teacher/update")
     public ResponseEntity<TeacherDTO> updateTeacher(@RequestBody TeacherDTO teacher) {
-        if(teacher.getId() == null || teacher.getId() <= 0)
+        if(teacher.getUserId() == null || teacher.getUserId() <= 0)
             return ResponseEntity.badRequest().build();
-        if(teacherService.getTeacherById(teacher.getId()) == null)
+        if(teacherService.getTeacherById(teacher.getUserId()) == null)
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(teacherService.saveTeacher(teacher));
     }

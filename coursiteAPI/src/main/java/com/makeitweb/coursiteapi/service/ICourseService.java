@@ -92,7 +92,7 @@ public class ICourseService implements CourseService {
         course.setScore(c.getScore());
         course.setIdCategory(c.getCategory().getId());
         course.setCategory(c.getCategory().getName());
-        course.setIdTeacher(c.getTeacher().getId());
+        course.setIdTeacher(c.getTeacher().getUser().getId());
         course.setTeacher(c.getTeacher().getUser().getName() + " " + c.getTeacher().getUser().getLastName());
         course.setStatus(c.getStatus());
         List<Unit> units = unitRepository.getUnitsByCourse_Id(id);

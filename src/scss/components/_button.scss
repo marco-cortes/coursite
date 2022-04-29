@@ -42,10 +42,11 @@
 .btn-info {
     background-color: $info;
     color: $white;
-    :hover {
-        background-color: darken($color: $info, $amount: 4);
-    }
 }
+.btn-info:hover {
+    background-color: darken($color: $info, $amount: 4);
+}
+
 
 .btn-link {
     border: $primary 2px solid;

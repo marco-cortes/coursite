@@ -1,5 +1,8 @@
 .pay-view {
     justify-content: center;
+    .d-flex {
+        align-items: center;
+    }
 }
 
 .form-pay {
@@ -12,7 +15,8 @@
     justify-content: space-between;
 
     button {
-        height: 100%;
+        padding: 1rem 2rem;
+        margin: 0;
     }
 
     margin-bottom: .5rem;
@@ -64,7 +68,8 @@
     font-size: 48px;
     font-weight: bold;
     color: $blue-dark;
-    margin-bottom: 4rem;
+    margin-bottom: 5rem;
+    align-self: flex-start;
 }
 
 table {
@@ -84,16 +89,18 @@ table {
     margin-bottom: 1rem;
 }
 
-.back-div {
+.pay-image {
+    width: 80%;
+    margin-top: 2rem;
+}
+
+.div-pay {
     display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    img {
-        width: 100%;
-        max-width: 400px;
-    }
-    .btn {
-        width: 200px;
-        padding: 1rem 0;
+    flex-direction: column;
+    align-items: center;
+    .btn-info {
+        padding: 1rem 3rem;
+        margin-top: 5rem;
+        align-self: flex-start;
     }
 }

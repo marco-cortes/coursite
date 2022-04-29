@@ -4,6 +4,7 @@ import { useForm } from '../../hooks/useForm';
 import { startRegister } from '../../redux/actions/auth';
 import { Logo } from '../Logo';
 import img from "../../image/register.svg";
+import Swal from 'sweetalert2';
 
 export const Register = () => {
     const [register, setRegister] = useForm({
@@ -18,12 +19,19 @@ export const Register = () => {
 
     const handleRegister = (e) => {
         e.preventDefault();
-        console.log(register);
-        dispatch(startRegister(register.email, register.password, register.name, register.lastName));
+        if(register.password === register.confirmPassword){
+            dispatch(startRegister(register.email, register.password, register.name, register.lastName));
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Las contraseñas no coinciden',
+            });
+        }
     }
 
     return (
-        <div className="auth-container">
+        <div className="auth-container animate__animated animate__fadeIn">
             <form className="auth-form-container" onSubmit={handleRegister}>
                 <div className="auth-form-content">
                     <h2 className="auth-title">Registro</h2>
@@ -50,9 +58,9 @@ export const Register = () => {
                     <label className="auth-label">Confirmar contraseña:</label>
                     <div className="auth-input-div">
                         <i className="fa-solid fa-lock auth-icon"></i>
-                        <input className="auth-input" placeholder="Repetir contraseña" type="password" name="confirmPassword" value={register.password} onChange={setRegister} required />
+                        <input className="auth-input" placeholder="Repetir contraseña" type="password" name="confirmPassword" value={register.confirmPassword} onChange={setRegister} required />
                     </div>
-                    <button className="btn auth-btn">Iniciar sesión</button>
+                    <button className="btn auth-btn">Registrarse</button>
                 </div>
                 <div className="auth-help-container">
                     <p className="auth-help">¿Ya tienes cuenta?</p>

@@ -1,5 +1,5 @@
 .navbar {
-    min-width: 271px;
+    min-width: $navbar-width;
     height: calc(100vh - 3rem);
     background-color: $dark;
     display: flex;
@@ -52,8 +52,6 @@
             text-decoration: none;
         }
     }
-
-    //background-color: lighten($color: $secondary, $amount: 64);
 }
 
 .link-text {

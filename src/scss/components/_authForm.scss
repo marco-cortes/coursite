@@ -81,6 +81,13 @@
     border: none;
     width: 100%;
 }
+
+.auth-input:-webkit-autofill {
+    -webkit-text-fill-color: $light;
+    color: $light;
+    box-shadow: 0 0 0px 1000px $dark-2 inset !important;
+}
+
 .auth-input-div {
     border-radius: 16px;
     border: 3px solid $primary;
@@ -88,6 +95,7 @@
     margin-bottom: 1.7rem;
     display: flex;
     align-items: center;
+    overflow: hidden;
 }
 .auth-icon {
     margin: 0 2rem;

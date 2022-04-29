@@ -38,7 +38,8 @@ public class IUserService implements UserService, UserDetailsService {
             if(u == null)
                 return null;
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if(user.getPassword() != null)
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
         Validation.validateUser(u, user.getName(), user.getLastName(), user.getEmail(), user.getPassword());
         if(u.getRole() == null) {
             if(user.getAdmin())

@@ -8,5 +8,7 @@ export const PublicRoute = ({ children }) => {
     //console.log(uid);
     return !user ?
         children
-        : <Navigate to={"/courses"} />
+        : user.role === 1 ? <Navigate to={"/student/courses"} /> 
+        : user.role === 2 ? <Navigate to={"/teacher/courses"} />
+        : user.role === 3 && <Navigate to={"/admin/"} />
 }

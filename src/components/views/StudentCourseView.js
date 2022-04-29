@@ -7,14 +7,14 @@ import { Lesson } from "../ui/Lesson";
 import { Modal } from "../ui/Modal";
 
 export const StudentCourseView = () => {
+    
     const dispatch = useDispatch();
     const { id } = useParams();
+    const { active } = useSelector(state => state.courses);
 
     useEffect(() => {
         dispatch(startLoadCourse(id));
     }, [dispatch, id]);
-
-    const { active } = useSelector(state => state.courses);
 
     if (!active) {
         return <div>Loading...</div>
@@ -29,7 +29,7 @@ export const StudentCourseView = () => {
     }
 
     return (
-        <div className="course-view">
+        <div className="course-view animate__animated animate__fadeIn">
             <div className={"course-image a" + id}>
                 <div className="student-course-info">
                     <div className="student-course-names">

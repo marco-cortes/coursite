@@ -23,17 +23,30 @@ export const NavBar = () => {
     <div className="navbar">
       <Logo dark />
       <div className="nav-links">
-        <Link text="Cursos" link="/courses" icon="fa-solid fa-layer-group" />
         {
-          user ?
+          user && user.role === 1 ?
           <>
-            <Link text="Mi aprendizaje" link="/learning" icon="fa-solid fa-book-open-reader" />
-            <Link text="Mi perfil" link="/profile" icon="fa-solid fa-user" />
+            <Link text="Cursos" link="/student/courses" icon="fa-solid fa-layer-group" />
+            <Link text="Mi aprendizaje" link="/student/learning" icon="fa-solid fa-book-open-reader" />
+            <Link text="Mi perfil" link="/student/profile" icon="fa-solid fa-user" />
             <Link text="Notificaciones" icon="fa-solid fa-bell" button={true} />
           </> 
+          : user && user.role === 2 ?
+          <>
+            <Link text="Mis cursos" link="/teacher/courses" icon="fa-solid fa-layer-group" />
+            <Link text="Mi perfil" link="/teacher/profile" icon="fa-solid fa-user" />
+            <Link text="Notificaciones" icon="fa-solid fa-bell" button={true} />
+          </>
+          : user && user.role === 3 ?
+          <>
+            <Link text="Dashboard" link="/admin/" icon="fa-solid fa-chart-pie" />
+            <Link text="Cursos" link="/admin/courses" icon="fa-solid fa-book-open" />
+            <Link text="Profesores" link="/admin/teachers" icon="fa-solid fa-person-chalkboard" />
+            <Link text="Mi perfil" link="/admin/profile" icon="fa-solid fa-user" />
+          </>
           :
           <>
-          
+            <Link text="Cursos" link="/courses" icon="fa-solid fa-layer-group" />
             <Link text="Iniciar sesión" link="/login" icon="fa-solid fa-right-to-bracket" />
             <Link text="Registrarse" link="/register" icon="fa-solid fa-user-plus" />
           </>

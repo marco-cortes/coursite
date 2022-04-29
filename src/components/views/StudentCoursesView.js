@@ -1,43 +1,36 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { startLoadCoursesStudent } from "../../redux/actions/courses";
-import { Card } from "../ui/Card";
+import { useSelector } from "react-redux";
+import { CoursesList } from "../ui/CoursesList";
 import { FormSearch } from "../ui/FormSearch";
 import { NavBarApp } from "../ui/NavBarApp";
 
 export const StudentCoursesView = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(startLoadCoursesStudent());
-  }, [dispatch]);
 
   const { myCourses } = useSelector(state => state.courses);
 
+  const active = (e) => {
+    e.target.classList.add("app-active");
+    e.target.parentNode.childNodes.forEach(node => {
+      if (node !== e.target) {
+        node.classList.remove("app-active");
+      }
+    });
+  }
+
   return (
-    <div className="courses-view">
+    <div className="courses-view animate__animated animate__fadeIn">
       <NavBarApp>
-        <button className="app-link app-active">
+        <button className="app-link app-active" onClick={active}>
           En progreso
         </button>
-        <button className="app-link">
+        <button className="app-link" onClick={active}>
           Terminados
         </button>
-        <button className="app-link">
+        <button className="app-link" onClick={active}>
           Certificados
         </button>
       </NavBarApp>
       <FormSearch />
-      {
-        myCourses &&
-        <div className="course-list">
-          {
-            myCourses.map(course => (
-              <Card {...course} key={course.id} isBought />
-            ))
-          }
-        </div>
-      }
+      <CoursesList courses={myCourses} />
     </div>
   )
 }

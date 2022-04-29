@@ -4,23 +4,23 @@ import { Link, useParams } from "react-router-dom";
 import { startLoadCourse } from "../../redux/actions/courses";
 import { Accordion } from "../ui/Accordion";
 
-export const CourseView = () => {
+export const CourseView = ({ role }) => {
 
     const dispatch = useDispatch();
     const { id } = useParams();
-    const [isBought, setIsBought] = useState(false);
-
     const { myCourses, active } = useSelector(state => state.courses);
+    const [isBought, setIsBought] = useState(false);
 
     useEffect(() => {
         dispatch(startLoadCourse(id));
     }, [dispatch, id]);
 
     useEffect(() => {
-        if(active) {
+        if (active) {
             setIsBought(myCourses.find(course => course.id === active.id));
         }
     }, [active, myCourses]);
+
 
     if (!active) {
         return <div>Loading...</div>
@@ -31,7 +31,7 @@ export const CourseView = () => {
     }
 
     return (
-        <div className="course-view">
+        <div className="course-view animate__animated animate__fadeIn">
             <div className={"course-image a" + id}>
                 <img src={active.image} className="img" alt="" />
             </div>
@@ -62,10 +62,12 @@ export const CourseView = () => {
                         </div>
                         <div className="course-btns">
                             {
-                                isBought ?
-                                    <Link className="btn btn-large btn-primary" to={"/learning/" + id}>Ir al curso</Link>
-                                    :
-                                    <Link className="btn btn-large btn-primary" to={"/courses/buy/" + id}>Inscribirme por $ {active.price}</Link>
+                                isBought && role === 1 ?
+                                    <Link className="btn btn-large btn-primary" to={"/student/learning/" + id}>Ir al curso</Link>
+                                : role === 1 ?
+                                    <Link className="btn btn-large btn-primary" to={"/student/courses/buy/" + id}>Inscribirme por $ {active.price}</Link>
+                                : role === 2 &&
+                                    <Link className="btn btn-large btn-primary" to={"/teacher/courses/" + id + "/edit"}>Editar <i className="fa-solid fa-pen"></i></Link>
                             }
                             <button className="btn btn-large btn-light" onClick={back}><i className="fa-solid fa-rotate-left"></i> Regresar</button>
                         </div>

@@ -71,3 +71,7 @@ a {
 .i {
     margin-right: .5rem;
 }
+
+.animate__animated.animate__fadeIn {
+    --animate-duration: .3s;
+  }

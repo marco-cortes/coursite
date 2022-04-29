@@ -8,7 +8,7 @@ import { ProfileButtons } from "../profile/ProfileButtons";
 import { UserImage } from "../profile/UserImage";
 import { Modal } from "../ui/Modal";
 
-export const ProfileView = () => {
+export const ProfileView = ({ role }) => {
 
   const { user } = useSelector(state => state.auth);
 
@@ -16,7 +16,7 @@ export const ProfileView = () => {
 
   const [userForm, setUserForm] = useForm(user);
 
-  const { name, email, lastName } = userForm;
+  const { name, email, lastName, phone } = userForm;
 
   const dispatch = useDispatch();
 
@@ -59,33 +59,47 @@ export const ProfileView = () => {
 
 
   return (
-    <div className="course-view">
+    <div className="course-view animate__animated animate__fadeIn">
       <form className="profile-container" onSubmit={submitUpdate}>
-        <UserImage name={user.name} lastname={user.lastName} />
-        <div className="user-form">
-          <h3 className="user-form-title">Nombre(s):</h3>
-          <div className="user-form-group">
-            <div className="input-button">
-              <input className="user-form-input" onChange={setUserForm} name="name" value={name} disabled id="input-user-name" />
-              <button onClick={e => enable(e, 0)} className="user-form-button"><i className="fa-solid fa-pen"></i> Editar </button>
+        <div>
+          <UserImage name={user.name} lastname={user.lastName} />
+          <div className="user-form">
+            <h3 className="user-form-title">Nombre(s):</h3>
+            <div className="user-form-group">
+              <div className="input-button">
+                <input className="user-form-input" onChange={setUserForm} name="name" value={name} disabled id="input-user-name" />
+                <button onClick={e => enable(e, 0)} className="user-form-button"><i className="fa-solid fa-pen"></i> Editar </button>
+              </div>
             </div>
-          </div>
-          <h3 className="user-form-title">Apellido(s):</h3>
-          <div className="user-form-group">
-            <div className="input-button">
-              <input className="user-form-input" onChange={setUserForm} name="lastName" value={lastName} disabled id="input-user-lastname" />
-              <button onClick={e => enable(e, 1)} className="user-form-button"><i className="fa-solid fa-pen"></i> Editar </button>
+            <h3 className="user-form-title">Apellido(s):</h3>
+            <div className="user-form-group">
+              <div className="input-button">
+                <input className="user-form-input" onChange={setUserForm} name="lastName" value={lastName} disabled id="input-user-lastname" />
+                <button onClick={e => enable(e, 1)} className="user-form-button"><i className="fa-solid fa-pen"></i> Editar </button>
+              </div>
             </div>
-          </div>
-          <h3 className="user-form-title">Correo electrónico:</h3>
-          <div className="user-form-group">
-            <div className="input-button">
-              <input className="user-form-input" onChange={setUserForm} name="email" value={email} disabled id="input-user-email" />
-              <button onClick={e => enable(e, 2)} className="user-form-button"><i className="fa-solid fa-pen"></i> Editar </button>
+            <h3 className="user-form-title">Correo electrónico:</h3>
+            <div className="user-form-group">
+              <div className="input-button">
+                <input className="user-form-input" onChange={setUserForm} name="email" value={email} disabled id="input-user-email" />
+                <button onClick={e => enable(e, 2)} className="user-form-button"><i className="fa-solid fa-pen"></i> Editar </button>
+              </div>
             </div>
+            {
+              role === 2 &&
+              <>
+                <h3 className="user-form-title">Teléfono:</h3>
+                <div className="user-form-group">
+                  <div className="input-button">
+                    <input className="user-form-input" onChange={setUserForm} name="phone" value={phone} disabled id="input-user-phone" />
+                    <button onClick={e => enable(e, 3)} className="user-form-button"><i className="fa-solid fa-pen"></i> Editar </button>
+                  </div>
+                </div>
+              </>
+            }
           </div>
+          <ProfileButtons setSelect={setSelect} />
         </div>
-        <ProfileButtons setSelect={setSelect} />
       </form>
       <Modal title={select ? "ELIMINAR CUENTA" : "CAMBIAR CONTRASEÑA"}>
         {

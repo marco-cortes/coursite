@@ -28,7 +28,6 @@ export const setCourses = (courses) => ({
 
 export const startLoadCourse = (id) => {
     return async (dispatch) => {
-        dispatch(clearCourse());
         const resp = await noAuthFetch("course/" + id, {});
         const body = await resp.json();
 
@@ -66,11 +65,19 @@ export const startLoadCoursesStudent = () => {
             const { id } = user;
             const resp = await authFetch("course/user/" + id, {});
             const body = await resp.json();
-            dispatch(setCoursesStudent(body))
+            
+            body.map(course => course.isBought = true);
+            dispatch(setCoursesStudent(body));
+            
+            const { myCourses } = getState().courses;
 
-            /*const { courses } = getState().courses;
-            courses.map(course => body.map(myCourse => course.id === myCourse.id ? course.isBought = true : null));
-            dispatch(setCourses(courses));*/
+            if (myCourses) {
+                const rcourses = await noAuthFetch("course/", {});
+                const rbody = await rcourses.json();
+                rbody.map(course => myCourses.map(myCourse => course.id === myCourse.id ? course.isBought = true : null));
+                dispatch(setCourses(rbody));
+            }
+            
         }
     }
 }
@@ -95,6 +102,18 @@ export const startBuyCourse = (id) => {
             } else {
                 Swal.fire("Success", "¡Curso comprado!", "success");
             }
+        }
+    }
+}
+
+export const startLoadCoursesTeacher = () => {
+    return async (dispatch, getState) => {
+        const user = getState().auth.user;
+        if (user) {
+            const { teacherId:id } = user;
+            const resp = await authFetch("course/teacher/" + id, {});
+            const body = await resp.json();
+            dispatch(setCourses(body));
         }
     }
 }

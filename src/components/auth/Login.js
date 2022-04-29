@@ -16,12 +16,11 @@ export const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log(login);
     dispatch(startLogin(login.email, login.password));
   }
 
   return (
-    <div className="auth-container">
+    <div className="auth-container animate__animated animate__fadeIn">
       <div className="auth-image-container">
         <div className="auth-logo">
           <Logo />
@@ -34,7 +33,7 @@ export const Login = () => {
           <label className="auth-label">Correo:</label>
           <div className="auth-input-div">
             <i className="fa-solid fa-at auth-icon"></i>
-            <input className="auth-input" placeholder="Ejemplo: abc@email.com" type="email" name="email" value={login.email} onChange={setLogin} required autoComplete="none"/>
+            <input className="auth-input" placeholder="Ejemplo: abc@email.com" type="email" name="email" value={login.email} onChange={setLogin} required />
           </div>
           <label className="auth-label">Tu contraseña:</label>
           <div className="auth-input-div">

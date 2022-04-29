@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom"
-export const Card = ({ id, title, category, teacher, price, score, image, isBought }) => {
+export const Card = ({ id, title, category, teacher, price, score, image, isBought, dir }) => {
 
     const { user } = useSelector(state => state.auth);
 
@@ -19,18 +19,22 @@ export const Card = ({ id, title, category, teacher, price, score, image, isBoug
                 </p>
             </div>
             <div className="card-btns">
-                <Link className="btn btn-info" to={"/courses/" + id}>
+                <Link className="btn btn-info" to={dir + "/courses/" + id}>
                 <i className="fa-solid fa-circle-info"></i> Detalles
                 </Link>
                 {
                     isBought ?
-                    <Link className="btn btn-primary" to={"/learning/" + id}>
+                    <Link className="btn btn-primary" to={dir + "/learning/" + id}>
                         Ir al Curso <i className="fa-solid fa-arrow-up-right-from-square"></i>
                     </Link>
-                    : user &&
-                    <Link className="btn btn-primary" to={"/courses/buy/" + id}>
+                    : user && user.role === 1 ?
+                    <Link className="btn btn-primary" to={dir + "/courses/buy/" + id}>
                         Inscribirse <i className="fa-solid fa-arrow-right-to-bracket"></i>
                     </Link>
+                    : user && user.role === 2 ?
+                    <Link className="btn btn-primary" to={dir + "/courses/" + id + "/edit"}>
+                        Editar <i className="fa-solid fa-pen"></i>
+                    </Link> : null
                 }
             </div>
         </div>

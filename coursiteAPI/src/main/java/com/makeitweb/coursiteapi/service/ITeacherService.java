@@ -32,11 +32,12 @@ public class ITeacherService implements TeacherService {
 
     @Override
     public TeacherDTO getTeacherById(Long id) {
-        Teacher t = teacherRepository.findById(id).orElse(null);
+        Teacher t = teacherRepository.findTeacherByUser_Id(id);
         if(t == null)
             return null;
         TeacherDTO teacherDTO = new TeacherDTO();
-        teacherDTO.setId(t.getId());
+        teacherDTO.setUserId(id);
+        teacherDTO.setTeacherId(t.getId());
         teacherDTO.setName(t.getUser().getName());
         teacherDTO.setLastName(t.getUser().getLastName());
         teacherDTO.setEmail(t.getUser().getEmail());
@@ -51,8 +52,8 @@ public class ITeacherService implements TeacherService {
         Teacher t = new Teacher();
         User u = new User();
 
-        if(teacher.getId() != null && teacher.getId() >= 1) {
-            t = teacherRepository.findById(teacher.getId()).orElse(null);
+        if(teacher.getTeacherId() != null && teacher.getTeacherId() >= 1) {
+            t = teacherRepository.findById(teacher.getTeacherId()).orElse(null);
             if(t == null)
                 return null;
             u = t.getUser();
@@ -68,7 +69,8 @@ public class ITeacherService implements TeacherService {
         Validation.validateTeacher(t, teacher.getPhone(), teacher.getStatus());
 
         t.setUser(userRepository.save(u));
-        teacher.setId(teacherRepository.save(t).getId());
+        teacher.setUserId(t.getId());
+        teacher.setTeacherId(teacherRepository.save(t).getId());
         teacher.setPassword(null);
         return teacher;
     }
@@ -86,7 +88,8 @@ public class ITeacherService implements TeacherService {
         TeacherDTO aux = new TeacherDTO();
         List<TeacherDTO> list = new ArrayList<>();
         for (Teacher teacher : teachers) {
-            aux.setId(teacher.getId());
+            aux.setUserId(teacher.getUser().getId());
+            aux.setTeacherId(teacher.getId());
             aux.setName(teacher.getUser().getName());
             aux.setLastName(teacher.getUser().getLastName());
             aux.setEmail(teacher.getUser().getEmail());

@@ -10,4 +10,6 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 
     @Query("SELECT t FROM Teacher t WHERE t.status=0")
     List<Teacher> getPendingTeachers();
+
+    Teacher findTeacherByUser_Id(Long userId);
 }

@@ -7,14 +7,19 @@ export const Modal = ({ children, title }) => {
     const dispatch = useDispatch();
 
     const close = () => {
-        dispatch(closeModal())
+        const modal = document.getElementById("modal");
+        modal.classList.remove("animate__animated", "animate__fadeIn");
+        modal.classList.add("animate__animated", "animate__fadeOut");
+        setTimeout(() => {
+            dispatch(closeModal());
+        }, 300);
     }
 
     if (!modalOpen)
         return null;
 
     return (
-        <div className="modal-container">
+        <div className="modal-container animate__animated animate__fadeIn" id="modal">
             <div className="modal">
                 <div className="modal-header">
                     <h2 className="modal-title">{title}</h2>

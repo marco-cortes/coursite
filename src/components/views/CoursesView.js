@@ -1,37 +1,93 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { startLoadCourses } from "../../redux/actions/courses";
 import { CoursesList } from "../ui/CoursesList";
 import { FormSearch } from "../ui/FormSearch";
 import { NavBarApp } from "../ui/NavBarApp";
-export const CoursesView = () => {
+
+export const CoursesView = ({ role }) => {
 
   const dispatch = useDispatch();
-
-  const { courses } = useSelector(state => state.courses);
+  const { courses:list } = useSelector(state => state.courses);
+  const [courses, setCourses] = useState(list);
 
   useEffect(() => {
-    dispatch(startLoadCourses());
-  }, [dispatch]);
+    if (role === 0) {
+      dispatch(startLoadCourses());
+    }
+  }, [dispatch, courses, role]);
 
-return (
-  <div className="courses-view">
-    <NavBarApp>
-      <button className="app-link app-active">
-        Todos los cursos
-      </button>
-      <button className="app-link">
-        Nuevos
-      </button>
-      <button className="app-link">
-        Destacados
-      </button>
-      <button className="app-link">
-        Categorias
-      </button>
-    </NavBarApp>
-    <FormSearch />
-    <CoursesList courses={courses} />
-  </div>
-)
+  useEffect(() => {
+    setCourses(list);
+  },[list]);
+
+  const filter = (e, type) => {
+    active(e);
+    switch (type) {
+      case "all":
+        setCourses(list);
+      break;
+      case "new":
+        setCourses(list);
+      break;
+      case "featured":
+        setCourses(list);
+      break;
+      case "category":
+        setCourses(list);
+      break;
+      case "pending":
+        setCourses(list.filter(course => course.status === 0));
+      break;
+      case "approved":
+        setCourses(list.filter(course => course.status === 1));
+      break;
+      default:
+        return courses;
+    }
+  }
+
+  const active = (e) => {
+    e.target.classList.add("app-active");
+    e.target.parentNode.childNodes.forEach(node => {
+      if (node !== e.target) {
+        node.classList.remove("app-active");
+      }
+    });
+  }
+
+  return (
+    <div className="courses-view animate__animated animate__fadeIn">
+      <NavBarApp>
+        <button className="app-link app-active" onClick={e => filter(e, "all")}>
+          Todos los cursos
+        </button>
+        {
+          role === 2 ?
+            <>
+              <button className="app-link" onClick={e => filter(e, "pending")}>
+                Pendientes
+              </button>
+              <button className="app-link" onClick={e => filter(e, "approved")}>
+                Publicados
+              </button>
+            </>
+            :
+            <>
+              <button className="app-link" onClick={e => filter(e, "new")}>
+                Nuevos
+              </button>
+              <button className="app-link" onClick={e => filter(e, "featured")}>
+                Destacados
+              </button>
+            </>
+        }
+        <button className="app-link" onClick={e => filter(e, "category")}>
+          Categorias
+        </button>
+      </NavBarApp>
+      <FormSearch role={role} />
+      <CoursesList courses={courses} />
+    </div>
+  )
 }
