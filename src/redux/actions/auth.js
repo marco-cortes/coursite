@@ -124,6 +124,34 @@ export const saveUser = (user) => {
     }
 };
 
+
+
+export const startChangePassword = (user, password, newPassword) => {
+    return async (dispatch) => {
+        const resp = await noAuthFetch(`login?email=${user.email}&password=${password}`, {}, "POST");
+        if (resp.status === 403) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'La contraseña actual es incorrecta',
+            });
+        } else {
+            const body = await resp.json();
+            if (body.error) {
+                Swal.fire("Error", body.error, "error");
+            }
+            if (body.access_token) {
+                localStorage.setItem("token", body.access_token);
+                localStorage.setItem("token-refresh", body.refresh_token);
+                localStorage.setItem("token-init-date", new Date().getTime());
+                user.password = newPassword;
+                dispatch(saveUser(user));
+            }
+        }
+    }
+
+}
+
 const checkingFinish = () => ({
     type: types.authCheckingFinish
 })

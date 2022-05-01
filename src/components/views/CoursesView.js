@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { startLoadCourses } from "../../redux/actions/courses";
 import { CoursesList } from "../ui/CoursesList";
 import { FormSearch } from "../ui/FormSearch";
+import { Modal } from "../ui/Modal";
 import { NavBarApp } from "../ui/NavBarApp";
+import { NewCourse } from "../teacher/NewCourse";
 
 export const CoursesView = ({ role }) => {
 
@@ -12,7 +14,7 @@ export const CoursesView = ({ role }) => {
   const [courses, setCourses] = useState(list);
 
   useEffect(() => {
-    if (role === 0) {
+    if (role === 0 && courses.length === 0) {
       dispatch(startLoadCourses());
     }
   }, [dispatch, courses, role]);
@@ -88,6 +90,9 @@ export const CoursesView = ({ role }) => {
       </NavBarApp>
       <FormSearch role={role} />
       <CoursesList courses={courses} />
+      <Modal title="NUEVO CURSO">
+        <NewCourse />
+      </Modal>
     </div>
   )
 }

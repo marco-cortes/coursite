@@ -1,4 +1,7 @@
+import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 import { useForm } from "../../hooks/useForm";
+import { startChangePassword } from "../../redux/actions/auth";
 
 export const ChangePasswordForm = () => {
 
@@ -9,9 +12,28 @@ export const ChangePasswordForm = () => {
     });
 
     const { password, newPassword, confirmNewPassword } = passwordForm;
+    const dispatch = useDispatch();
+    const { user } = useSelector(state => state.auth);
 
+    const handleChangePassword = (e) => {
+        e.preventDefault();
+        if(newPassword === confirmNewPassword) {
+            dispatch(startChangePassword(user, password, newPassword));
+            setPasswordForm({
+                password: "",
+                newPassword: "",
+                confirmNewPassword: ""
+            });
+        } else {
+            Swal.fire({
+                title: "Error",
+                text: "Las contraseñas no coinciden",
+                icon: "error",
+            })
+        }
+    }
     return (
-        <form className="password-container">
+        <form className="password-container" onSubmit={handleChangePassword}>
             <h3 className="label-password">Contraseña actual</h3>
             <div className="password-div">
                 <i className="fa-solid fa-lock icon-password"></i>
