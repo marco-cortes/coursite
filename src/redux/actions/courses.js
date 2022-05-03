@@ -67,7 +67,7 @@ export const startLoadCoursesStudent = () => {
                 const { myCourses } = getState().courses;
 
                 if (myCourses) {
-                    const rcourses = await noAuthFetch("course/", {});
+                    const rcourses = await noAuthFetch("courses/", {});
                     const rbody = await rcourses.json();
                     rbody.map(course => myCourses.map(myCourse => course.id === myCourse.id ? course.isBought = true : null));
                     dispatch(setCourses(rbody));
@@ -90,14 +90,15 @@ export const startBuyCourse = (id) => {
         const { id: uid } = getState().auth.user;
         id = parseInt(id);
         if (uid) {
-            const resp = await authFetch("usercourse/save", { courseId: id, userId: uid }, "POST");
+            const resp = await authFetch("user/course/save", { courseId: id, userId: uid }, "POST");
             const body = await resp.json();
-            console.log(body);
             if (body.error) {
                 Swal.fire("Error", "Error :CCC", "error");
             } else {
+                dispatch(startLoadCoursesStudent());
                 Swal.fire("Success", "¡Curso comprado!", "success");
             }
+
         }
     }
 }
@@ -109,7 +110,8 @@ export const startLoadCoursesTeacher = () => {
             const { id } = user;
             const resp = await authFetch("teacher/courses/" + id, {});
             const body = await resp.json();
-            dispatch(setCourses(body));
+            if (body.status === 200)
+                dispatch(setCourses(body.courses));
         }
     }
 }
@@ -158,6 +160,41 @@ export const setTeachers = (teachers) => {
     }
 }
 
+export const startSetTeacherStatus = (teacher) => {
+    return async (dispatch) => {
+        const resp = await authFetch("admin/teacher/" + teacher.id + "/status/" + teacher.status, { }, "PUT");
+        const body = await resp.json();
+        if (body.status === 200) {
+            dispatch(updateTeacher(teacher));
+            Swal.fire("Success", "¡Status actualizado!", "success");
+        } else {
+            Swal.fire("Error", "Error :CCC", "error");
+        }
+    }
+}
+
+export const updateTeacher = (teacher) => {
+    return {
+        type: types.teachersUpdated,
+        payload: teacher
+    }
+}
+
+export const startGetTeacher = (id) => {
+    return async (dispatch) => {
+        const resp = await authFetch("admin/teacher/" + id, {});
+        const body = await resp.json();
+        dispatch(setTeacher(body));
+    }
+}
+
+export const setTeacher = (teacher) => {
+    return {
+        type: types.teacherSetActive,
+        payload: teacher
+    }
+}
+
 export const startAddCategory = (category) => {
     return async (dispatch) => {
         const resp = await authFetch("admin/category/save", category, "POST");
@@ -175,5 +212,45 @@ export const addCategory = (category) => {
     return {
         type: types.categoriesAddNew,
         payload: category
+    }
+}
+
+export const startUpdateCategory = (category) => {
+    return async (dispatch) => {
+        const resp = await authFetch("admin/category/update", category, "PUT");
+        const body = await resp.json();
+        if (body.error) {
+            Swal.fire("Error", "Error :CCC", "error");
+        } else {
+            Swal.fire("Success", "¡Categoría actualizada!", "success");
+            dispatch(updateCategory(body));
+        }
+    }
+}
+
+export const updateCategory = (category) => {
+    return {
+        type: types.categoriesUpdated,
+        payload: category
+    }
+}
+
+export const startAddCourse = (course) => {
+    return async (dispatch) => {
+        const resp = await authFetch("teacher/course/new", course, "POST");
+        const body = await resp.json();
+        if (body.error) {
+            Swal.fire("Error", "Error :CCC", "error");
+        } else {
+            Swal.fire("Success", "¡Curso agregado!", "success");
+            dispatch(addCourse(body));
+        }
+    }
+}
+
+export const addCourse = (course) => {
+    return {
+        type: types.courseAddNew,
+        payload: course
     }
 }

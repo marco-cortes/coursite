@@ -60,10 +60,12 @@ public class IUserService implements UserService, UserDetailsService {
         if(old == null) {
             if(user.getRole() == null)
                 user.setRole(1);
+            else if(user.getRole() == 2)
+                user.setStatus(0);
             return userRepository.save(user);
         }
+        old.setStatus(user.getStatus());
         Validation.validateUser(old, user.getName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getPhone());
-
         return userRepository.save(old);
     }
 

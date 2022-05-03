@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "../../hooks/useForm";
-import { startAddCategory } from "../../redux/actions/courses";
+import { startAddCategory, startUpdateCategory } from "../../redux/actions/courses";
 
 export const AdminCategories = () => {
 
@@ -8,15 +8,23 @@ export const AdminCategories = () => {
 
   const dispatch = useDispatch();
 
-  const [category, setCategory, reset] = useForm({
+  const [category, setCategory, reset, setValues] = useForm({
     name: "",
+    id: null
   })
 
   const handleCreate = (e) => {
     e.preventDefault();
-    console.log(category);
-    dispatch(startAddCategory(category));
+    if(category.id === null)
+      dispatch(startAddCategory(category));
+    else 
+      dispatch(startUpdateCategory(category));
     reset();
+  }
+
+  const setCategoryActive = (e, c) => {
+    e.preventDefault();
+    setValues(c);
   }
 
   return (
@@ -41,8 +49,8 @@ export const AdminCategories = () => {
                   <h2 className="category-text">{category.name}</h2>
                 </div>
                 <div className="category-btns">
-                  <button className="btn btn-danger"> Delete</button>
-                  <button className="btn btn-warning"> Edit</button>
+                  <button className="btn btn-danger"> Eliminar</button>
+                  <button className="btn btn-warning" onClick={e=>setCategoryActive(e,category)}> Editar</button>
                 </div>
               </div>
             ))

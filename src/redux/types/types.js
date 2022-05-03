@@ -33,4 +33,5 @@ export const types = {
     teachersAddNew: "[teachers] teachers Add New",
     teachersUpdated: "[teachers] teachers Updated",
     teachersDeleted: "[teachers] teachers Deleted",
+    teacherSetActive: "[teachers] teacher Set Active",
 }

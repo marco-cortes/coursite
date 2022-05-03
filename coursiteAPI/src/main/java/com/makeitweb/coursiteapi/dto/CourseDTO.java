@@ -20,6 +20,8 @@ public class CourseDTO {
     private Integer status = 0;
     private Long idTeacher;
     private String teacher;
+    private String teacherEmail;
+    private String teacherPhone;
     private String category;
     private Long idCategory;
     private List<UnitDTO> units;

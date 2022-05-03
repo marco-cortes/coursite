@@ -5,11 +5,16 @@ export const FormSearch = ({ role }) => {
 
   const dispatch = useDispatch();
 
+  const handleCourse = (e) => {
+    e.preventDefault();
+    dispatch(showModal());
+  }
+
   return (
     <div className="form-div">
       {
         role === 2 &&
-        <button className="btn btn-primary" onClick={()=>dispatch(showModal())}>
+        <button className="btn btn-primary" onClick={handleCourse}>
           Nuevo Curso <i className="fa-solid fa-plus"></i>
         </button>
       }

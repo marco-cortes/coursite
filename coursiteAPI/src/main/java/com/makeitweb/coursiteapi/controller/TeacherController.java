@@ -34,8 +34,19 @@ public class TeacherController {
 
     @PostMapping("/course/new")
     public ResponseEntity<?> addCourse(@RequestBody CourseDTO course) {
+        System.out.println(course);
         Map<String, Object> response = new HashMap<>();
-        return saveCourse(course, response);
+        course = courseService.saveCourse(course);
+        System.out.println(course);
+        if(course == null) {
+            response.put("status", 500);
+            response.put("error", "Error al guardar el curso. Verifique sus datos.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        response.put("status", 200);
+        response.put("course", course);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/course/update/{id}")
@@ -96,7 +107,6 @@ public class TeacherController {
 
     private ResponseEntity<?> saveCourse(@RequestBody CourseDTO course, Map<String, Object> response) {
         course = courseService.saveCourse(course);
-
         if(course == null) {
             response.put("status", 500);
             response.put("error", "Error al guardar el curso. Verifique sus datos.");

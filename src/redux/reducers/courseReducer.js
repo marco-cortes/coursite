@@ -70,6 +70,11 @@ export const courseReducer = (state = initialState, action) => {
                 ...state,
                 teachers: state.teachers.filter(teacher => teacher.id !== action.payload)
             }
+        case types.teacherSetActive:
+            return {
+                ...state,
+                active: action.payload
+            }
         case types.categoriesAddNew:
             return {
                 ...state,

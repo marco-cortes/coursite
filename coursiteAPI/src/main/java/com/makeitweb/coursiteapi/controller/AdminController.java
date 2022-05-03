@@ -40,8 +40,8 @@ public class AdminController {
     private final CategoryService categoryService;
     private final DocumentService documentService;
 
-    @PutMapping("/course/{id}/status")
-    public ResponseEntity<?> changeCourseStatus(@PathVariable Long id) {
+    @PutMapping("/course/{id}/status/{value}")
+    public ResponseEntity<?> changeCourseStatus(@PathVariable Long id, @PathVariable Integer value) {
         CourseDTO c = courseService.getCourseById(id);
         Map<String, Object> response = new HashMap<>();
 
@@ -51,10 +51,7 @@ public class AdminController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        if(c.getStatus() == 0)
-            c.setStatus(1);
-        else if(c.getStatus() == 1)
-            c.setStatus(0);
+        c.setStatus(value);
 
         c = courseService.saveCourse(c);
         response.put("status", 200);
@@ -63,8 +60,8 @@ public class AdminController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/teacher/{id}/status")
-    public ResponseEntity<?> changeTeacherStatus(@PathVariable Long id) {
+    @PutMapping("/teacher/{id}/status/{value}")
+    public ResponseEntity<?> changeTeacherStatus(@PathVariable Long id, @PathVariable Integer value) {
         User u = userService.getUserById(id);
 
         Map<String, Object> response = new HashMap<>();
@@ -76,17 +73,11 @@ public class AdminController {
         }
 
         if (u.getRole() == 2) {
-            if(u.getStatus() == 0)
-                u.setStatus(1);
-            else if(u.getStatus() == 1)
-                u.setStatus(0);
-
+            u.setStatus(value);
             u = userService.saveUser(u);
-
             response.put("status", 200);
             response.put("user", u);
             return ResponseEntity.ok(response);
-
         }
 
         response.put("status", 500);

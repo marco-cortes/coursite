@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 authorizeRequests().antMatchers("/api/**").permitAll().
 
-                antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("ROLE_USER").
+                /*antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("ROLE_USER").
                 antMatchers(HttpMethod.POST, "/api/user/**").hasAnyAuthority("ROLE_USER").
                 antMatchers(HttpMethod.PUT, "/api/user/**").hasAnyAuthority("ROLE_USER").
                 antMatchers(HttpMethod.DELETE, "/api/user/**").hasAnyAuthority("ROLE_USER").
@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 antMatchers(HttpMethod.GET, "/api/admin/**").hasAnyAuthority("ROLE_ADMIN").
                 antMatchers(HttpMethod.POST, "/api/admin/**").hasAnyAuthority("ROLE_ADMIN").
                 antMatchers(HttpMethod.PUT, "/api/admin/**").hasAnyAuthority("ROLE_ADMIN").
-                antMatchers(HttpMethod.DELETE, "/api/admin/**").hasAnyAuthority("ROLE_ADMIN").
+                antMatchers(HttpMethod.DELETE, "/api/admin/**").hasAnyAuthority("ROLE_ADMIN").*/
 
                 anyRequest().authenticated().and().
                 cors().configurationSource(corsConfigurationSource()).

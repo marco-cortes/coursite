@@ -20,11 +20,11 @@ export const CoursesList = ({ courses }) => {
     return (
         <>
             {
-                courses && courses.length > 0 ?
+                courses.length > 0 ?
                 <div className="course-list">
                     {
                         courses.map(course => (
-                            <Card {...course} key={course.id} dir={dir} />
+                            <Card course={course} key={course.id} dir={dir} />
                         ))
                     }
                 </div> :

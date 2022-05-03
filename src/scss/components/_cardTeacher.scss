@@ -8,12 +8,16 @@
     padding: 2rem;
     border-radius: 30px;
     border: $primary 4px solid;
+    position: relative;
 }
 
 .card-teacher-buttons {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    width: 340px;
+    height: 100%;
 }
 
 .card-teacher-info {
@@ -21,6 +25,7 @@
     flex-direction: column;
     align-items: flex-start;
     max-width: 400px;
+    width: 100%;
 }
 
 .teacher-div-img {
@@ -42,31 +47,88 @@
     }
 }
 
-.teacher-name {
-    font-size: 1.5rem;
+.text-dark {
     font-weight: bold;
-    color: $dark;
-    margin-bottom: 1rem;
+    color: $primary;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
 }
 
 .teacher-info  {
     font-size: 1rem;
     font-weight: 500;
-    color: $primary;
+    color: $gray;
     margin-bottom: 1rem;
 }
 
+.teacher-status {
+    font-size: 0.8rem;
+    font-weight: 800;
+    margin-top: 1rem;
+    background-color: $blue-dark;
+    padding: 0.3rem 0.8rem;
+    border-radius: 30px;
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
+}
+
 .teacher-link {
-    color: $blue;
+    color: $light;
     text-decoration: none;
-    margin-top: 2rem;
+    background-color: $info;
+    padding: 0.3rem 1rem;
+    border-radius: 30px;
 }
 
 .teacher-link:hover {
-    text-decoration: underline;
+    background-color: darken($color: $info, $amount: 4);
 }
 
 .admin-title {
     color: $dark;
     font-size: 1.5rem;
+}
+
+.teacher-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 2rem auto;
+    background-color: $light;
+    padding: 2rem;
+    border-radius: 30px;
+    min-width: 350px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.profile-teacher-name {
+    color: $primary;
+    margin: 1rem 0;
+}
+
+.profile-teacher-info {
+    color: $gray;
+    margin-bottom: 1rem;
+}
+
+.profile-teacher-status {
+    font-weight: 800;
+    margin-top: 1rem;
+    background-color: $blue-dark;
+    padding: 0.5rem 1.5rem;
+    border-radius: 30px;
+}
+
+.s0 {
+    color: $warning;
+}
+
+.s1 {
+    color: $success;
+}
+
+.s-1 {
+    color: $danger;
 }

@@ -1,16 +1,33 @@
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import defaultImg from "../../image/user-image.svg";
+import { startSetTeacherStatus } from "../../redux/actions/courses";
 
 export const CardTeacher = ({ teacher }) => {
+
+    const dispatch = useDispatch();
+
+    const setTeacherStatus = (teacher, status) => {
+        teacher.status = status;
+        dispatch(startSetTeacherStatus(teacher));
+    }
 
     return (
         <div className="card-teacher">
             <div className="card-teacher-info">
-                <h2 className="teacher-name">Nombre: {teacher.name + " " + teacher.lastName}</h2>
-                <p className="teacher-info">Correo: {teacher.email}</p>
-                <p className="teacher-info">Celular: {teacher.phone}</p>
+                <h2 className="teacher-info"><span className="text-dark">NOMBRE</span> <br/> {teacher.name + " " + teacher.lastName}</h2>
+                <p className="teacher-info"><span className="text-dark">CORREO</span> <br/> {teacher.email}</p>
+                <p className="teacher-info"><span className="text-dark">CELULAR</span> <br/> {teacher.phone}</p>
                 <Link to={"/admin/teachers/" + teacher.id} className="teacher-link"> {">"} Detalles</Link>
             </div>
+            {
+                teacher.status === 0 ?
+                    <h2 className="teacher-status warning">Pendiente</h2>
+                    : teacher.status === 1 ?
+                        <h2 className="teacher-status success">Aprobado</h2>
+                        : teacher.status === -1 &&
+                        <h2 className="teacher-status danger">Rechazado</h2>
+            }
             <div className="card-teacher-buttons">
                 <div className="teacher-div-img">
                     {
@@ -19,10 +36,13 @@ export const CardTeacher = ({ teacher }) => {
                             : <img src={defaultImg} alt={teacher.name} className="teacher-img" />
                     }
                 </div>
-                <div className="teacher-btns">
-                    <button className="btn btn-success"><i className="fa-solid fa-check"></i >Aprobar</button>
-                    <button className="btn btn-danger"><i className="fa-solid fa-times"></i> Rechazar</button>
-                </div>
+                {
+                    teacher.status === 0 &&
+                    <div className="teacher-btns">
+                        <button className="btn btn-success" onClick={() => setTeacherStatus(teacher, 1)} ><i className="fa-solid fa-check"></i >Aprobar</button>
+                        <button className="btn btn-danger" onClick={() => setTeacherStatus(teacher, -1)}><i className="fa-solid fa-times"></i> Rechazar</button>
+                    </div>
+                }
             </div>
         </div>
     )

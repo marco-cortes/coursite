@@ -3,14 +3,12 @@ package com.makeitweb.coursiteapi.service;
 import com.makeitweb.coursiteapi.dto.CourseDTO;
 import com.makeitweb.coursiteapi.dto.LessonDTO;
 import com.makeitweb.coursiteapi.dto.UnitDTO;
+import com.makeitweb.coursiteapi.entity.course.Category;
 import com.makeitweb.coursiteapi.entity.course.Course;
 import com.makeitweb.coursiteapi.entity.course.Lesson;
 import com.makeitweb.coursiteapi.entity.course.Unit;
 import com.makeitweb.coursiteapi.helpers.Validation;
-import com.makeitweb.coursiteapi.repository.CourseRepository;
-import com.makeitweb.coursiteapi.repository.LessonRepository;
-import com.makeitweb.coursiteapi.repository.UnitRepository;
-import com.makeitweb.coursiteapi.repository.UserRepository;
+import com.makeitweb.coursiteapi.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,16 +27,26 @@ public class ICourseService implements CourseService {
     private final UnitRepository unitRepository;
     private final LessonRepository lessonRepository;
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public CourseDTO saveCourse(CourseDTO course) {
-        Course c = courseRepository.findById(course.getId()).orElse(new Course());
+        Course c = new Course();
+        if(course.getId() != null)
+            c = courseRepository.findById(course.getId()).orElse(new Course());
+
         Validation.validateCourse(c, course.getTitle(), course.getDescription(), course.getImage(), course.getPrice(), course.getStatus(), course.getScore());
 
         if(c.getTeacher() == null) {
             c.setTeacher(userRepository.findById(course.getIdTeacher()).orElse(null));
         }
+        if(course.getIdCategory() == null)
+            return  null;
+        Category category = categoryRepository.findById(course.getIdCategory()).orElse(null);
 
+        if(category == null)
+            return null;
+        c.setCategory(category);
         c = courseRepository.save(c);
         course.setId(c.getId());
 
@@ -46,9 +54,10 @@ public class ICourseService implements CourseService {
         if (unitDTOList == null || unitDTOList.size() <= 0)
             return  course;
 
-        Unit unit;
+        Unit unit = new Unit();
         for (UnitDTO u: unitDTOList) {
-            unit = unitRepository.findById(u.getId()).orElse(new Unit());
+            if(u.getId() != null && u.getId() > 0)
+                unit = unitRepository.findById(u.getId()).orElse(new Unit());
             Validation.validateUnit(unit, u.getTitle(), u.getDescription());
             unit.setCourse(c);
             unit = unitRepository.save(unit);
@@ -56,9 +65,10 @@ public class ICourseService implements CourseService {
 
             List<LessonDTO> lessonDTOList = u.getLessons();
             if (lessonDTOList != null && lessonDTOList.size() > 0) {
-                Lesson lesson;
+                Lesson lesson = new Lesson();
                for(LessonDTO l: lessonDTOList) {
-                   lesson = lessonRepository.findById(l.getId()).orElse(new Lesson());
+                   if(l.getId() != null && l.getId() > 0)
+                        lesson = lessonRepository.findById(l.getId()).orElse(new Lesson());
                    Validation.validateLesson(lesson, l.getTitle(), l.getDescription(), l.getLinkDoc(), l.getLinkVideo());
                    lesson.setUnit(unit);
                    lesson = lessonRepository.save(lesson);
@@ -186,6 +196,8 @@ public class ICourseService implements CourseService {
         course.setIdTeacher(c.getTeacher().getId());
         course.setTeacher(c.getTeacher().getName() + " " + c.getTeacher().getLastName());
         course.setStatus(c.getStatus());
+        course.setTeacherEmail(c.getTeacher().getEmail());
+        course.setTeacherPhone(c.getTeacher().getPhone());
         return course;
     }
 }

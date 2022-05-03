@@ -1,33 +1,32 @@
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { NavBarApp } from "../ui/NavBarApp";
 import { CardTeacher } from "./CardTeacher";
 
 export const AdminTeachers = () => {
 
-  const { teachers } = useSelector(state => state.courses);
+  const { teachers: list } = useSelector(state => state.courses);
 
+  const [teachers, setTeachers] = useState(list);
+
+  useEffect(() => {
+    if (list && list.length > 0) {
+      setTeachers(list.filter(teacher => teacher.status === 0));
+    }
+  }, [list])
 
   const filter = (e, type) => {
     active(e);
     switch (type) {
-      case "all":
-        //setCourses(list);
-      break;
-      case "new":
-        //setCourses(list);
-      break;
-      case "featured":
-        //setCourses(list);
-      break;
-      case "category":
-        //setCourses(list);
-      break;
+      case "active":
+        setTeachers(list.filter(teacher => teacher.status === 1));
+        break;
       case "pending":
-        //setCourses(list.filter(course => course.status === 0));
-      break;
-      case "approved":
-        //setCourses(list.filter(course => course.status === 1));
-      break;
+        setTeachers(list.filter(teacher => teacher.status === 0));
+        break;
+      case "rejected":
+        setTeachers(list.filter(teacher => teacher.status === -1));
+        break;
       default:
         return;
     }
@@ -46,14 +45,14 @@ export const AdminTeachers = () => {
   return (
     <div className="admin-teachers">
       <NavBarApp >
-        <button className="app-link app-active" onClick={e => filter(e, "all")}>
+        <button className="app-link app-active" onClick={e => filter(e, "pending")}>
           Pendientes
         </button>
-        <button className="app-link" onClick={e => filter(e, "all")}>
+        <button className="app-link" onClick={e => filter(e, "active")}>
           Activos
         </button>
-        <button className="app-link" onClick={e => filter(e, "all")}>
-          Todos
+        <button className="app-link" onClick={e => filter(e, "rejected")}>
+          Rechazados
         </button>
       </NavBarApp>
 
