@@ -2,48 +2,11 @@ import Swal from "sweetalert2";
 import { authFetch, noAuthFetch } from "../../helpers/fetch";
 import { types } from "../types/types";
 import jwtDecode from "jwt-decode";
-import { clearAll, startLoadCoursesStudent, startLoadCoursesTeacher } from "./courses";
-
-export const getUser = (email) => {
-    return async (dispatch) => {
-        try {
-            const response = await authFetch("user/" + email, {});
-            const body = await response.json();
-            dispatch(setUser(body));
-
-            if(body.role === 1) {
-                dispatch(startLoadCoursesStudent());
-            } else if (body.role === 2) {
-                dispatch(getTeacher(body.id));
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
-}
-
-export const getTeacher = (id) => {
-    return async (dispatch) => {
-        try {
-            const response = await noAuthFetch("teacher/" + id, {});
-            const body = await response.json();
-            dispatch(setUser(body));
-            dispatch(startLoadCoursesTeacher());
-        } catch (error) {
-            console.log(error);
-        }
-    }
-}
-
-export const setUser = (user) => ({
-    type: types.authLogin,
-    payload: user
-});
+import { clearAll, startLoadCategories, startLoadCoursesAdmin, startLoadCoursesStudent, startLoadCoursesTeacher, startLoadTeachers } from "./courses";
 
 export const startLogin = (email, password) => {
     return async (dispatch) => {
         const resp = await noAuthFetch(`login?email=${email}&password=${password}`, {}, "POST");
-
         if (resp.status === 403) {
             Swal.fire({
                 icon: 'error',
@@ -65,16 +28,16 @@ export const startLogin = (email, password) => {
     }
 }
 
-export const startRegister = (email, password, name, lastName) => {
+export const startRegister = (user) => {
     return async (dispatch) => {
         try {
-            const resp = await noAuthFetch("register", { email, password, name, lastName }, "POST");
+            const resp = await noAuthFetch("register", user, "POST");
             const body = await resp.json();
             if (body.error) {
-                Swal.fire("Error", "El correo ya está registrado.", "error");
+                Swal.fire("Error", body.error, "error");
             } else {
-                dispatch(startLogin(email, password));
-                dispatch(getUser(email));
+                dispatch(startLogin(user.email, user.password));
+                dispatch(getUser(user.email));
             }
         } catch (error) {
             console.log(error);
@@ -91,19 +54,57 @@ export const startChecking = () => {
                 localStorage.setItem("token", body.access_token);
                 localStorage.setItem("token-refresh", body.refresh_token);
                 localStorage.setItem("token-init-date", new Date().getTime());
-
                 const { sub } = jwtDecode(body.access_token);
                 dispatch(getUser(sub));
                 dispatch(checkingFinish()); // para que no se quede en el loading
-
             } else {
-                Swal.fire("Error", body.error, "error");
                 dispatch(checkingFinish()); // para que no se quede en el loading
             }
         } else {
             dispatch(checkingFinish());
         }
 
+    }
+}
+
+const checkingFinish = () => ({
+    type: types.authCheckingFinish
+})
+
+export const startLogout = () => {
+    return async (dispatch) => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("token-refresh");
+        localStorage.removeItem("token-init-date");
+        localStorage.removeItem("lastPath");
+        dispatch(logout());
+        dispatch(clearAll());
+    }
+}
+
+const logout = () => ({
+    type: types.authLogout
+});
+
+
+export const getUser = (email) => {
+    return async (dispatch) => {
+        try {
+            const response = await authFetch("user/" + email, {});
+            const body = await response.json();
+            dispatch(setUser(body));
+            if (body.role === 1) {
+                dispatch(startLoadCoursesStudent());
+            } else if (body.role === 2) {
+                dispatch(startLoadCoursesTeacher(body.id));
+            } else if (body.role === 3) {
+                dispatch(startLoadCoursesAdmin());
+                dispatch(startLoadTeachers());
+                dispatch(startLoadCategories());
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 
@@ -124,11 +125,17 @@ export const saveUser = (user) => {
     }
 };
 
+export const setUser = (user) => ({
+    type: types.authLogin,
+    payload: user
+});
+
 
 
 export const startChangePassword = (user, password, newPassword) => {
     return async (dispatch) => {
         const resp = await noAuthFetch(`login?email=${user.email}&password=${password}`, {}, "POST");
+        console.log(resp);
         if (resp.status === 403) {
             Swal.fire({
                 icon: 'error',
@@ -144,28 +151,24 @@ export const startChangePassword = (user, password, newPassword) => {
                 localStorage.setItem("token", body.access_token);
                 localStorage.setItem("token-refresh", body.refresh_token);
                 localStorage.setItem("token-init-date", new Date().getTime());
-                user.password = newPassword;
-                dispatch(saveUser(user));
+
+                const resp = await authFetch("user/update-password/" + user.id, { password:newPassword }, "PUT");
+                const bodyPassword = await resp.json();
+                if (bodyPassword.error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: body.error,
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Exito',
+                        text: "Contraseña actualizada correctamente.",
+                    });
+                }
             }
         }
     }
 
 }
-
-const checkingFinish = () => ({
-    type: types.authCheckingFinish
-})
-
-export const startLogout = () => {
-    return async (dispatch) => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("token-refresh");
-        localStorage.removeItem("token-init-date");
-        dispatch(logout());
-        dispatch(clearAll());
-    }
-}
-
-const logout = () => ({
-    type: types.authLogout
-});

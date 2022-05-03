@@ -6,21 +6,28 @@ import { Logo } from '../Logo';
 import img from "../../image/register.svg";
 import Swal from 'sweetalert2';
 
-export const Register = () => {
+export const Register = ({ role }) => {
     const [register, setRegister] = useForm({
         name: "",
         lastName: "",
         email: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
+        role: role
     });
 
     const dispatch = useDispatch();
 
     const handleRegister = (e) => {
         e.preventDefault();
-        if(register.password === register.confirmPassword){
-            dispatch(startRegister(register.email, register.password, register.name, register.lastName));
+        if (register.password === register.confirmPassword) {
+            dispatch(startRegister({
+                name: register.name,
+                lastName: register.lastName,
+                email: register.email,
+                password: register.password,
+                role: register.role
+            }));
         } else {
             Swal.fire({
                 icon: 'error',
@@ -34,7 +41,7 @@ export const Register = () => {
         <div className="auth-container animate__animated animate__fadeIn">
             <form className="auth-form-container" onSubmit={handleRegister}>
                 <div className="auth-form-content">
-                    <h2 className="auth-title">Registro</h2>
+                    <h2 className="auth-title">Registro {role === 2 ? "Profesor" : role === 3 ? "Administrador" : null}</h2>
                     <label className="auth-label">Nombre(s):</label>
                     <div className="auth-input-div">
                         <i className="fa-solid fa-user auth-icon"></i>

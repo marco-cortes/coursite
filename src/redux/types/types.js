@@ -8,15 +8,13 @@ export const types = {
     courseCleanActive: "[course] Clean Active",
     courseBuy: "[course] course Buy",
 
+    coursesLoaded: "[course] courses Loaded",
     courseAddNew: "[course] Add New",
     courseUpdated: "[course] course Updated",
     courseDeleted: "[course] course Deleted",
-    
-    coursesLoaded: "[course] courses Loaded",
 
     myCoursesLoaded: "[course] myCourses Loaded",
     clearAll: "[course] clearAll",
-    
 
     authChecking: "[auth] Checking",
     authCheckingFinish: "[auth] Checking Finish",
@@ -25,4 +23,14 @@ export const types = {
     authStartRegister: "[auth] Start Register",
     authStartTokenRenew: "[auth] Start Token Renew",
     authLogout: "[auth] Logout",
+
+    categoriesLoaded: "[categories] categories Loaded",
+    categoriesAddNew: "[categories] categories Add New",
+    categoriesUpdated: "[categories] categories Updated",
+    categoriesDeleted: "[categories] categories Deleted",
+
+    teachersLoaded: "[teachers] teachers Loaded",
+    teachersAddNew: "[teachers] teachers Add New",
+    teachersUpdated: "[teachers] teachers Updated",
+    teachersDeleted: "[teachers] teachers Deleted",
 }

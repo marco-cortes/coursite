@@ -1,17 +1,26 @@
 package com.makeitweb.coursiteapi.service;
 
 import com.makeitweb.coursiteapi.dto.CourseDTO;
+import com.makeitweb.coursiteapi.entity.course.Course;
 
 import java.util.List;
 
 public interface CourseService {
+
     CourseDTO saveCourse(CourseDTO course);
-    Boolean deleteCourse(Long course);
-    CourseDTO courseById(Long id);
-    List<CourseDTO> allCourses();
-    List<CourseDTO> coursesByCategory(Long category);
-    List<CourseDTO> coursesByTeacher(Long teacher);
-    List<CourseDTO> coursesByUser(Long user);
-    List<CourseDTO> pendingCourses();
-    List<CourseDTO> enabledCourses();
+
+    CourseDTO getCourseById(Long id);
+    CourseDTO getAllCourseById(Long id);
+
+    List<Course> getAllCourses();
+    List<Course> getPendingCourses();
+    List<Course> getAvailableCourses();
+
+    List<Course> getCoursesByStudent(Long id);
+    List<Course> getCoursesByTeacher(Long id);
+
+    Boolean deleteCourse(Long id);
+    Boolean deleteUnit(Long id);
+    Boolean deleteLesson(Long id);
+
 }

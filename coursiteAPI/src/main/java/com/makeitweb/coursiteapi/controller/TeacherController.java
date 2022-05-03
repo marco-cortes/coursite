@@ -1,51 +1,112 @@
 package com.makeitweb.coursiteapi.controller;
 
-import com.makeitweb.coursiteapi.dto.TeacherDTO;
-import com.makeitweb.coursiteapi.service.TeacherService;
+import com.makeitweb.coursiteapi.dto.CourseDTO;
+import com.makeitweb.coursiteapi.entity.Document;
+import com.makeitweb.coursiteapi.entity.course.Course;
+import com.makeitweb.coursiteapi.service.CourseService;
+import com.makeitweb.coursiteapi.service.DocumentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
+@RequestMapping("/api/teacher")
 @RequiredArgsConstructor
 public class TeacherController {
 
-    private final TeacherService teacherService;
+    /*
+    *
+    * Create new course
+    * update courses
+    * delete courses
+    * upload documents
+    * get his courses
+    *
+    */
 
-    @GetMapping("/api/admin/teacher/")
-    public ResponseEntity<List<TeacherDTO>> getPendingTeachers() {
-        return ResponseEntity.ok(teacherService.pendingTeachers());
+    private final CourseService courseService;
+    private final DocumentService documentService;
+
+    @PostMapping("/course/new")
+    public ResponseEntity<?> addCourse(@RequestBody CourseDTO course) {
+        Map<String, Object> response = new HashMap<>();
+        return saveCourse(course, response);
     }
 
-    @GetMapping("/api/teacher/{id}")
-    public ResponseEntity<TeacherDTO> getTeacherById(@PathVariable Long id) {
-        TeacherDTO t = teacherService.getTeacherById(id);
-        if(t == null)
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(t);
+    @PutMapping("/course/update/{id}")
+    public ResponseEntity<?> saveCourse(@PathVariable Long id, @RequestBody CourseDTO course) {
+        Map<String, Object> response = new HashMap<>();
+
+        if(courseService.getCourseById(id) == null) {
+            response.put("status", 404);
+            response.put("error", "El curso no existe.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        return saveCourse(course, response);
     }
 
-    @PostMapping("/api/teacher/new")
-    public ResponseEntity<TeacherDTO> newTeacher(@RequestBody TeacherDTO user) {
-        return ResponseEntity.ok(teacherService.saveTeacher(user));
+    @DeleteMapping("/course/delete/{id}")
+    public ResponseEntity<?> deleteCourse(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+
+        if(!courseService.deleteCourse(id)) {
+            response.put("status", 404);
+            response.put("error", "El curso no existe.");
+            return ResponseEntity.badRequest().body(response);
+        }
+        response.put("status", 200);
+        response.put("message", "Curso eliminado exitosamente.");
+        return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/api/teacher/update")
-    public ResponseEntity<TeacherDTO> updateTeacher(@RequestBody TeacherDTO teacher) {
-        if(teacher.getUserId() == null || teacher.getUserId() <= 0)
-            return ResponseEntity.badRequest().build();
-        if(teacherService.getTeacherById(teacher.getUserId()) == null)
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(teacherService.saveTeacher(teacher));
+    @GetMapping("/courses/{id}")
+    public ResponseEntity<?> getTeacherCourses(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+        List<Course> courses = courseService.getCoursesByTeacher(id);
+        if(courses == null) {
+            response.put("status", 404);
+            response.put("error", "El profesor no existe.");
+            return ResponseEntity.badRequest().body(response);
+        }
+        response.put("status", 200);
+        response.put("courses", courses);
+        return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/api/teacher/delete/{id}")
-    public ResponseEntity<Boolean> deleteTeacher(@PathVariable Long id) {
-        if(!teacherService.deleteTeacher(id))
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(Boolean.TRUE);
+    @PostMapping("/document/save")
+    public ResponseEntity<?> addCourse(@RequestBody Document document) {
+        Map<String, Object> response = new HashMap<>();
+        document = documentService.save(document);
+        if(document == null) {
+            response.put("status", 404);
+            response.put("error", "El profesor no existe.");
+            return  ResponseEntity.badRequest().body(response);
+        }
+        response.put("status", 200);
+        response.put("document", document);
+        return ResponseEntity.ok(response);
     }
+
+
+    private ResponseEntity<?> saveCourse(@RequestBody CourseDTO course, Map<String, Object> response) {
+        course = courseService.saveCourse(course);
+
+        if(course == null) {
+            response.put("status", 500);
+            response.put("error", "Error al guardar el curso. Verifique sus datos.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        response.put("status", 200);
+        response.put("course", course);
+
+        return ResponseEntity.ok(response);
+    }
+
 }

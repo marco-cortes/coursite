@@ -5,8 +5,10 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.makeitweb.coursiteapi.dto.UserDTO;
+import com.makeitweb.coursiteapi.dto.CourseDTO;
+import com.makeitweb.coursiteapi.entity.course.Course;
 import com.makeitweb.coursiteapi.entity.users.User;
+import com.makeitweb.coursiteapi.service.CourseService;
 import com.makeitweb.coursiteapi.service.UserService;
 import com.makeitweb.coursiteapi.util.Keys;
 import lombok.RequiredArgsConstructor;
@@ -23,17 +25,45 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.*;
 
-
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@CrossOrigin("*")
-public class AuthController {
+public class GuestController {
+    /*
+     *
+     * Get available courses
+     * view course details
+     * login
+     * register
+     *
+     */
 
+    private final CourseService courseService;
     private final UserService userService;
 
+    @GetMapping("/courses")
+    public ResponseEntity<List<Course>> getAvailableCourses() {
+        return ResponseEntity.ok(courseService.getAvailableCourses());
+    }
+
+    @GetMapping("/course/{id}")
+    public ResponseEntity<CourseDTO> geCourse(@PathVariable Long id) {
+        CourseDTO c = courseService.getAllCourseById(id);
+        if(c == null)
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(c);
+    }
+
+
     @PostMapping("/register")
-    public ResponseEntity<UserDTO> register(@RequestBody UserDTO user){
+    public ResponseEntity<?> register(@RequestBody User user){
+        if(userService.getUserByEmail(user.getEmail()) != null) {
+            Map<String, String> status = new HashMap<>();
+            status.put("error", "El correo ya está registrado.");
+            return ResponseEntity.badRequest().body(status);
+        }
+
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/new").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
@@ -41,6 +71,7 @@ public class AuthController {
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+
         if(authorizationHeader != null && authorizationHeader.startsWith(Keys.start)) {
             try {
                 String refresh_token = authorizationHeader.substring(Keys.start.length());
@@ -50,13 +81,11 @@ public class AuthController {
                 String email = decodedJWT.getSubject();
                 User user = userService.getUserByEmail(email);
 
-
-
                 String access_token = JWT.create()
                         .withSubject(user.getEmail())
                         .withExpiresAt(new Date(System.currentTimeMillis() + Keys.jwtDuration))
                         .withIssuer(request.getRequestURL().toString())
-                        .withClaim("roles", setRoles(user.getId()))
+                        .withClaim("roles", setRoles(user.getRole()))
                         .sign(algorithm);
 
                 Map<String, String> tokens = new HashMap<>();
@@ -79,19 +108,19 @@ public class AuthController {
         }
     }
 
-    private List<String> setRoles(Long id) {
+    private List<String> setRoles(Integer id) {
         List<String> roles = new ArrayList<>();
-        if (id == 2L) {
+        if (id == 1) {
+            roles.add("ROLE_USER");
+        }
+        else if (id == 2) {
             roles.add("ROLE_USER");
             roles.add("ROLE_TEACHER");
-        } else if (id == 3L) {
+        } else if (id == 3) {
             roles.add("ROLE_USER");
             roles.add("ROLE_TEACHER");
             roles.add("ROLE_ADMIN");
-        } else {
-            roles.add("ROLE_USER");
         }
         return roles;
     }
-
 }

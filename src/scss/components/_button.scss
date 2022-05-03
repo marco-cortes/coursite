@@ -129,3 +129,30 @@
     background-color: transparent;
     cursor: pointer;
 }
+
+.btn-success {
+    background-color: $success-1;
+    color: $white;
+}
+
+.btn-success:hover {
+    background-color: darken($color: $success-1, $amount: 4);
+}
+
+.btn-danger {
+    background-color: $danger;
+    color: $white;
+}
+
+.btn-danger:hover {
+    background-color: darken($color: $danger, $amount: 4);
+}
+
+.btn-warning {
+    background-color: $warning;
+    color: $white;
+}
+
+.btn-warning:hover {
+    background-color: darken($color: $warning, $amount: 4);
+}

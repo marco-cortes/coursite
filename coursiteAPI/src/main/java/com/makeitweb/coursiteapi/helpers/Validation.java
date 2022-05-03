@@ -4,7 +4,6 @@ import com.makeitweb.coursiteapi.entity.Document;
 import com.makeitweb.coursiteapi.entity.course.Course;
 import com.makeitweb.coursiteapi.entity.course.Lesson;
 import com.makeitweb.coursiteapi.entity.course.Unit;
-import com.makeitweb.coursiteapi.entity.users.Teacher;
 import com.makeitweb.coursiteapi.entity.users.User;
 
 import java.util.regex.Matcher;
@@ -56,7 +55,7 @@ public class Validation {
         return Boolean.FALSE;
     }
 
-    public static void validateUser(User u, String name, String lastName, String email, String password) {
+    public static void validateUser(User u, String name, String lastName, String email, String password, String phone) {
         if(text(name))
             u.setName(name);
 
@@ -68,14 +67,16 @@ public class Validation {
 
         if(password(password))
             u.setPassword(password);
+        if(phone(phone))
+            u.setPhone(phone);
     }
-
+/*
     public static void validateTeacher(Teacher t, String phone, Integer status) {
         if(phone(phone))
             t.setPhone(phone);
         if(status(status))
             t.setStatus(status);
-    }
+    }*/
 
     public static void validateCourse(Course c, String title, String description, String image, Float price, Integer status, Integer score) {
         if(text(title))

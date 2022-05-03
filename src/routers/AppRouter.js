@@ -26,6 +26,7 @@ import { AdminTeachers } from "../components/admin/AdminTeachers";
 import { AdminDashboard } from "../components/admin/AdminDashboard";
 import { AdminCourse } from "../components/admin/AdminCourse";
 import { AdminTeacher } from "../components/admin/AdminTeacher";
+import { AdminCategories } from "../components/admin/AdminCategories";
 
 export const AppRouter = () => {
 
@@ -52,7 +53,17 @@ export const AppRouter = () => {
                     } />
                     <Route path="/register" element={
                         <PublicRoute>
-                            <Register />
+                            <Register role={1} />
+                        </PublicRoute>
+                    } />
+                    <Route path="/teacher/register" element={
+                        <PublicRoute>
+                            <Register role={2} />
+                        </PublicRoute>
+                    } />
+                    <Route path="/admin/register" element={
+                        <PublicRoute>
+                            <Register role={3} />
                         </PublicRoute>
                     } />
                     <Route path="/courses" element={
@@ -162,6 +173,14 @@ export const AppRouter = () => {
                         <AdminRoute>
                             <Container>
                                 <AdminTeachers />
+                            </Container>
+                        </AdminRoute>
+                    }
+                    />
+                    <Route path="/admin/categories" element={
+                        <AdminRoute>
+                            <Container>
+                                <AdminCategories />
                             </Container>
                         </AdminRoute>
                     }

@@ -1,11 +1,9 @@
 package com.makeitweb.coursiteapi.service;
 
-import com.makeitweb.coursiteapi.dto.UserDTO;
-import com.makeitweb.coursiteapi.entity.users.Role;
+import com.makeitweb.coursiteapi.dto.CourseDTO;
 import com.makeitweb.coursiteapi.entity.users.User;
-import com.makeitweb.coursiteapi.repository.RoleRepository;
-import com.makeitweb.coursiteapi.repository.UserRepository;
 import com.makeitweb.coursiteapi.helpers.Validation;
+import com.makeitweb.coursiteapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,54 +25,7 @@ import java.util.Collection;
 public class IUserService implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-
-
-    @Override
-    public UserDTO saveUser(UserDTO user) {
-        User u = new User();
-        if(user.getId() != null && user.getId() >= 1) {
-            u = userRepository.findById(user.getId()).orElse(null);
-            if(u == null)
-                return null;
-        }
-        if(user.getPassword() != null)
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Validation.validateUser(u, user.getName(), user.getLastName(), user.getEmail(), user.getPassword());
-        if(u.getRole() == null) {
-            if(user.getAdmin())
-                user.setRole(3L);
-            Role r = roleRepository.findById(user.getRole()).orElse(null);
-            if(r == null)
-                return null;
-            u.setRole(r);
-        }
-        user.setId(userRepository.save(u).getId());
-        user.setPassword(null);
-        return user;
-    }
-
-    @Override
-    public UserDTO getUserById(String email) {
-        return userToDTO(userRepository.findUserByEmail(email));
-    }
-
-    @Override
-    public Boolean deleteUser(Long id) {
-        User u = userRepository.findById(id).orElse(null);
-        if(u == null)
-            return false;
-        //delete notifications and roles
-        //userCourseRepository.deleteUserCoursesByUser(u);
-        userRepository.delete(u);
-        return true;
-    }
-
-    @Override
-    public User getUserByEmail(String email) {
-        return userRepository.findUserByEmail(email);
-    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -85,29 +37,71 @@ public class IUserService implements UserService, UserDetailsService {
             log.info("User found in the database: {}", email);
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        //user.getRole().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
 
-        if (user.getRole().getId().equals(2L)) {
+        if (user.getRole() == 1) {
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        } else if (user.getRole().getId().equals(3L)) {
+        } else if (user.getRole() == 2) {
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
             authorities.add(new SimpleGrantedAuthority("ROLE_TEACHER"));
+        } else if (user.getRole() == 3) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+            authorities.add(new SimpleGrantedAuthority("ROLE_TEACHER"));
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
-
-        authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
 
-    private UserDTO userToDTO (User u) {
+    @Override
+    public User saveUser(User user) {
+        if(user.getPassword() != null && user.getId() == null)
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User old = getUserByEmail(user.getEmail());
+        if(old == null) {
+            if(user.getRole() == null)
+                user.setRole(1);
+            return userRepository.save(user);
+        }
+        Validation.validateUser(old, user.getName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getPhone());
+
+        return userRepository.save(old);
+    }
+
+    @Override
+    public User changePassword(Long id, String password) {
+        User u = getUserById(id);
         if(u == null)
             return null;
-        UserDTO user = new UserDTO();
-        user.setId(u.getId());
-        user.setName(u.getName());
-        user.setLastName(u.getLastName());
-        user.setEmail(u.getEmail());
-        user.setRole(u.getRole().getId());
-        if(user.getRole() == 3)
-            user.setAdmin(Boolean.TRUE);
-        return user;
+        u.setPassword(passwordEncoder.encode(password));
+        return userRepository.save(u);
+    }
+
+    @Override
+    public Boolean deleteUser(Long id) {
+        User u = getUserById(id);
+        if (u == null)
+            return Boolean.FALSE;
+        userRepository.delete(u);
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<User> getTeachersPending() {
+        return userRepository.findAllByStatus(0);
+    }
+
+    @Override
+    public List<User> getAllTeachers() {
+        return userRepository.findAllByRole(2);
     }
 }

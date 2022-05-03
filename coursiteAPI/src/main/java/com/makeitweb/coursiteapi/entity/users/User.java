@@ -29,6 +29,13 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String password;
+    @Column
+    private String image;
+
+    @Column
+    private String phone;
+    @Column
+    private Integer status;
 
     /* *@OneToMany
     @ToString.Exclude
@@ -38,9 +45,8 @@ public class User {
     /* * @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<UserCourse> userCourses;*/
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Role role;
+    @Column(nullable = false)
+    private Integer role;
 
     @Override
     public boolean equals(Object o) {

@@ -22,7 +22,12 @@ export const ProfileView = ({ role }) => {
 
   const submitUpdate = (e) => {
     e.preventDefault();
-    dispatch(saveUser(userForm));
+    user.name = name;
+    user.lastName = lastName;
+    user.email = email;
+    if (phone)
+      user.phone = phone;
+    dispatch(saveUser(user));
     disable();
   }
 
@@ -31,18 +36,23 @@ export const ProfileView = ({ role }) => {
     switch (i) {
       case 0:
         let a = document.getElementById("input-user-name");
-        a.disabled = false;
-        a.parentNode.classList.add("enabled");
+        a.disabled = !a.disabled;
+        a.parentNode.classList.toggle("enabled");
         break;
       case 1:
         let b = document.getElementById("input-user-lastname");
-        b.disabled = false;
-        b.parentNode.classList.add("enabled");
+        b.disabled = !b.disabled;
+        b.parentNode.classList.toggle("enabled");
         break;
       case 2:
         let c = document.getElementById("input-user-email");
-        c.disabled = false;
-        c.parentNode.classList.add("enabled");
+        c.disabled = !c.disabled;
+        c.parentNode.classList.toggle("enabled");
+        break;
+      case 3:
+        let d = document.getElementById("input-user-phone");
+        d.disabled = !d.disabled;
+        d.parentNode.classList.toggle("enabled");
         break;
       default:
         break;

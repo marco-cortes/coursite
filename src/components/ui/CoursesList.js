@@ -20,14 +20,15 @@ export const CoursesList = ({ courses }) => {
     return (
         <>
             {
-                courses &&
+                courses && courses.length > 0 ?
                 <div className="course-list">
                     {
                         courses.map(course => (
                             <Card {...course} key={course.id} dir={dir} />
                         ))
                     }
-                </div>
+                </div> :
+                <h5>No hay cursos disponibles</h5>
             }
         </>
     )

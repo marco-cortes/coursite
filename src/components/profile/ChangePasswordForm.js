@@ -5,7 +5,7 @@ import { startChangePassword } from "../../redux/actions/auth";
 
 export const ChangePasswordForm = () => {
 
-    const [passwordForm, setPasswordForm] = useForm({
+    const [passwordForm, setPasswordForm, reset] = useForm({
         password: "",
         newPassword: "",
         confirmNewPassword: ""
@@ -19,11 +19,7 @@ export const ChangePasswordForm = () => {
         e.preventDefault();
         if(newPassword === confirmNewPassword) {
             dispatch(startChangePassword(user, password, newPassword));
-            setPasswordForm({
-                password: "",
-                newPassword: "",
-                confirmNewPassword: ""
-            });
+            reset();
         } else {
             Swal.fire({
                 title: "Error",

@@ -1,12 +1,10 @@
 package com.makeitweb.coursiteapi.entity.course;
 
-import com.makeitweb.coursiteapi.entity.UserCourse;
-import com.makeitweb.coursiteapi.entity.users.Teacher;
+import com.makeitweb.coursiteapi.entity.users.User;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -34,7 +32,7 @@ public class Course {
 
     @JoinColumn(nullable = false)
     @ManyToOne
-    private Teacher teacher;
+    private User teacher;
 
     @JoinColumn(nullable = false)
     @ManyToOne

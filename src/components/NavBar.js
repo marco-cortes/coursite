@@ -42,6 +42,7 @@ export const NavBar = () => {
             <Link text="Dashboard" link="/admin/" icon="fa-solid fa-chart-pie" />
             <Link text="Cursos" link="/admin/courses" icon="fa-solid fa-book-open" />
             <Link text="Profesores" link="/admin/teachers" icon="fa-solid fa-person-chalkboard" />
+            <Link text="Categorías" link="/admin/categories" icon="fa-solid fa-cubes-stacked" />
             <Link text="Mi perfil" link="/admin/profile" icon="fa-solid fa-user" />
           </>
           :

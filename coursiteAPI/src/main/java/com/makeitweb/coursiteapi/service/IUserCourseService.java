@@ -1,3 +1,4 @@
+
 package com.makeitweb.coursiteapi.service;
 
 import com.makeitweb.coursiteapi.dto.UserCourseDTO;
@@ -29,23 +30,23 @@ public class IUserCourseService implements UserCourseService {
         User user;
         Course course;
 
-        if(userCourseDTO.getUserId() == null || userCourseDTO.getUserId() <= 0)
+        if (userCourseDTO.getUserId() == null || userCourseDTO.getUserId() <= 0)
             return null;
 
         user = userRepository.findById(userCourseDTO.getUserId()).orElse(null);
-        if(user == null)
+        if (user == null)
             return null;
 
-        if(userCourseDTO.getCourseId() == null || userCourseDTO.getCourseId() <= 0)
+        if (userCourseDTO.getCourseId() == null || userCourseDTO.getCourseId() <= 0)
             return null;
 
         course = courseRepository.findById(userCourseDTO.getCourseId()).orElse(null);
-        if(course == null)
+        if (course == null)
             return null;
 
         userCourse = userCourseRepository.findById(new UserCoursePK(user.getId(), course.getId())).orElse(null);
 
-        if(userCourse == null) {
+        if (userCourse == null) {
             userCourse = new UserCourse();
             userCourse.setUser(user);
             userCourse.setCourse(course);
@@ -56,9 +57,9 @@ public class IUserCourseService implements UserCourseService {
             return userCourseDTO;
         }
 
-        if(Validation.floatValue(userCourseDTO.getScore()))
+        if (Validation.floatValue(userCourseDTO.getScore()))
             userCourse.setScore(userCourseDTO.getScore());
-        if(Validation.floatValue(userCourseDTO.getProgress()))
+        if (Validation.floatValue(userCourseDTO.getProgress()))
             userCourse.setProgress(userCourseDTO.getProgress());
         userCourseRepository.save(userCourse);
         return userCourseDTO;
@@ -70,22 +71,22 @@ public class IUserCourseService implements UserCourseService {
         User user;
         Course course;
 
-        if(userCourseDTO.getUserId() == null || userCourseDTO.getUserId() <= 0)
+        if (userCourseDTO.getUserId() == null || userCourseDTO.getUserId() <= 0)
             return null;
 
         user = userRepository.findById(userCourseDTO.getUserId()).orElse(null);
-        if(user == null)
+        if (user == null)
             return null;
 
-        if(userCourseDTO.getCourseId() == null || userCourseDTO.getCourseId() <= 0)
+        if (userCourseDTO.getCourseId() == null || userCourseDTO.getCourseId() <= 0)
             return null;
 
         course = courseRepository.findById(userCourseDTO.getCourseId()).orElse(null);
-        if(course == null)
+        if (course == null)
             return null;
 
         userCourse = userCourseRepository.findById(new UserCoursePK(user.getId(), course.getId())).orElse(null);
-        if(userCourse == null)
+        if (userCourse == null)
             return null;
         userCourseDTO.setProgress(userCourse.getProgress());
         userCourseDTO.setScore(userCourse.getScore());

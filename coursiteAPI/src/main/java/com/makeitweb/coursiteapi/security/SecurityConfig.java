@@ -39,32 +39,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().
                 sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().
 
-                authorizeRequests().antMatchers("/api/login/**",
-                        "/api/token/refresh/**",
-                        "/api/register").permitAll().
-                antMatchers(HttpMethod.GET, "/api/course/*").permitAll().
-                antMatchers(HttpMethod.GET, "/api/teacher/*").permitAll().
+                authorizeRequests().antMatchers("/api/**").permitAll().
 
                 antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("ROLE_USER").
                 antMatchers(HttpMethod.POST, "/api/user/**").hasAnyAuthority("ROLE_USER").
                 antMatchers(HttpMethod.PUT, "/api/user/**").hasAnyAuthority("ROLE_USER").
                 antMatchers(HttpMethod.DELETE, "/api/user/**").hasAnyAuthority("ROLE_USER").
-                antMatchers(HttpMethod.GET, "/api/course/user/*").hasAnyAuthority("ROLE_USER").
-                antMatchers(HttpMethod.GET, "/api/usercourse/*").hasAnyAuthority("ROLE_USER").
-                antMatchers(HttpMethod.POST, "/api/usercourse/**").hasAnyAuthority("ROLE_USER").
 
-                antMatchers(HttpMethod.POST, "/api/course/*").hasAnyAuthority("ROLE_TEACHER").
-                antMatchers(HttpMethod.PUT, "/api/course/*").hasAnyAuthority("ROLE_TEACHER").
-                antMatchers(HttpMethod.DELETE, "/api/course/*").hasAnyAuthority("ROLE_TEACHER").
-                antMatchers(HttpMethod.POST, "/api/document/*").hasAnyAuthority("ROLE_TEACHER").
-                antMatchers(HttpMethod.POST, "/api/lesson/*").hasAnyAuthority("ROLE_TEACHER").
-                antMatchers(HttpMethod.DELETE, "/api/lesson/*").hasAnyAuthority("ROLE_TEACHER").
-                antMatchers(HttpMethod.GET, "/api/unit/*").hasAnyAuthority("ROLE_TEACHER").
-                antMatchers(HttpMethod.POST, "/api/unit/*").hasAnyAuthority("ROLE_TEACHER").
-                antMatchers(HttpMethod.DELETE, "/api/unit/*").hasAnyAuthority("ROLE_TEACHER").
-                antMatchers(HttpMethod.POST, "/api/teacher/*").hasAnyAuthority("ROLE_TEACHER").
-                antMatchers(HttpMethod.PUT, "/api/teacher/*").hasAnyAuthority("ROLE_TEACHER").
-                antMatchers(HttpMethod.DELETE, "/api/teacher/*").hasAnyAuthority("ROLE_TEACHER").
+                antMatchers(HttpMethod.GET, "/api/teacher/**").hasAnyAuthority("ROLE_TEACHER").
+                antMatchers(HttpMethod.POST, "/api/teacher/**").hasAnyAuthority("ROLE_TEACHER").
+                antMatchers(HttpMethod.PUT, "/api/teacher/**").hasAnyAuthority("ROLE_TEACHER").
+                antMatchers(HttpMethod.DELETE, "/api/teacher/**").hasAnyAuthority("ROLE_TEACHER").
 
                 antMatchers(HttpMethod.GET, "/api/admin/**").hasAnyAuthority("ROLE_ADMIN").
                 antMatchers(HttpMethod.POST, "/api/admin/**").hasAnyAuthority("ROLE_ADMIN").
