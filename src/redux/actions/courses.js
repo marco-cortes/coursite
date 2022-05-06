@@ -124,7 +124,7 @@ export const clearAll = () => {
 
 export const startLoadCategories = () => {
     return async (dispatch) => {
-        const resp = await authFetch("admin/categories", {});
+        const resp = await authFetch("categories", {});
         const body = await resp.json();
         dispatch(setCategories(body));
     }
@@ -177,6 +177,26 @@ export const updateTeacher = (teacher) => {
     return {
         type: types.teachersUpdated,
         payload: teacher
+    }
+}
+
+export const startSetCourseStatus = (course) => {
+    return async (dispatch) => {
+        const resp = await authFetch("admin/course/" + course.id + "/status/" + course.status, { }, "PUT");
+        const body = await resp.json();
+        if (body.status === 200) {
+            dispatch(updateCourse(course));
+            Swal.fire("Success", "¡Status actualizado!", "success");
+        } else {
+            Swal.fire("Error", "Error :CCC", "error");
+        }
+    }
+}
+
+export const updateCourse = (course) => {
+    return {
+        type: types.courseUpdated,
+        payload: course
     }
 }
 

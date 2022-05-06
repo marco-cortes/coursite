@@ -14,6 +14,11 @@ export const AdminTeacher = () => {
     dispatch(startGetTeacher(id));
   }, [dispatch, id]);
 
+  const back = (e) => {
+    e.preventDefault();
+    window.history.back();
+  }
+
 
   if (!active) return <h2>Cargando</h2>;
 
@@ -39,7 +44,7 @@ export const AdminTeacher = () => {
           : "Status: Rechazado"}
         </p>
       </div>
-      
+      <button className="btn btn-back" onClick={back}><i className="fa-solid fa-rotate-left"></i> Regresar</button>
     </div>
   )
 }

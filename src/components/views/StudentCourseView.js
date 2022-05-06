@@ -45,12 +45,12 @@ export const StudentCourseView = () => {
             </div>
             <div className="course-container">
                 {
-                    active.units.map((unit, index) => (
+                    active.units && active.units.map((unit, index) => (
                         <div className="student-course-units" key={index}>
                             <h2 className="student-course-unit">Unidad {index + 1}: {unit.title}</h2>
                             <div className="student-course-lessons">
                                 {
-                                    unit.lessons.map((lesson, index) => (
+                                    unit && unit.lessons.map((lesson, index) => (
                                         <Lesson key={index} {...lesson} />
                                     ))
                                 }

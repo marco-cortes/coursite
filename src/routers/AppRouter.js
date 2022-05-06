@@ -24,9 +24,9 @@ import { EditCourse } from "../components/teacher/EditCourse";
 import { AdminCourses } from "../components/admin/AdminCourses";
 import { AdminTeachers } from "../components/admin/AdminTeachers";
 import { AdminDashboard } from "../components/admin/AdminDashboard";
-import { AdminCourse } from "../components/admin/AdminCourse";
 import { AdminTeacher } from "../components/admin/AdminTeacher";
 import { AdminCategories } from "../components/admin/AdminCategories";
+import { NewCourse } from "../components/teacher/NewCourse";
 
 export const AppRouter = () => {
 
@@ -152,7 +152,14 @@ export const AppRouter = () => {
                         </TeacherRoute>
                     }
                     />
-
+                    <Route path="/teacher/courses/new" element={
+                        <TeacherRoute>
+                            <Container>
+                                <NewCourse />
+                            </Container>
+                        </TeacherRoute>
+                    }
+                    />
                     <Route path="/teacher/profile" element={
                         <TeacherRoute>
                             <Container>
@@ -188,7 +195,7 @@ export const AppRouter = () => {
                     <Route path="/admin/courses/:id" element={
                         <AdminRoute>
                             <Container>
-                                <AdminCourse />
+                                <StudentCourseView />
                             </Container>
                         </AdminRoute>
                     }

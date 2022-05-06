@@ -108,11 +108,6 @@ public class AdminController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/categories")
-    public ResponseEntity<?> getCategories() {
-        return ResponseEntity.ok(categoryService.getAllCategories());
-    }
-
     @PostMapping("/category/save")
     public ResponseEntity<?> addCategory(@RequestBody Category category) {
         return ResponseEntity.ok(categoryService.saveCategory(category));

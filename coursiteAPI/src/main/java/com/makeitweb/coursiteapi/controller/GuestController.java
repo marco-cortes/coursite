@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.makeitweb.coursiteapi.dto.CourseDTO;
 import com.makeitweb.coursiteapi.entity.course.Course;
 import com.makeitweb.coursiteapi.entity.users.User;
+import com.makeitweb.coursiteapi.service.CategoryService;
 import com.makeitweb.coursiteapi.service.CourseService;
 import com.makeitweb.coursiteapi.service.UserService;
 import com.makeitweb.coursiteapi.util.Keys;
@@ -41,6 +42,7 @@ public class GuestController {
 
     private final CourseService courseService;
     private final UserService userService;
+    private final CategoryService categoryService;
 
     @GetMapping("/courses")
     public ResponseEntity<List<Course>> getAvailableCourses() {
@@ -55,6 +57,10 @@ public class GuestController {
         return ResponseEntity.ok(c);
     }
 
+    @GetMapping("/categories")
+    public ResponseEntity<?> getCategories() {
+        return ResponseEntity.ok(categoryService.getAllCategories());
+    }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user){

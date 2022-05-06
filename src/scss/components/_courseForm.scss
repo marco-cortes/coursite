@@ -1,0 +1,85 @@
+.new-course-form {
+    width: 100%;
+    max-width: 600px;
+    margin: 2rem auto;
+    flex-direction: column;
+    display: flex;
+    .btn {
+        align-self: flex-end;
+    }
+}
+
+.course-form {
+    display: flex;
+    flex-direction: column;
+    .btn {
+        align-self: flex-end;
+    }
+}
+
+.course-form-group {
+    max-width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    label {
+        color: $dark;
+        margin-bottom: 0.5rem;
+    }
+}
+
+.dark {
+    margin-bottom: 1rem;
+    label, input, textarea {
+        color: $light;
+    }
+
+}
+
+.group-flex {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    .course-form-group {
+        width: 100%;
+        max-width: 280px;
+    }
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    margin-bottom: 1rem;
+    border-radius: 15px;
+    border: 2px solid $primary;
+    background-color: transparent;
+    padding: 0.5rem 1rem;
+    outline: none;
+}
+
+.form-units {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-title {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.units-head {
+    display: flex;
+    justify-content: space-between;
+}
+
+.unit-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.unit-info {
+    width: 100%;
+    max-width: 500px;
+}
