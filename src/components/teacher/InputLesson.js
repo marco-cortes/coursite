@@ -1,26 +1,91 @@
 import { useSelector } from "react-redux";
 import { useForm } from "../../hooks/useForm";
+import { v4 as uuidv4 } from 'uuid';
 
 export const InputLesson = ({ course, setValues }) => {
 
-    const { active:unit } = useSelector(state => state.courses);
+    const { unitActive: unit, lessonActive } = useSelector(state => state.courses);
 
-    const [lesson, setLesson] = useForm({
-        title: '',
-        description: '',
-        linkDoc: '',
-        linkVideo: '',
+    const [lesson, setLesson, reset] = useForm({
+        title: lessonActive ? lessonActive.title : '',
+        description: lessonActive ? lessonActive.description : '',
+        linkDoc: lessonActive ? lessonActive.linkDoc : '',
+        linkVideo: lessonActive ? lessonActive.linkVideo : '',
+        unit: unit.id ? unit.id : null,
+        uuid: lessonActive ? lessonActive.uuid : null,
+        id: lessonActive && lessonActive.id
     });
 
     const addLesson = (e) => {
         e.preventDefault();
-        setValues(
-            {
-                ...course,
-                units: course.units.map(u => unit.index === u.index ? { ...u, lessons: [...u.lessons, { ...lesson, index: u.lessons.length }] } : u)
+
+        
+        
+        
+        if(!unit.uuid && unit.id !== null) {
+            //la unidad ya está en BD
+            
+            if(!lesson.uuid && lesson.id !== null) {
+                //la lección ya está en BD y se está editando
+                
+                setValues({
+                    ...course,
+                    units: course.units.map(u => u.id === unit.id ? {
+                        ...u,
+                        lessons: u.lessons.map(l => l.id === lesson.id ? lesson : l)
+                    } : u)
+                })
+            } else if(lesson.uuid === null && lesson.id === null) {
+                //la lección no está en BD y se está creando
+                
+                setValues({
+                    ...course,
+                    units: course.units.map(u => u.id === unit.id ? {
+                        ...u,
+                        lessons: [...u.lessons, { ...lesson, uuid: uuidv4() }]
+                    } : u)
+                });
+                lesson.uuid = uuidv4();
+                reset();
+            } else if (lesson.uuid !== null && lesson.id === null) {
+                //la lección no está en BD y se está editando
+                
+                setValues({
+                    ...course,
+                    units: course.units.map(u => u.id === unit.id ? {
+                        ...u,
+                        lessons: u.lessons.map(l => l.uuid === lesson.uuid ? lesson : l)
+                    } : u)
+                });
             }
-        )
-        console.log(lesson);
+
+        } else if (unit.uuid !== null && unit.id === null) {
+            //la unidad está en local
+            
+            if(lesson.uuid === null && lesson.id === null) {
+                //la lección es nueva y su unidad no está en BD
+                
+                setValues({
+                    ...course,
+                    units: course.units.map(u => u.uuid === unit.uuid ? {
+                        ...u,
+                        lessons: [...u.lessons, { ...lesson, uuid: uuidv4() }]
+                    } : u)
+                });
+                lesson.uuid = uuidv4();
+                reset();
+            } else if(lesson.uuid !== null && lesson.id === null) {
+                //la lección se está editando en local y su unidad no está en BD
+                
+                setValues({
+                    ...course,
+                    units: course.units.map(u => u.uuid === unit.uuid ? {
+                        ...u,
+                        lessons: u.lessons.map(l => lesson.uuid === l.uuid ? lesson : l)
+                    } : u)
+                });
+            }   
+        }
     }
 
     return (
@@ -41,7 +106,7 @@ export const InputLesson = ({ course, setValues }) => {
                 <label htmlFor="lesson-link-video">Link video</label>
                 <input type="text" className="form-control" id="lesson-link-video" placeholder="Link video" name="linkVideo" value={lesson.linkVideo} onChange={setLesson} />
             </div>
-            <button className="btn btn-primary" type="submit">Agregar lección</button>
+            <button className="btn btn-primary" type="submit">{lesson.id ? "Guardar" : lesson.uuid ? "Guardar" : "Agregar lección"}</button>
         </form>
     )
 }

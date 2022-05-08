@@ -1,5 +1,5 @@
 .new-course-form {
-    width: 100%;
+    width: calc(100% - 4rem - 6px);
     max-width: 600px;
     margin: 2rem auto;
     flex-direction: column;
@@ -7,6 +7,12 @@
     .btn {
         align-self: flex-end;
     }
+    background-color: $light;
+    border: 3px solid $primary;
+    border-radius: 30px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    
 }
 
 .course-form {
@@ -52,6 +58,7 @@
     margin-bottom: 1rem;
     border-radius: 15px;
     border: 2px solid $primary;
+    color: $dark;
     background-color: transparent;
     padding: 0.5rem 1rem;
     outline: none;
@@ -64,22 +71,138 @@
 }
 
 .form-title {
-    font-size: 1.5rem;
+    font-size: 2rem;
+    color: $primary;
+    margin-bottom: 2rem;
+}
+
+.form-unit {
+    background-color: $light;
+    border: 3px solid $primary;
+    border-radius: 15px;
+    padding: 2rem;
     margin-bottom: 2rem;
 }
 
 .units-head {
+    width: 100%;
+    max-width: 600px;
     display: flex;
     justify-content: space-between;
+    margin: 0 auto;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 15px;
+    border: 3px solid $primary;
+    background-color: $light;
+    .btn {
+        margin: 0;
+    }
+}
+
+.units {
+    font-size: 1.5rem;
+    color: $primary;
 }
 
 .unit-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
 }
 
 .unit-info {
     width: 100%;
     max-width: 500px;
+}
+
+.lesson-info {
+    width: 100%;
+    max-width: 530px;
+    word-wrap: break-word;
+}
+
+.units-body {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.course-lesson-div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: darken($color: $light, $amount: 6);
+    border-radius: 15px;
+    padding: 1rem;
+    margin: 1rem 0;
+    flex-wrap: wrap;
+}
+
+.lesson-btns, .unit-btns {
+    display: flex;
+    .btn {
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        margin: 0 0.5rem;
+    }
+}
+
+.unit-lessons {
+    width: calc(100% - 3rem);
+    margin: 0 auto;
+}
+
+.unit-title {
+    color: $blue-dark;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.unit-desc {
+    color: $gray;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.course-lesson-title {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: $dark-2;
+}
+
+.course-lesson-desc {
+    color: $gray;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.course-lesson-link {
+    color: $blue;
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-decoration: none;
+}
+
+.text-dark {
+    color: $dark;
+    letter-spacing: 0;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.new-course-btns {
+    top: 5rem;
+    left: 0;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    
+    .btn {
+        margin: 1rem 0.5rem;
+    }
 }

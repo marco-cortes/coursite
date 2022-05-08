@@ -14,7 +14,7 @@ export const CoursesView = ({ role }) => {
   const [courses, setCourses] = useState(list);
 
   useEffect(() => {
-    if (courses.length === 0) {
+    if (courses.length === 0 && role === 0) {
       dispatch(startLoadCourses());
     }
   }, [dispatch, courses, role]);

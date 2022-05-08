@@ -1,26 +1,32 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "../../hooks/useForm";
-import { setCourse, startLoadCategories } from "../../redux/actions/courses";
+import { cleanUnit, startAddCourse, startLoadCategories } from "../../redux/actions/courses";
 import { showModal } from "../../redux/actions/ui";
 import { Modal } from "../ui/Modal";
 import { InputUnit } from "./InputUnit";
 import { InputLesson } from "./InputLesson";
 import { TeacherUnit } from "./TeacherUnit";
 
-export const NewCourse = () => {
+export const NewCourse = ({active}) => {
 
   const { categories } = useSelector(state => state.courses);
+  const { id } = useSelector(state => state.auth.user);
+
   const dispatch = useDispatch();
   const [bool, setBool] = useState(false);
 
   const [course, setCourseData, , setValues] = useForm({
-    title: '',
-    description: '',
-    image: '',
-    price: 0,
-    category: '',
-    units: []
+    title: active ? active.title : '',
+    description: active ? active.description : '',
+    image: active ? active.image : '',
+    price: active ? active.price : 0,
+    idCategory: active ? active.idCategory : 0,
+    status: active ? active.status : 0,
+    score: active ? active.score : 0,
+    idTeacher: id,
+    units: active ? active.units ? active.units : [] : [],
+    id: active && active.id
   });
 
   useEffect(() => {
@@ -33,16 +39,26 @@ export const NewCourse = () => {
     dispatch(showModal());
   }
 
-  const showLessonForm = (e, unit) => {
+  const showLessonForm = (e) => {
     e.preventDefault();
     setBool(true);
-    dispatch(setCourse(unit));
     dispatch(showModal());
+  }
+
+  const newUnit = (e) => {
+    e.preventDefault();
+    dispatch(cleanUnit());
+    showUnitForm(e);
   }
 
   const submitCourse = (e) => {
     e.preventDefault();
-    console.log(course);
+    dispatch(startAddCourse(course, id));
+  }
+
+  const back = (e) => {
+    e.preventDefault();
+    window.history.back();
   }
 
 
@@ -72,7 +88,7 @@ export const NewCourse = () => {
           </div>
           <div className="course-form-group">
             <label htmlFor="category">Categoría</label>
-            <select className="form-control" id="category" value={course.category} name="category" onChange={setCourseData}>
+            <select className="form-control" id="category" value={course.idCategory} name="idCategory" onChange={setCourseData}>
               <option>Seleccione una categoría</option>
               {
                 categories.map(category => (
@@ -82,17 +98,18 @@ export const NewCourse = () => {
             </select>
           </div>
         </div>
-        <button type="submit" className="btn btn-primary">Guardar</button>
+        <div className="new-course-btns">
+          <button type="submit" className="btn btn-primary">Guardar</button>
+          <button onClick={newUnit} className="btn btn-info">Agregar unidad</button>
+          <button onClick={back} className="btn btn-blue">Volver</button>
+        </div>
       </form>
       <div className="form-units">
-        <div className="units-head">
-          <h2 className="unit-title">Unidades</h2>
-          <button onClick={showUnitForm} className="btn btn-info">Agregar unidad</button>
-        </div>
+        <h2 className="units">Unidades</h2>
         <div className="units-body">
           {
-            course.units.length > 0 && course.units.map((unit, i) => (
-              <TeacherUnit unit={unit} key={i} show={showLessonForm} />
+            course.units && course.units.length > 0 && course.units.map((unit, i) => (
+              <TeacherUnit course={course} setValues={setValues} unit={unit} key={i} show={showLessonForm} edit={showUnitForm} />
             ))
           }
         </div>

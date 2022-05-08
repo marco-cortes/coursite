@@ -54,11 +54,16 @@
     background-color: #04CA83;
     box-shadow: 0 0 5px rgba(0, 0, 0, .5);
     border-radius: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .image {
     width: 100%;
-    display: none;
+    height: auto;
+    object-fit: cover;
+
 }
 
 .card-body {

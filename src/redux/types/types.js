@@ -12,6 +12,10 @@ export const types = {
     courseAddNew: "[course] Add New",
     courseUpdated: "[course] course Updated",
     courseDeleted: "[course] course Deleted",
+    setUnitActive: "[course] setUnitActive",
+    setLessonActive: "[course] setLessonActive",
+    unitCleanActive: "[course] unitCleanActive",
+    lessonCleanActive: "[course] lessonCleanActive",
 
     myCoursesLoaded: "[course] myCourses Loaded",
     clearAll: "[course] clearAll",

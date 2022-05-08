@@ -76,6 +76,32 @@ public class TeacherController {
         return ResponseEntity.ok(response);
     }
 
+    @DeleteMapping("/course/unit/delete/{id}")
+    public ResponseEntity<?> deleteUnit(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+        if(!courseService.deleteUnit(id)) {
+            response.put("status", 404);
+            response.put("error", "La unidad no existe.");
+            return ResponseEntity.badRequest().body(response);
+        }
+        response.put("status", 200);
+        response.put("message", "Unidad eliminada exitosamente.");
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/course/lesson/delete/{id}")
+    public ResponseEntity<?> deleteLesson(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+        if(!courseService.deleteLesson(id)) {
+            response.put("status", 404);
+            response.put("error", "La lección no existe.");
+            return ResponseEntity.badRequest().body(response);
+        }
+        response.put("status", 200);
+        response.put("message", "Lección eliminada exitosamente.");
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/courses/{id}")
     public ResponseEntity<?> getTeacherCourses(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();

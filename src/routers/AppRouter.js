@@ -20,13 +20,13 @@ import { ProfileView } from "../components/views/ProfileView";
 import { Login } from "../components/auth/Login";
 import { Container } from "../components/ui/Container";
 import { Register } from "../components/auth/Register";
-import { EditCourse } from "../components/teacher/EditCourse";
 import { AdminCourses } from "../components/admin/AdminCourses";
 import { AdminTeachers } from "../components/admin/AdminTeachers";
 import { AdminDashboard } from "../components/admin/AdminDashboard";
 import { AdminTeacher } from "../components/admin/AdminTeacher";
 import { AdminCategories } from "../components/admin/AdminCategories";
 import { NewCourse } from "../components/teacher/NewCourse";
+import { EditCourse } from "../components/teacher/EditCourse";
 
 export const AppRouter = () => {
 

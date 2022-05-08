@@ -39,6 +39,9 @@ public class ICourseService implements CourseService {
 
         if(c.getTeacher() == null) {
             c.setTeacher(userRepository.findById(course.getIdTeacher()).orElse(null));
+            if(c.getTeacher() == null)
+                return null;
+            course.setTeacher(c.getTeacher().getName() + " " + c.getTeacher().getLastName());
         }
         if(course.getIdCategory() == null)
             return  null;
@@ -46,6 +49,9 @@ public class ICourseService implements CourseService {
 
         if(category == null)
             return null;
+
+        course.setCategory(category.getName());
+
         c.setCategory(category);
         c = courseRepository.save(c);
         course.setId(c.getId());
@@ -73,9 +79,12 @@ public class ICourseService implements CourseService {
                    lesson.setUnit(unit);
                    lesson = lessonRepository.save(lesson);
                    l.setId(lesson.getId());
+                   lesson = new Lesson();
                }
             }
+            unit = new Unit();
         }
+
         return course;
     }
 

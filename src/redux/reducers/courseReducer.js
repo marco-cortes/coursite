@@ -65,6 +65,26 @@ export const courseReducer = (state = initialState, action) => {
                 ...state,
                 teachers: state.teachers.map(teacher => teacher.id === action.payload.id ? action.payload : teacher)
             }
+        case types.setUnitActive:
+            return {
+                ...state,
+                unitActive: action.payload
+            }
+        case types.setLessonActive:
+            return {
+                ...state,
+                lessonActive: action.payload
+            }
+        case types.unitCleanActive:
+            return {
+                ...state,
+                unitActive: null
+            }
+        case types.lessonCleanActive:
+            return {
+                ...state,
+                lessonActive: null
+            }
         case types.teachersDeleted:
             return {
                 ...state,

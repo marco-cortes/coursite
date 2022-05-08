@@ -19,7 +19,9 @@ public class Course {
     private Long id;
     @Column(nullable = false)
     private String title;
-    @Column(nullable = false)
+    @Lob @Basic (fetch = FetchType.LAZY)
+    @Column(nullable = false, columnDefinition = "text")
+    @ToString.Exclude
     private String description;
     @Column(nullable = false)
     private String image;

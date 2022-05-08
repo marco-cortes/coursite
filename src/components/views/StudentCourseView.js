@@ -51,7 +51,7 @@ export const StudentCourseView = () => {
                             <div className="student-course-lessons">
                                 {
                                     unit && unit.lessons.map((lesson, index) => (
-                                        <Lesson key={index} {...lesson} />
+                                        <Lesson key={index} {...lesson} index={index+1} />
                                     ))
                                 }
                             </div>

@@ -46,6 +46,32 @@ export const setCourse = (course) => {
     }
 }
 
+export const setUnitActive = (unit) => {
+    return {
+        type: types.setUnitActive,
+        payload: unit
+    }
+}
+
+export const setLessonActive = (lesson) => {
+    return {
+        type: types.setLessonActive,
+        payload: lesson
+    }
+}
+
+export const cleanUnit = () => {
+    return {
+        type: types.unitCleanActive
+    }
+}
+
+export const cleanLesson = () => {
+    return {
+        type: types.lessonCleanActive
+    }
+}
+
 export const clearCourse = () => {
     return {
         type: types.courseCleanActive
@@ -60,7 +86,7 @@ export const startLoadCoursesStudent = () => {
             const resp = await authFetch("user/" + id + "/courses", {});
             const body = await resp.json();
 
-            if (body !== null && body.length > 0) {
+            if (body !== null) {
                 body.map(course => course.isBought = true);
                 dispatch(setCoursesStudent(body));
 
@@ -162,7 +188,7 @@ export const setTeachers = (teachers) => {
 
 export const startSetTeacherStatus = (teacher) => {
     return async (dispatch) => {
-        const resp = await authFetch("admin/teacher/" + teacher.id + "/status/" + teacher.status, { }, "PUT");
+        const resp = await authFetch("admin/teacher/" + teacher.id + "/status/" + teacher.status, {}, "PUT");
         const body = await resp.json();
         if (body.status === 200) {
             dispatch(updateTeacher(teacher));
@@ -182,7 +208,7 @@ export const updateTeacher = (teacher) => {
 
 export const startSetCourseStatus = (course) => {
     return async (dispatch) => {
-        const resp = await authFetch("admin/course/" + course.id + "/status/" + course.status, { }, "PUT");
+        const resp = await authFetch("admin/course/" + course.id + "/status/" + course.status, {}, "PUT");
         const body = await resp.json();
         if (body.status === 200) {
             dispatch(updateCourse(course));
@@ -255,15 +281,25 @@ export const updateCategory = (category) => {
     }
 }
 
-export const startAddCourse = (course) => {
+export const startAddCourse = (course, teacher) => {
     return async (dispatch) => {
+        course.idCategory = parseInt(course.idCategory);
+        course.units = course.units.map(u => ({
+            ...u,
+            uuid: null,
+            lessons: u.lessons.map(l => ({
+                ...l,
+                uuid: null,
+            }))
+        })
+        );
         const resp = await authFetch("teacher/course/new", course, "POST");
         const body = await resp.json();
         if (body.error) {
             Swal.fire("Error", "Error :CCC", "error");
         } else {
             Swal.fire("Success", "¡Curso agregado!", "success");
-            dispatch(addCourse(body));
+            dispatch(startLoadCoursesTeacher(teacher));
         }
     }
 }
@@ -272,5 +308,29 @@ export const addCourse = (course) => {
     return {
         type: types.courseAddNew,
         payload: course
+    }
+}
+
+export const startDeleteUnit = (unit) => {
+    return async (dispatch) => {
+        const resp = await authFetch("teacher/course/unit/delete/" + unit, {}, "DELETE");
+        const body = await resp.json();
+        if (body.error) {
+            Swal.fire("Error", "Error :CCC", "error");
+        } else {
+            Swal.fire("Success", "¡Unidad eliminada!", "success");
+        }
+    }
+}
+
+export const startDeleteLesson = (lesson) => {
+    return async (dispatch) => {
+        const resp = await authFetch("teacher/course/lesson/delete/" + lesson, {}, "DELETE");
+        const body = await resp.json();
+        if (body.error) {
+            Swal.fire("Error", "Error :CCC", "error");
+        } else {
+            Swal.fire("Success", "¡Lección eliminada!", "success");
+        }
     }
 }

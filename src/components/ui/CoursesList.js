@@ -23,8 +23,8 @@ export const CoursesList = ({ courses }) => {
                 courses.length > 0 ?
                 <div className="course-list">
                     {
-                        courses.map(course => (
-                            <Card course={course} key={course.id} dir={dir} />
+                        courses.map((course, i) => (
+                            <Card course={course} key={i} dir={dir} />
                         ))
                     }
                 </div> :
