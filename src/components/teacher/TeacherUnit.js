@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
-import { cleanLesson, cleanUnit, setUnitActive, startDeleteUnit } from "../../redux/actions/courses";
 import { TeacherLesson } from "./TeacherLesson"
+import { cleanLesson, cleanUnit, setUnitActive, startDeleteUnit } from "../../redux/actions/teachers"
 
 export const TeacherUnit = ({ course, setValues, unit, show, edit }) => {
 

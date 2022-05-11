@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import defaultImg from "../../image/user-image.svg";
-import { startSetTeacherStatus } from "../../redux/actions/courses";
+import { startSetTeacherStatus } from "../../redux/actions/admin";
 
 export const CardTeacher = ({ teacher }) => {
 

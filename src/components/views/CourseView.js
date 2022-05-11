@@ -46,7 +46,7 @@ export const CourseView = ({ role }) => {
                 </div>
                 <div className="course-desc">
                     <h3 className="text-title">Descripción</h3>
-                    <p className="text-body">Es un hecho establecido hace demasiado tiempo que un lector se distraerá con el contenido del texto de un sitio mientras que mira su diseño. {active.description}</p>
+                    <p className="text-body">{active.description}</p>
                 </div>
                 <div>
                     <h3 className="text-title">Temario</h3>

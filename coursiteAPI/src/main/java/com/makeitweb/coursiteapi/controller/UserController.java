@@ -79,7 +79,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}/courses")
-    public ResponseEntity<List<Course>> getStudentCourses(@PathVariable Long id) {
+    public ResponseEntity<List<UserCourseDTO>> getStudentCourses(@PathVariable Long id) {
+        System.out.println(id);
         return ResponseEntity.ok(courseService.getCoursesByStudent(id));
     }
 

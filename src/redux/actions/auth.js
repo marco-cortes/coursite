@@ -2,7 +2,11 @@ import Swal from "sweetalert2";
 import { authFetch, noAuthFetch } from "../../helpers/fetch";
 import { types } from "../types/types";
 import jwtDecode from "jwt-decode";
-import { clearAll, startLoadCategories, startLoadCoursesAdmin, startLoadCoursesStudent, startLoadCoursesTeacher, startLoadTeachers } from "./courses";
+import { clearAll } from "./courses";
+import { startLoadCoursesStudent } from "./student";
+import { startLoadCoursesTeacher } from "./teachers";
+import { startLoadCategories, startLoadCoursesAdmin, startLoadTeachers } from "./admin";
+
 
 export const startLogin = (email, password) => {
     return async (dispatch) => {

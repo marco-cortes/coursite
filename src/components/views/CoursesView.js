@@ -6,47 +6,64 @@ import { FormSearch } from "../ui/FormSearch";
 import { Modal } from "../ui/Modal";
 import { NavBarApp } from "../ui/NavBarApp";
 import { NewCourse } from "../teacher/NewCourse";
+import { startLoadCategories } from "../../redux/actions/admin";
 
 export const CoursesView = ({ role }) => {
 
   const dispatch = useDispatch();
-  const { courses:list } = useSelector(state => state.courses);
+  const { courses: list, categories } = useSelector(state => state.courses);
   const [courses, setCourses] = useState(list);
 
   useEffect(() => {
-    if (courses.length === 0 && role === 0) {
+    if (list.length === 0 && role === 0) {
       dispatch(startLoadCourses());
     }
-  }, [dispatch, courses, role]);
+    dispatch(startLoadCategories());
+  }, [dispatch, list, role]);
 
   useEffect(() => {
     setCourses(list);
-  },[list]);
+  }, [list]);
 
   const filter = (e, type) => {
-    active(e);
     switch (type) {
       case "all":
         setCourses(list);
-      break;
+        active(e);
+        break;
       case "new":
-        setCourses(list);
-      break;
+        setCourses(list.filter((course, i) => i <= 10));
+        active(e);
+        break;
       case "featured":
-        setCourses(list);
-      break;
+        setCourses(list.filter(course => course.score >= 1));
+        active(e);
+        break;
       case "category":
-        setCourses(list);
-      break;
+        e.target.parentNode.parentNode.childNodes.forEach(node => {
+          if (node !== e.target) {
+            node.classList.remove("app-active");
+          }
+        });
+        e.target.classList.toggle("app-active");
+        document.getElementById("div-categories").classList.toggle("div-categories-active");
+        break;
       case "pending":
         setCourses(list.filter(course => course.status === 0));
-      break;
+        active(e);
+        break;
       case "approved":
         setCourses(list.filter(course => course.status === 1));
-      break;
+        active(e);
+        break;
       default:
         return courses;
     }
+  }
+
+  const filterCategory = (e, category) => {
+    active(e);
+    setCourses(list.filter(course => course.category.id === category));
   }
 
   const active = (e) => {
@@ -84,11 +101,20 @@ export const CoursesView = ({ role }) => {
               </button>
             </>
         }
-        <button className="app-link" onClick={e => filter(e, "category")}>
-          Categorias
-        </button>
+        <div className="app-link-group">
+          <button className="app-link btn-categories" onClick={e => filter(e, "category")}>
+            Categorias <i className="icon-link btn-categories fa-solid fa-angle-down"></i>
+          </button>
+          <div className="div-categories" id="div-categories">
+            {
+              categories && categories.map((category, i) => (
+                <button className="app-link" key={i} onClick={e => filterCategory(e, category.id)}>{category.name}</button>
+              ))
+            }
+          </div>
+        </div>
       </NavBarApp>
-      <FormSearch role={role} />
+      <FormSearch role={role} setCourses={setCourses} />
       <CoursesList courses={courses} />
       <Modal title="NUEVO CURSO">
         <NewCourse />

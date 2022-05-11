@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "../../hooks/useForm";
-import { startAddCategory, startUpdateCategory } from "../../redux/actions/courses";
+import { startAddCategory, startUpdateCategory } from "../../redux/actions/admin";
 
 export const AdminCategories = () => {
 

@@ -12,4 +12,6 @@ public class UserCourseDTO {
     private Long userId;
     private Float progress;
     private Float score;
+
+    private CourseDTO course;
 }

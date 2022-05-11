@@ -78,7 +78,7 @@ public class Validation {
             t.setStatus(status);
     }*/
 
-    public static void validateCourse(Course c, String title, String description, String image, Float price, Integer status, Integer score) {
+    public static void validateCourse(Course c, String title, String description, String image, Float price, Integer status, Float score) {
         if(text(title))
             c.setTitle(title);
         if(text(description))

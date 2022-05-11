@@ -17,4 +17,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     List<Course> getPendingCourses();
     @Query("SELECT c FROM Course c WHERE c.status=1")
     List<Course> getCourses();
+
+
 }

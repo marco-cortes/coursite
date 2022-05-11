@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { startGetTeacher } from "../../redux/actions/courses";
+import { startGetTeacher } from "../../redux/actions/admin";
 import defaultImg from "../../image/user-image.svg";
 
 export const AdminTeacher = () => {

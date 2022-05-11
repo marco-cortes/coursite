@@ -10,9 +10,9 @@ export const Card = ({ course, dir }) => {
                 <img className="image" src={course.image} alt={course.title} />
             </div>
             <div className="card-body">
-                <h2 className="category">{course.category.name}</h2>
+                <h2 className="category">{course.category.name ? course.category.name : course.category}</h2>
                 <h3 className="course">{course.title}</h3>
-                <p className="teacher">Profesor: {course.teacher.name + " " + course.teacher.lastName}</p>
+                <p className="teacher">Profesor: {course.teacher.name ? course.teacher.name + " " + course.teacher.lastName : course.teacher}</p>
                 <p className="info">
                     <span className="price">Precio: ${course.price}</span>
                     <span className="score">Score: {course.score}</span>

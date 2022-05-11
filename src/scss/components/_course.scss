@@ -84,3 +84,38 @@
         width: 290px;
     }
 }
+
+.app-link-group {
+    position: relative;
+}
+
+.div-categories {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    background-color: $light;
+    border-radius: 0 0 30px 30px;
+    box-shadow: 1px 10px 10px rgba(0, 0, 0, .4);
+    padding-bottom: 1rem;
+    opacity: 0;
+}
+
+.div-categories-active {
+    opacity: 1 !important;
+}
+
+.btn-categories {
+    border-bottom: transparent;
+}
+
+.icon-link {
+    margin-left: 0.5rem;
+}
+
+.btn-category {
+    background-color: transparent;
+    color: $gray;
+    cursor: pointer;
+}

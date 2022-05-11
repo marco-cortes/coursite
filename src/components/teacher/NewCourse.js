@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "../../hooks/useForm";
-import { cleanUnit, startAddCourse, startLoadCategories } from "../../redux/actions/courses";
 import { showModal } from "../../redux/actions/ui";
 import { Modal } from "../ui/Modal";
 import { InputUnit } from "./InputUnit";
 import { InputLesson } from "./InputLesson";
 import { TeacherUnit } from "./TeacherUnit";
+import { startLoadCategories } from "../../redux/actions/admin";
+import { cleanUnit, startAddCourse } from "../../redux/actions/teachers";
 
 export const NewCourse = ({active}) => {
 

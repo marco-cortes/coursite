@@ -3,6 +3,8 @@ package com.makeitweb.coursiteapi.service;
 import com.makeitweb.coursiteapi.dto.CourseDTO;
 import com.makeitweb.coursiteapi.dto.LessonDTO;
 import com.makeitweb.coursiteapi.dto.UnitDTO;
+import com.makeitweb.coursiteapi.dto.UserCourseDTO;
+import com.makeitweb.coursiteapi.entity.UserCourse;
 import com.makeitweb.coursiteapi.entity.course.Category;
 import com.makeitweb.coursiteapi.entity.course.Course;
 import com.makeitweb.coursiteapi.entity.course.Lesson;
@@ -27,6 +29,7 @@ public class ICourseService implements CourseService {
     private final UnitRepository unitRepository;
     private final LessonRepository lessonRepository;
     private final UserRepository userRepository;
+    private final UserCourseRepository userCourseRepository;
     private final CategoryRepository categoryRepository;
 
     @Override
@@ -163,8 +166,25 @@ public class ICourseService implements CourseService {
     }
 
     @Override
-    public List<Course> getCoursesByStudent(Long id) {
-        return courseRepository.getCoursesByUserId(id);
+    public List<UserCourseDTO> getCoursesByStudent(Long id) {
+        List<UserCourseDTO> list = new ArrayList<>();
+
+        List<Course> courses = courseRepository.getCoursesByUserId(id);
+        List<UserCourse> userCourses = userCourseRepository.findUserCourseByUser_Id(id);
+
+        UserCourseDTO aux = new UserCourseDTO();
+
+        for(int i = 0; i < courses.size(); i++) {
+            aux.setCourseId(courses.get(i).getId());
+            aux.setProgress(userCourses.get(i).getProgress());
+            aux.setScore(courses.get(i).getScore());
+            aux.setUserId(id);
+            aux.setCourse(courseToDTO(courses.get(i)));
+            list.add(aux);
+            aux = new UserCourseDTO();
+        }
+
+        return list;
     }
 
     @Override

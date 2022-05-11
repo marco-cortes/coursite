@@ -28,7 +28,7 @@ public class Course {
     @Column(nullable = false)
     private Float price;
     @Column(nullable = false)
-    private Integer score;
+    private Float score;
     @Column(nullable = false)
     private Integer status;
 

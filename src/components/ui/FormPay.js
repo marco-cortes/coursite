@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom";
-import { startBuyCourse } from "../../redux/actions/courses";
+import { startBuyCourse } from "../../redux/actions/student";
+
 
 export const FormPay = ({id}) => {
 

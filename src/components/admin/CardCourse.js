@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom"
-import { startSetCourseStatus } from "../../redux/actions/courses";
+import { startSetCourseStatus } from "../../redux/actions/admin";
 
 export const CardCourse = ({ course }) => {
 

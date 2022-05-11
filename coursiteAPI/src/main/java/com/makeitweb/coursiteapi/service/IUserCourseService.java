@@ -44,6 +44,8 @@ public class IUserCourseService implements UserCourseService {
         if (course == null)
             return null;
 
+
+
         userCourse = userCourseRepository.findById(new UserCoursePK(user.getId(), course.getId())).orElse(null);
 
         if (userCourse == null) {
@@ -57,11 +59,20 @@ public class IUserCourseService implements UserCourseService {
             return userCourseDTO;
         }
 
-        if (Validation.floatValue(userCourseDTO.getScore()))
+        if (Validation.floatValue(userCourseDTO.getScore())) {
             userCourse.setScore(userCourseDTO.getScore());
+        }
         if (Validation.floatValue(userCourseDTO.getProgress()))
             userCourse.setProgress(userCourseDTO.getProgress());
-        userCourseRepository.save(userCourse);
+        userCourse = userCourseRepository.save(userCourse);
+
+        if(userCourse.getScore() > 0) {
+            Float score = userCourseRepository.getScoresById(userCourse.getCourse().getId());
+            Integer users = userCourseRepository.countUserCoursesByCourse_Id(userCourse.getCourse().getId());
+            course.setScore(score/users);
+            courseRepository.save(course);
+        }
+
         return userCourseDTO;
     }
 

@@ -16,7 +16,7 @@ public class CourseDTO {
     private String description;
     private String image;
     private Float price;
-    private Integer score;
+    private Float score;
     private Integer status = 0;
     private Long idTeacher;
     private String teacher;
