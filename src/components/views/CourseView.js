@@ -41,7 +41,7 @@ export const CourseView = ({ role }) => {
                     <h2 className="course-category">{active.category}</h2>
                 </div>
                 <div className="course-details">
-                    <p className="course-score">Calificación: {active.score}</p>
+                    <p className="course-score">Calificación:  {active.score/20} <i className="fa-solid fa-star"></i></p>
                     <p className="course-teacher">{active.teacher}</p>
                 </div>
                 <div className="course-desc">

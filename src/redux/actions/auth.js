@@ -6,6 +6,7 @@ import { clearAll } from "./courses";
 import { startLoadCoursesStudent } from "./student";
 import { startLoadCoursesTeacher } from "./teachers";
 import { startLoadCategories, startLoadCoursesAdmin, startLoadTeachers } from "./admin";
+import { useNavigate } from "react-router-dom";
 
 
 export const startLogin = (email, password) => {
@@ -37,11 +38,15 @@ export const startRegister = (user) => {
         try {
             const resp = await noAuthFetch("register", user, "POST");
             const body = await resp.json();
+            const navigate = useNavigate();
             if (body.error) {
                 Swal.fire("Error", body.error, "error");
             } else {
                 dispatch(startLogin(user.email, user.password));
                 dispatch(getUser(user.email));
+                if(user.role === 2) {
+                    navigate("/teacher/register/finish");
+                }
             }
         } catch (error) {
             console.log(error);

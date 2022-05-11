@@ -18,16 +18,11 @@ export const InputLesson = ({ course, setValues }) => {
 
     const addLesson = (e) => {
         e.preventDefault();
-
-        
-        
-        
         if(!unit.uuid && unit.id !== null) {
             //la unidad ya está en BD
             
             if(!lesson.uuid && lesson.id !== null) {
                 //la lección ya está en BD y se está editando
-                
                 setValues({
                     ...course,
                     units: course.units.map(u => u.id === unit.id ? {

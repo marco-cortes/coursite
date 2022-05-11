@@ -17,12 +17,15 @@ export const InputUnit = ({ course, setValues }) => {
 
     const addUnit = (e) => {
         e.preventDefault();
-        
+
         if(unit.id === null) {
             
             if(unit.uuid === null) {
                 
-                setValues({ ...course, units: [...course.units, { ...unit, uuid: uuidv4() }] });
+                unit.uuid = uuidv4();
+
+                setValues({ ...course, units: [...course.units, { ...unit }] });
+
                 reset();
                 unit.uuid = uuidv4();
             } else {

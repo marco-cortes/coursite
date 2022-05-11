@@ -80,7 +80,6 @@ public class UserController {
 
     @GetMapping("/{id}/courses")
     public ResponseEntity<List<UserCourseDTO>> getStudentCourses(@PathVariable Long id) {
-        System.out.println(id);
         return ResponseEntity.ok(courseService.getCoursesByStudent(id));
     }
 
@@ -100,6 +99,7 @@ public class UserController {
         u = userCourseService.getProgress(u);
         if(u == null)
             return ResponseEntity.notFound().build();
+        u.setCourse(courseService.getCourseById(u.getCourseId()));
         return ResponseEntity.ok(u);
     }
 

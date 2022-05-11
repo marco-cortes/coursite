@@ -15,7 +15,7 @@ export const Card = ({ course, dir }) => {
                 <p className="teacher">Profesor: {course.teacher.name ? course.teacher.name + " " + course.teacher.lastName : course.teacher}</p>
                 <p className="info">
                     <span className="price">Precio: ${course.price}</span>
-                    <span className="score">Score: {course.score}</span>
+                    <span className="score">Score: {course.score/20} <i className="fa-solid fa-star"></i></span>
                 </p>
             </div>
             <div className="card-btns">

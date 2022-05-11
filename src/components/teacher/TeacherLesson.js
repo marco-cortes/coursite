@@ -47,7 +47,7 @@ export const TeacherLesson = ({ course, setValues, unit, lesson, show }) => {
   }
 
   return (
-    <div className="course-lesson-div">
+    <div className="course-lesson-div" id={lesson.id ? lesson.id : lesson.uuid}>
       <div className="lesson-info">
         <h3 className="course-lesson-title">{lesson.title}</h3>
         <p className="course-lesson-desc">{lesson.description}</p>

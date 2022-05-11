@@ -2,6 +2,8 @@ import Swal from "sweetalert2";
 import { authFetch } from "../../helpers/fetch";
 import { types } from "../types/types";
 import { setCourses } from "./courses";
+import { storage } from "../../firebase/firebase-config";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 export const setUnitActive = (unit) => {
     return {
@@ -95,5 +97,26 @@ export const startDeleteLesson = (lesson) => {
         } else {
             Swal.fire("Success", "¡Lección eliminada!", "success");
         }
+    }
+}
+
+export const startUploadFile = (id, file) => {
+    return async (dispatch) => {
+        const fileRef = ref(storage, "docs/" + id + "/" + file.name);
+        const uploadTask = uploadBytesResumable(fileRef, file);
+        uploadTask.on("state_changed",
+            (snapshot) => {
+                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                console.log(progress);
+            },
+            (error) => {
+                console.log(error);
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    
+                })
+            })
+        
     }
 }

@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 import { authFetch, noAuthFetch } from "../../helpers/fetch";
 import { types } from "../types/types";
-import { setCourses } from "./courses";
+import { setCourse, setCourses } from "./courses";
 
 
 export const startLoadCoursesStudent = () => {
@@ -11,9 +11,7 @@ export const startLoadCoursesStudent = () => {
             const { id } = user;
             const resp = await authFetch("user/" + id + "/courses", {});
             const body = await resp.json();
-
             if (body !== null) {
-
                 let courses = body.map(c => ({
                     category: c.course.category,
                     description: c.course.description,
@@ -31,11 +29,10 @@ export const startLoadCoursesStudent = () => {
                     progress: c.progress,
                     isBought: true
                 }));
-                
+
                 dispatch(setCoursesStudent(courses));
 
                 const { myCourses } = getState().courses;
-
                 if (myCourses) {
                     const rcourses = await noAuthFetch("courses/", {});
                     const rbody = await rcourses.json();
@@ -69,6 +66,45 @@ export const startBuyCourse = (id) => {
                 Swal.fire("Success", "¡Curso comprado!", "success");
             }
 
+        }
+    }
+}
+
+export const saveUserCourse = (course) => {
+    return async (dispatch) => {
+        try {
+            const resp = await authFetch("user/course/save", course, "POST");
+            const body = await resp.json();
+            if (body.error) {
+                Swal.fire("Error", body.error, "error");
+            } else {
+                dispatch(startLoadCoursesStudent());
+                Swal.fire("Exito", "Acción realizada correctamente", "success");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const startLoadUserCourse = (course, user) => {
+    return async (dispatch, getState) => {
+        try {
+            const resp = await authFetch("user/course/" + course + "/info/" + user, {});
+            const body = await resp.json();
+            if (body.error) {
+                Swal.fire("Error", body.error, "error");
+            } else {
+                const { active } = getState().courses;
+                if (active) {
+                    dispatch(setCourse({
+                        ...active,
+                        score: body.score,
+                    }));
+                }
+            }
+        } catch (error) {
+            console.log(error);
         }
     }
 }

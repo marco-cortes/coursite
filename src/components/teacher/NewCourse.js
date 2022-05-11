@@ -11,7 +11,7 @@ import { cleanUnit, startAddCourse } from "../../redux/actions/teachers";
 
 export const NewCourse = ({active}) => {
 
-  const { categories } = useSelector(state => state.courses);
+  const { categories, unitActive, lessonActive } = useSelector(state => state.courses);
   const { id } = useSelector(state => state.auth.user);
 
   const dispatch = useDispatch();
@@ -62,6 +62,26 @@ export const NewCourse = ({active}) => {
     window.history.back();
   }
 
+  useEffect(()=>{
+
+    if(lessonActive) {
+      lessonActive.uuid ?
+      document.getElementById(lessonActive.uuid).scrollIntoView({ behavior: 'smooth' }) :
+      document.getElementById(lessonActive.id).scrollIntoView({ behavior: 'smooth' })
+    }
+    else if(unitActive) {
+      unitActive.uuid ? 
+      document.getElementById(unitActive.uuid) ? 
+      document.getElementById(unitActive.uuid).scrollIntoView({ behavior: 'smooth' }) : 
+      document.getElementById(unitActive.id) ? 
+      document.getElementById(unitActive.id).scrollIntoView({ behavior: 'smooth' }) :
+      <></> :
+      <></>
+    }
+    else if(document.getElementById("units-end"))
+      document.getElementById("units-end").scrollIntoView({ behavior: 'smooth' });
+  }, [course.units, unitActive, lessonActive]);
+
 
   if (!categories)
     return <h2>Cargando</h2>;
@@ -107,14 +127,15 @@ export const NewCourse = ({active}) => {
       </form>
       <div className="form-units">
         <h2 className="units">Unidades</h2>
-        <div className="units-body">
+        <div className="units-body" id="units-body">
           {
             course.units && course.units.length > 0 && course.units.map((unit, i) => (
-              <TeacherUnit course={course} setValues={setValues} unit={unit} key={i} show={showLessonForm} edit={showUnitForm} />
+              <TeacherUnit course={course} setValues={setValues} unit={unit} key={i} show={showLessonForm} edit={showUnitForm} i={i} />
             ))
           }
         </div>
       </div>
+      <div id="units-end"></div>
       <Modal title={!bool ? "Unidad" : "Lección"}>
         {
           !bool ? <InputUnit course={course} setValues={setValues} /> : <InputLesson course={course} setValues={setValues} />

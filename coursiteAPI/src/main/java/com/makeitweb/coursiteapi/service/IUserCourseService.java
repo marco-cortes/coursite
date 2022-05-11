@@ -68,7 +68,7 @@ public class IUserCourseService implements UserCourseService {
 
         if(userCourse.getScore() > 0) {
             Float score = userCourseRepository.getScoresById(userCourse.getCourse().getId());
-            Integer users = userCourseRepository.countUserCoursesByCourse_Id(userCourse.getCourse().getId());
+            Integer users = userCourseRepository.countUserCoursesByCourse_IdAndScoreNotNull(userCourse.getCourse().getId());
             course.setScore(score/users);
             courseRepository.save(course);
         }

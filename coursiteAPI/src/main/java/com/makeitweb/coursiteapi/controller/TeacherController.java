@@ -34,7 +34,6 @@ public class TeacherController {
 
     @PostMapping("/course/new")
     public ResponseEntity<?> addCourse(@RequestBody CourseDTO course) {
-        System.out.println(course);
         Map<String, Object> response = new HashMap<>();
         course = courseService.saveCourse(course);
         System.out.println(course);

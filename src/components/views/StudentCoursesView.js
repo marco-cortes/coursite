@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { CoursesList } from "../ui/CoursesList";
 import { FormSearch } from "../ui/FormSearch";
@@ -8,7 +8,7 @@ export const StudentCoursesView = () => {
 
   const { myCourses } = useSelector(state => state.courses);
 
-  const [courses, setCourses] = useState(myCourses.filter(course => course.progress < 1));
+  const [courses, setCourses] = useState(myCourses);
 
   const [showCerts, setShowCerts] = useState(false);
 
@@ -20,6 +20,10 @@ export const StudentCoursesView = () => {
       }
     });
   }
+
+  useEffect(()=>{
+    setCourses(myCourses);
+  }, [myCourses])
 
   const filter = (e, type) => {
     setShowCerts(false);

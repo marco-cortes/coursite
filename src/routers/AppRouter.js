@@ -27,6 +27,7 @@ import { AdminTeacher } from "../components/admin/AdminTeacher";
 import { AdminCategories } from "../components/admin/AdminCategories";
 import { NewCourse } from "../components/teacher/NewCourse";
 import { EditCourse } from "../components/teacher/EditCourse";
+import { TeacherRegister } from "../components/teacher/TeacherRegister";
 
 export const AppRouter = () => {
 
@@ -126,6 +127,12 @@ export const AppRouter = () => {
                                 <ProfileView />
                             </Container>
                         </StudentRoute>
+                    }
+                    />
+                    <Route path="/teacher/register/finish" element={
+                        <TeacherRoute>
+                            <TeacherRegister />
+                        </TeacherRoute>
                     }
                     />
                     <Route path="/teacher/courses" element={

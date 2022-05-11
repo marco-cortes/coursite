@@ -32,7 +32,7 @@ export const TeacherUnit = ({ course, setValues, unit, show, edit }) => {
     }
 
     return (
-        <div className="form-unit">
+        <div className="form-unit" id={unit.id ? unit.id : unit.uuid}>
             <div className="unit-header">
                 <div className="unit-info">
                     <h3 className="unit-title">{unit.title}</h3>

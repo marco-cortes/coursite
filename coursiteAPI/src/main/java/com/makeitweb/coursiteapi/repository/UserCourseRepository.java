@@ -13,8 +13,9 @@ public interface UserCourseRepository extends JpaRepository<UserCourse, UserCour
 
     List<UserCourse> findUserCourseByUser_Id(Long id);
 
-    Integer countUserCoursesByCourse_Id(Long id);
 
-    @Query("SELECT count(c.score) FROM UserCourse c WHERE c.course.id = ?1")
+    Integer countUserCoursesByCourse_IdAndScoreNotNull(Long id);
+
+    @Query("SELECT SUM(c.score) FROM UserCourse c WHERE c.course.id = ?1")
     Float getScoresById(Long id);
 }

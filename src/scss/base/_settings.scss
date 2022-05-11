@@ -83,3 +83,30 @@ a {
 .img {
     width: 100%;
 }
+
+.flex {
+    display: flex;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.text-info {
+    color: $info;
+}
+
+.user-course-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
