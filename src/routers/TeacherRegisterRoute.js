@@ -5,6 +5,6 @@ export const TeacherRegisterRoute = ({ children }) => {
     const { user } = useSelector(state => state.auth);
 
     return user && user.role === 2 ?
-        children
+        children 
         : <Navigate to="/login" />
 }

@@ -1,7 +1,6 @@
 package com.makeitweb.coursiteapi.controller;
 
 import com.makeitweb.coursiteapi.dto.UserCourseDTO;
-import com.makeitweb.coursiteapi.entity.course.Course;
 import com.makeitweb.coursiteapi.entity.users.User;
 import com.makeitweb.coursiteapi.service.CourseService;
 import com.makeitweb.coursiteapi.service.DocumentService;

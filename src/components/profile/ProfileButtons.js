@@ -6,12 +6,12 @@ export const ProfileButtons = ({setSelect}) => {
   const dispatch = useDispatch();
 
   const showDelete = () => {
-    setSelect(true);
+    setSelect(1);
     dispatch(showModal());
   }
 
   const showPassword = () => {
-    setSelect(false);
+    setSelect(0);
     dispatch(showModal());
   }
 

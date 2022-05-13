@@ -94,6 +94,12 @@
     margin-bottom: 1rem;
 }
 
+.status {
+    color: $info;
+    font-size: 14px;
+    font-weight: bold;
+}
+
 .info {
     display: flex;
     justify-content: space-between;

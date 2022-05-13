@@ -25,10 +25,13 @@
     position: absolute;
     left: 0;
     bottom: -2.5rem;
+
 }
 
 .user-image {
-    max-width: 150px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
 }
 
 .user-edit-image {

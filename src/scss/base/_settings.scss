@@ -76,6 +76,10 @@ a {
     margin-right: .5rem;
 }
 
+.light {
+    color: $light;
+}
+
 .animate__animated.animate__fadeIn {
     --animate-duration: .3s;
   }

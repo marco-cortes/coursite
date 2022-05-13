@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom"
 import { hiddenNotifications, showNotifications } from "../../redux/actions/ui";
@@ -7,6 +8,21 @@ export const Link = ({ text, link, icon, button }) => {
 
     const { notifications } = useSelector(state => state.auth);
     const { notificationsOpen } = useSelector(state => state.ui);
+
+    const [notificationsUnread, setNotificationsUnread] = useState(0);
+
+    useEffect(() => {
+        if (notifications) {
+            let unread = 0;
+            notifications.forEach(notification => {
+                if (notification.status === 0) {
+                    unread++;
+                }
+            });
+            setNotificationsUnread(unread);
+        }
+    }, [notifications]);
+
     const dispatch = useDispatch();
 
     const linkActive = (isActive) => {
@@ -14,7 +30,7 @@ export const Link = ({ text, link, icon, button }) => {
     }
 
     const show = () => {
-        if(notificationsOpen) {
+        if (notificationsOpen) {
             dispatch(hiddenNotifications())
             document.getElementById("notifications").classList.remove("active");
         } else {
@@ -30,7 +46,7 @@ export const Link = ({ text, link, icon, button }) => {
                     <div className="nav-link">
                         <div className="link-bar"></div>
                         <span className="link-text">
-                            <i className={icon + " i"}></i>{text} {notifications  && <span className="link-notifications">{notifications.length}</span>}
+                            <i className={icon + " i"}></i>{text} {notifications && notificationsUnread > 0 && <span className="link-notifications">{notificationsUnread}</span>}
                         </span>
                     </div>
                 </button>

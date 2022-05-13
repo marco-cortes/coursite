@@ -1,12 +1,13 @@
+import { useDispatch } from "react-redux";
+import { changeToRead } from "../../redux/actions/auth";
+
 export const Notification = ({ notification, i }) => {
 
+    const dispatch = useDispatch();
 
     const handleClick = () => {
-        console.log("click");
-        console.log(notification, i);
-        /**
-         * change status of notification to read
-         */
+        if(notification.status === 0) 
+            dispatch(changeToRead(i))
     }
 
     let icon = "";

@@ -1,6 +1,18 @@
+import { useDispatch } from "react-redux";
 import imgUser from "../../image/user-image.svg";
+import { showModal } from "../../redux/actions/ui";
 
-export const UserImage = ({ name, lastname, image }) => {
+export const UserImage = ({ name, lastname, image, setSelect }) => {
+
+
+  const dispatch = useDispatch();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    setSelect(2);
+    dispatch(showModal());
+  }
+
   return (
     <div className="user-top">
       <div className="user-top-container">
@@ -11,7 +23,7 @@ export const UserImage = ({ name, lastname, image }) => {
               image ? <img src={image} alt="user" className="user-image" />
                 : <img src={imgUser} alt="user" className="user-image" />
             }
-            <button className="user-edit-image"><i className="fa-solid fa-pen"></i></button>
+            <button type="button" className="user-edit-image" onClick={handleClick} ><i className="fa-solid fa-pen"></i></button>
           </div>
 
         }

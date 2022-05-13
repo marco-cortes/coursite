@@ -7,16 +7,17 @@ import { DeleteAccount } from "../profile/DeleteAccount";
 import { ProfileButtons } from "../profile/ProfileButtons";
 import { UserImage } from "../profile/UserImage";
 import { Modal } from "../ui/Modal";
+import { UploadPhoto } from "../ui/UploadPhoto";
 
 export const ProfileView = ({ role }) => {
 
   const { user } = useSelector(state => state.auth);
 
-  const [select, setSelect] = useState(false);
+  const [select, setSelect] = useState(0);
 
   const [userForm, setUserForm] = useForm(user);
 
-  const { name, email, lastName, phone } = userForm;
+  const { name, email, lastName, phone, image } = userForm;
 
   const dispatch = useDispatch();
 
@@ -25,6 +26,8 @@ export const ProfileView = ({ role }) => {
     user.name = name;
     user.lastName = lastName;
     user.email = email;
+    if(image)
+      user.image = image;
     if (phone)
       user.phone = phone;
     dispatch(saveUser(user));
@@ -72,7 +75,7 @@ export const ProfileView = ({ role }) => {
     <div className="course-view animate__animated animate__fadeIn">
       <form className="profile-container" onSubmit={submitUpdate}>
         <div>
-          <UserImage name={user.name} lastname={user.lastName} />
+          <UserImage image={user.image} name={user.name} lastname={user.lastName} setSelect={setSelect} />
           <div className="user-form">
             <h3 className="user-form-title">Nombre(s):</h3>
             <div className="user-form-group">
@@ -111,12 +114,13 @@ export const ProfileView = ({ role }) => {
           <ProfileButtons setSelect={setSelect} />
         </div>
       </form>
-      <Modal title={select ? "ELIMINAR CUENTA" : "CAMBIAR CONTRASEÑA"}>
+      <Modal title={select === 1 ? "ELIMINAR CUENTA" : select === 0 ? "CAMBIAR CONTRASEÑA" : "ACTUALIZAR FOTO"}>
         {
-          select ?
+          select ===  1 ?
             <DeleteAccount />
-            :
-            <ChangePasswordForm />
+            : select === 0 ?
+              <ChangePasswordForm />
+              : <UploadPhoto />
         }
       </Modal>
     </div>

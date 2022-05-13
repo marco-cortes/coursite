@@ -6,8 +6,9 @@ import { clearAll } from "./courses";
 import { startLoadCoursesStudent } from "./student";
 import { startLoadCoursesTeacher } from "./teachers";
 import { startLoadCategories, startLoadCoursesAdmin, startLoadTeachers } from "./admin";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../firebase/firebase-config";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db, storage } from "../../firebase/firebase-config";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 
 export const startLogin = (email, password) => {
@@ -122,7 +123,6 @@ export const getUser = (email) => {
                     return;
                 }
 
-
                 dispatch(setDocuments(body.docs));
                 dispatch(startLoadCoursesTeacher(body.id));
 
@@ -162,6 +162,36 @@ export const setUser = (user) => ({
     type: types.authLogin,
     payload: user
 });
+
+export const startUploadImage = (user, image) => {
+    return async (dispatch) => {
+
+        const filePath = `profileImages/${user.id}/${image.name}`;
+        const fileRef = ref(storage, filePath)
+        const task = uploadBytesResumable(fileRef, image);
+
+        task.on("state_changed",
+            (snapshot) => {
+                // Observe state change events such as progress, pause, and resume
+                // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                //const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                //console.log("Upload is " + progress + "% done");
+            },
+            (error) => {
+                // Handle unsuccessful uploads
+                console.log(error);
+            },
+            () => {
+                // Handle successful uploads on complete
+                getDownloadURL(task.snapshot.ref).then(async url => {
+                    user.image = url;
+                    dispatch(saveUser(user));
+                })
+            })
+
+
+    }
+}
 
 export const setDocuments = (docs) => ({
     type: types.setDocs,
@@ -213,6 +243,8 @@ export const startChangePassword = (user, password, newPassword) => {
 
 
 
+
+
 export const startLoadNotifications = () => {
     return async (dispatch, getState) => {
         const user = getState().auth.user;
@@ -236,5 +268,25 @@ export const setNotifications = (notifications) => {
     return {
         type: types.loadNotifications,
         payload: notifications
+    }
+}
+
+export const changeToRead = (index) => {
+    return async (dispatch, getState) => {
+        const user = getState().auth.user;
+        if (user) {
+            const { id } = user;
+            const docRef = doc(db, "notifications", "" + id);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists) {
+                const data = docSnap.data();
+                if (data) {
+                    data.notifications[index].status = 1;
+
+                    await setDoc(docRef, { notifications: data.notifications });
+
+                }
+            }
+        }
     }
 }

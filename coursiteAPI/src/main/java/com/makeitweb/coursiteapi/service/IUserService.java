@@ -64,6 +64,10 @@ public class IUserService implements UserService, UserDetailsService {
                 user.setStatus(0);
             return userRepository.save(user);
         }
+
+        if(user.getImage() != null)
+            old.setImage(user.getImage());
+
         old.setStatus(user.getStatus());
         Validation.validateUser(old, user.getName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getPhone());
         return userRepository.save(old);

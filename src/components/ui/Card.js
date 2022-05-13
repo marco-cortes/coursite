@@ -13,6 +13,9 @@ export const Card = ({ course, dir }) => {
                 <h2 className="category">{course.category.name ? course.category.name : course.category}</h2>
                 <h3 className="course">{course.title}</h3>
                 <p className="teacher">Profesor: {course.teacher.name ? course.teacher.name + " " + course.teacher.lastName : course.teacher}</p>
+                {
+                    user && user.role === 2 && <span className="status">Status: {course.status}</span>
+                }
                 <p className="info">
                     <span className="price">Precio: ${course.price}</span>
                     <span className="score">Score: {course.score/20} <i className="fa-solid fa-star"></i></span>

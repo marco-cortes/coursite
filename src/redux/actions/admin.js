@@ -66,7 +66,7 @@ export const startSetTeacherStatus = (teacher) => {
                 if (docSnap.exists) {
                     console.log(docSnap.data());
                     await setDoc(docRef, {
-                        notifications: [...docSnap.data().notifications, notification]
+                        notifications: [notification, ...docSnap.data().notifications]
                     })
                     return;
                 }
@@ -110,18 +110,23 @@ export const startSetCourseStatus = (course) => {
                 status: 0
             }
     
+            console.log(course.teacher.id);
+
             const docRef = doc(db, "notifications", ""+course.teacher.id);
             const docSnap = await getDoc(docRef);
     
             if (docSnap.exists) {
                 console.log(docSnap.data());
-                await setDoc(docRef, {
-                    notifications: [...docSnap.data().notifications, notification]
-                })
-                return;
+                if(docSnap.data()){
+                    await setDoc(docRef, {
+                        notifications: [notification, ...docSnap.data().notifications]
+                    })
+                } else {
+                    await setDoc(docRef, { notifications: [notification] });
+                }
             }
             
-            await setDoc(docRef, { notifications: [notification] });
+            
             
 
             Swal.fire("Success", "¡Status actualizado!", "success");
