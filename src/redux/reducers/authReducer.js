@@ -24,6 +24,17 @@ export const authReducer = (state = initialState, action) => {
                 checking: false,
                 user: null
             };
+        case types.setDocs:
+            return {
+                ...state,
+                docs: action.payload
+            }
+        
+        case types.loadNotifications: 
+            return {
+                ...state,
+                notifications: action.payload
+            }
         default:
             return state
     }

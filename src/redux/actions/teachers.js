@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 import { authFetch } from "../../helpers/fetch";
 import { types } from "../types/types";
-import { setCourses } from "./courses";
+import { setCourse, setCourses } from "./courses";
 import { storage } from "../../firebase/firebase-config";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
@@ -100,23 +100,47 @@ export const startDeleteLesson = (lesson) => {
     }
 }
 
-export const startUploadFile = (id, file) => {
+export const startUploadFile = (user, files) => {
     return async (dispatch) => {
-        const fileRef = ref(storage, "docs/" + id + "/" + file.name);
-        const uploadTask = uploadBytesResumable(fileRef, file);
-        uploadTask.on("state_changed",
-            (snapshot) => {
-                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-                console.log(progress);
-            },
-            (error) => {
-                console.log(error);
-            },
-            () => {
-                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                    
-                })
+        try {
+            files.map(async file => {
+                const filePath = `docs/${user.id}/${file.name}`;
+                const fileRef = ref(storage, filePath)
+                const task = uploadBytesResumable(fileRef, file);
+
+                task.on("state_changed",
+                    (snapshot) => {
+                        // Observe state change events such as progress, pause, and resume
+                        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                        //const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        //console.log("Upload is " + progress + "% done");
+                    },
+                    (error) => {
+                        // Handle unsuccessful uploads
+                        console.log(error);
+                    },
+                    () => {
+                        // Handle successful uploads on complete
+                        getDownloadURL(task.snapshot.ref).then(async url => {
+                            const resp = await authFetch("teacher/document/save", {
+                                url: url,
+                                name: file.name,
+                                teacher: user
+                            }, "POST");
+                            const body = await resp.json();
+                            if (body.status === 200) {
+                                dispatch(setCourse({true: true}));
+                            } else {
+                                dispatch(setCourse({true: false}));
+                            }
+
+                        })
+                    })
+
             })
-        
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

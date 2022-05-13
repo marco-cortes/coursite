@@ -11,6 +11,7 @@ export const startLoadCoursesStudent = () => {
             const { id } = user;
             const resp = await authFetch("user/" + id + "/courses", {});
             const body = await resp.json();
+
             if (body !== null) {
                 let courses = body.map(c => ({
                     category: c.course.category,
@@ -33,6 +34,7 @@ export const startLoadCoursesStudent = () => {
                 dispatch(setCoursesStudent(courses));
 
                 const { myCourses } = getState().courses;
+
                 if (myCourses) {
                     const rcourses = await noAuthFetch("courses/", {});
                     const rbody = await rcourses.json();

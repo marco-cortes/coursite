@@ -6,7 +6,8 @@ import { clearAll } from "./courses";
 import { startLoadCoursesStudent } from "./student";
 import { startLoadCoursesTeacher } from "./teachers";
 import { startLoadCategories, startLoadCoursesAdmin, startLoadTeachers } from "./admin";
-import { useNavigate } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../firebase/firebase-config";
 
 
 export const startLogin = (email, password) => {
@@ -38,15 +39,11 @@ export const startRegister = (user) => {
         try {
             const resp = await noAuthFetch("register", user, "POST");
             const body = await resp.json();
-            const navigate = useNavigate();
             if (body.error) {
                 Swal.fire("Error", body.error, "error");
             } else {
                 dispatch(startLogin(user.email, user.password));
                 dispatch(getUser(user.email));
-                if(user.role === 2) {
-                    navigate("/teacher/register/finish");
-                }
             }
         } catch (error) {
             console.log(error);
@@ -102,16 +99,42 @@ export const getUser = (email) => {
         try {
             const response = await authFetch("user/" + email, {});
             const body = await response.json();
-            dispatch(setUser(body));
-            if (body.role === 1) {
+            dispatch(setUser(body.user));
+            if (body.user.role === 1) {
                 dispatch(startLoadCoursesStudent());
-            } else if (body.role === 2) {
+            } else if (body.user.role === 2) {
+
+                if (body.user.status === 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Su solicitud de registro está en proceso de aprobación...',
+                    });
+                    dispatch(startLogout());
+                    return;
+                } else if (body.user.status === -1) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Su solicitud de registro fue rechazada...',
+                    });
+                    dispatch(startLogout());
+                    return;
+                }
+
+
+                dispatch(setDocuments(body.docs));
                 dispatch(startLoadCoursesTeacher(body.id));
-            } else if (body.role === 3) {
+
+
+
+            } else if (body.user.role === 3) {
                 dispatch(startLoadCoursesAdmin());
                 dispatch(startLoadTeachers());
                 dispatch(startLoadCategories());
             }
+
+            dispatch(startLoadNotifications());
         } catch (error) {
             console.log(error);
         }
@@ -140,6 +163,10 @@ export const setUser = (user) => ({
     payload: user
 });
 
+export const setDocuments = (docs) => ({
+    type: types.setDocs,
+    payload: docs
+});
 
 
 export const startChangePassword = (user, password, newPassword) => {
@@ -162,7 +189,7 @@ export const startChangePassword = (user, password, newPassword) => {
                 localStorage.setItem("token-refresh", body.refresh_token);
                 localStorage.setItem("token-init-date", new Date().getTime());
 
-                const resp = await authFetch("user/update-password/" + user.id, { password:newPassword }, "PUT");
+                const resp = await authFetch("user/update-password/" + user.id, { password: newPassword }, "PUT");
                 const bodyPassword = await resp.json();
                 if (bodyPassword.error) {
                     Swal.fire({
@@ -181,4 +208,33 @@ export const startChangePassword = (user, password, newPassword) => {
         }
     }
 
+}
+
+
+
+
+export const startLoadNotifications = () => {
+    return async (dispatch, getState) => {
+        const user = getState().auth.user;
+        if (user) {
+            const { id } = user;
+            const docRef = doc(db, "notifications", "" + id);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists) {
+                const data = docSnap.data();
+                if (data) {
+                    dispatch(setNotifications(data.notifications));
+                }
+            }
+        }
+    }
+}
+
+
+
+export const setNotifications = (notifications) => {
+    return {
+        type: types.loadNotifications,
+        payload: notifications
+    }
 }

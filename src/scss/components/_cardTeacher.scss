@@ -147,3 +147,27 @@
 .btn-back:hover {
     background-color: lighten($color: $primary, $amount: 4);
 }
+
+.teacher-docs {
+    width: 90%;
+    max-width: 500px;
+    align-self: center;
+}
+
+.teacher-doc {
+    background-color: $info !important;
+    color: $light !important;
+}
+
+.teacher-doc-link {
+    font-weight: bold;
+    color: $dark !important;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.teacher-docs-title {
+    color: $primary;
+    margin-bottom: 1rem;
+}

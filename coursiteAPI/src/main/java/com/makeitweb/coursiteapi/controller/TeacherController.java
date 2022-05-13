@@ -5,6 +5,7 @@ import com.makeitweb.coursiteapi.entity.Document;
 import com.makeitweb.coursiteapi.entity.course.Course;
 import com.makeitweb.coursiteapi.service.CourseService;
 import com.makeitweb.coursiteapi.service.DocumentService;
+import com.makeitweb.coursiteapi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,7 @@ public class TeacherController {
     */
 
     private final CourseService courseService;
+    private final UserService userService;
     private final DocumentService documentService;
 
     @PostMapping("/course/new")
@@ -118,6 +120,7 @@ public class TeacherController {
     @PostMapping("/document/save")
     public ResponseEntity<?> addCourse(@RequestBody Document document) {
         Map<String, Object> response = new HashMap<>();
+        document.setTeacher(userService.getUserById(document.getTeacher().getId()));
         document = documentService.save(document);
         if(document == null) {
             response.put("status", 404);

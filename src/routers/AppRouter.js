@@ -28,6 +28,7 @@ import { AdminCategories } from "../components/admin/AdminCategories";
 import { NewCourse } from "../components/teacher/NewCourse";
 import { EditCourse } from "../components/teacher/EditCourse";
 import { TeacherRegister } from "../components/teacher/TeacherRegister";
+import { TeacherRegisterRoute } from "./TeacherRegisterRoute";
 
 export const AppRouter = () => {
 
@@ -130,9 +131,9 @@ export const AppRouter = () => {
                     }
                     />
                     <Route path="/teacher/register/finish" element={
-                        <TeacherRoute>
+                        <TeacherRegisterRoute>
                             <TeacherRegister />
-                        </TeacherRoute>
+                        </TeacherRegisterRoute>
                     }
                     />
                     <Route path="/teacher/courses" element={

@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
 import { startRegister } from '../../redux/actions/auth';
 import { Logo } from '../Logo';
@@ -7,6 +7,9 @@ import img from "../../image/register.svg";
 import Swal from 'sweetalert2';
 
 export const Register = ({ role }) => {
+
+    const navigate = useNavigate();
+    
     const [register, setRegister] = useForm({
         name: "",
         lastName: "",
@@ -28,6 +31,7 @@ export const Register = ({ role }) => {
                 password: register.password,
                 role: register.role
             }));
+            navigate("/teacher/register/finish");
         } else {
             Swal.fire({
                 icon: 'error',

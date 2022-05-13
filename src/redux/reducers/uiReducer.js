@@ -19,12 +19,12 @@ export const uiReducer = (state = initialState, action) => {
         case types.uiShowNotifications:
             return {
                 ...state,
-                notifications: true,
+                notificationsOpen: true,
             }
         case types.uiHiddenNotifications:
             return {
                 ...state,
-                notifications: false,
+                notificationsOpen: false,
             }
         default:
             return state;

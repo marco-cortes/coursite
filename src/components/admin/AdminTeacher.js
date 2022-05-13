@@ -34,15 +34,28 @@ export const AdminTeacher = () => {
           }
         </div>
         <h2 className="profile-teacher-name">{active.teacher.name + " " + active.teacher.lastName}</h2>
-        <p  className="profile-teacher-info">{active.teacher.email}</p>
-        <p  className="profile-teacher-info">{active.teacher.phone}</p>
-        <p  className={"profile-teacher-status s" + active.teacher.status}>
-          {active.teacher.status === 0 
-          ? "Status: Pendiente" 
-          : active.teacher.status === 1 
-          ? "Status: Activo" 
-          : "Status: Rechazado"}
+        <p className="profile-teacher-info">{active.teacher.email}</p>
+        <p className="profile-teacher-info">{active.teacher.phone}</p>
+        <p className={"profile-teacher-status s" + active.teacher.status}>
+          {active.teacher.status === 0
+            ? "Status: Pendiente"
+            : active.teacher.status === 1
+              ? "Status: Activo"
+              : "Status: Rechazado"}
         </p>
+      </div>
+      <div className="teacher-docs">
+        <h2 className="teacher-docs-title">Documentos</h2>
+        {
+          active.documents && active.documents.length > 0 ?
+            active.documents.map(doc => (
+              <div className="file-container flex align-items-center space-between teacher-doc" key={doc.id}>
+                <p className="teacher-doc-name">{doc.name}</p>
+                <a href={doc.url} target="_blank" className="teacher-doc-link" rel="noopener noreferrer">Link</a>
+              </div>
+            ))
+            : <p>No hay documentos</p>
+        }
       </div>
       <button className="btn btn-back" onClick={back}><i className="fa-solid fa-rotate-left"></i> Regresar</button>
     </div>

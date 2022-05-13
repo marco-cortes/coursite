@@ -131,12 +131,6 @@
     color: $danger;
 }
 
-.btn-notification {
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-}
-
 .btn-success {
     background-color: $success-1;
     color: $white;
@@ -162,4 +156,14 @@
 
 .btn-warning:hover {
     background-color: darken($color: $warning, $amount: 4);
+}
+
+.btn-upload {
+    background-color: $blue;
+    color: $white;
+    border: $blue 2px solid;
+
+    &:hover {
+        background-color: darken($color: $blue, $amount: 4);
+    }
 }

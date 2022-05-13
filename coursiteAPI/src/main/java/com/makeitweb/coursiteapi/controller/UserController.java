@@ -4,6 +4,7 @@ import com.makeitweb.coursiteapi.dto.UserCourseDTO;
 import com.makeitweb.coursiteapi.entity.course.Course;
 import com.makeitweb.coursiteapi.entity.users.User;
 import com.makeitweb.coursiteapi.service.CourseService;
+import com.makeitweb.coursiteapi.service.DocumentService;
 import com.makeitweb.coursiteapi.service.UserCourseService;
 import com.makeitweb.coursiteapi.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -32,13 +33,25 @@ public class UserController {
     private final UserService userService;
     private final CourseService courseService;
     private final UserCourseService userCourseService;
+    private final DocumentService documentService;
 
     @GetMapping("/{email}")
-    public ResponseEntity<User> getUserById(@PathVariable String email) {
+    public ResponseEntity<?> getUserById(@PathVariable String email) {
+        Map<String, Object> response = new HashMap<>();
+
+
+
         User u = userService.getUserByEmail(email);
         if(u == null)
             return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(u);
+
+        response.put("user", u);
+
+        if(u.getRole() == 2) {
+            response.put("docs", documentService.getDocumentsByTeacher(u.getId()));
+        }
+
+        return ResponseEntity.ok(response);
     }
     @PostMapping("/new")
     public ResponseEntity<User> newUser(@RequestBody User user) {

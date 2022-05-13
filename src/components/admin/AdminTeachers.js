@@ -11,13 +11,16 @@ export const AdminTeachers = () => {
 
   useEffect(() => {
     if (list && list.length > 0) {
-      setTeachers(list.filter(teacher => teacher.status === 0));
+      setTeachers(list);
     }
   }, [list])
 
   const filter = (e, type) => {
     active(e);
     switch (type) {
+      case "all":
+        setTeachers(list);
+      break;
       case "active":
         setTeachers(list.filter(teacher => teacher.status === 1));
         break;
@@ -45,7 +48,10 @@ export const AdminTeachers = () => {
   return (
     <div className="admin-teachers">
       <NavBarApp >
-        <button className="app-link app-active" onClick={e => filter(e, "pending")}>
+        <button className="app-link app-active" onClick={e => filter(e, "all")}>
+          Todos
+        </button>
+        <button className="app-link" onClick={e => filter(e, "pending")}>
           Pendientes
         </button>
         <button className="app-link" onClick={e => filter(e, "active")}>

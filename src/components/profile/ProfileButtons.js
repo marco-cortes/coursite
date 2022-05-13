@@ -1,5 +1,4 @@
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
 import { showModal } from "../../redux/actions/ui";
 
 export const ProfileButtons = ({setSelect}) => {
@@ -30,9 +29,6 @@ export const ProfileButtons = ({setSelect}) => {
                 <i className="fa-solid fa-check icon success"></i>
                 Actualizar datos
             </button>
-            <Link className="btn btn-danger" to="/teacher/register/finish">
-                Documentos
-            </Link>
         </div>
     )
 }

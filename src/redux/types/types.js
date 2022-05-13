@@ -38,4 +38,8 @@ export const types = {
     teachersUpdated: "[teachers] teachers Updated",
     teachersDeleted: "[teachers] teachers Deleted",
     teacherSetActive: "[teachers] teacher Set Active",
+
+    setDocs: "[docs] setDocs",
+
+    loadNotifications: "[notifications] startLoadNotifications",
 }
