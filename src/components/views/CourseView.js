@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { startLoadCourse } from "../../redux/actions/courses";
 import { Accordion } from "../ui/Accordion";
+import { Loading } from "../ui/Loading";
 
 export const CourseView = ({ role }) => {
 
@@ -23,7 +24,7 @@ export const CourseView = ({ role }) => {
 
 
     if (!active) {
-        return <div>Loading...</div>
+        return <Loading />;
     }
 
     const back = () => {

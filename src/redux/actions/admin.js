@@ -197,3 +197,19 @@ export const updateCategory = (category) => {
         payload: category
     }
 }
+
+
+export const startLoadStats = () => {
+    return async (dispatch) => {
+        const resp = await authFetch("admin/stats", {});
+        const body = await resp.json();
+        dispatch(setStats(body));
+    }
+}
+
+export const setStats = (stats) => {
+    return {
+        type: types.loadStats,
+        payload: stats
+    }
+}

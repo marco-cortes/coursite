@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { startLoadCourse } from "../../redux/actions/courses";
 import { showModal } from "../../redux/actions/ui";
 import { Lesson } from "../ui/Lesson";
+import { Loading } from "../ui/Loading";
 import { Modal } from "../ui/Modal";
 import { RatingCourse } from "../ui/RatingCourse";
 
@@ -20,7 +21,7 @@ export const StudentCourseView = () => {
     }, [dispatch, id]);
 
     if (!active) {
-        return <div>Loading...</div>
+        return <Loading />;
     }
 
     const back = () => {

@@ -5,7 +5,7 @@ import jwtDecode from "jwt-decode";
 import { clearAll } from "./courses";
 import { startLoadCoursesStudent } from "./student";
 import { startLoadCoursesTeacher } from "./teachers";
-import { startLoadCategories, startLoadCoursesAdmin, startLoadTeachers } from "./admin";
+import { startLoadCategories, startLoadCoursesAdmin, startLoadStats, startLoadTeachers } from "./admin";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db, storage } from "../../firebase/firebase-config";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
@@ -132,6 +132,7 @@ export const getUser = (email) => {
                 dispatch(startLoadCoursesAdmin());
                 dispatch(startLoadTeachers());
                 dispatch(startLoadCategories());
+                dispatch(startLoadStats());
             }
 
             dispatch(startLoadNotifications());

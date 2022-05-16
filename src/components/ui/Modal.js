@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../../redux/actions/ui";
 
-export const Modal = ({ children, title }) => {
+export const Modal = ({ children, title, landing }) => {
 
     const { modalOpen } = useSelector(state => state.ui);
     const dispatch = useDispatch();
@@ -20,7 +20,7 @@ export const Modal = ({ children, title }) => {
 
     return (
         <div className="modal-container animate__animated animate__fadeIn" id="modal">
-            <div className="modal">
+            <div className={landing ? "modal modal-light" : "modal"} >
                 <div className="modal-header">
                     <h2 className="modal-title">{title}</h2>
                     <button className="btn btn-modal" onClick={close}>

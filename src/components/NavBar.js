@@ -23,18 +23,21 @@ export const NavBar = () => {
 
   useEffect(() => {
 
-    const ref = doc(db, "notifications", "" + user.id);
+    if (user) {
+      const ref = doc(db, "notifications", "" + user.id);
 
-    const unsub = onSnapshot(ref, (doc) => {
-      if(doc.data())
-        dispatch(setNotifications(doc.data().notifications));
-    })
+      const unsub = onSnapshot(ref, (doc) => {
+        if (doc.data())
+          dispatch(setNotifications(doc.data().notifications));
+      })
 
-    return () => {
-      unsub();
+      return () => {
+        unsub();
+      }
     }
 
-  }, [user.id, dispatch]);
+
+  }, [user, dispatch]);
 
 
   return (

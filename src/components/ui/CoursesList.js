@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { EmptyList } from "../views/EmptyList";
 import { Card } from "./Card"
 
 export const CoursesList = ({ courses }) => {
@@ -28,7 +29,7 @@ export const CoursesList = ({ courses }) => {
                         ))
                     }
                 </div> :
-                <h5>No hay cursos disponibles</h5>
+                <EmptyList />
             }
         </>
     )

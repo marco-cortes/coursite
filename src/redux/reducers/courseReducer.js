@@ -110,6 +110,7 @@ export const courseReducer = (state = initialState, action) => {
                 ...state,
                 categories: state.categories.filter(category => category.id !== action.payload)
             }
+        
         default:
             return state
     }

@@ -29,6 +29,10 @@ import { NewCourse } from "../components/teacher/NewCourse";
 import { EditCourse } from "../components/teacher/EditCourse";
 import { TeacherRegister } from "../components/teacher/TeacherRegister";
 import { TeacherRegisterRoute } from "./TeacherRegisterRoute";
+import { HomeView } from "../components/views/HomeView";
+import { AboutView } from "../components/views/AboutView";
+import { ServicesView } from "../components/views/ServicesView";
+import { View404 } from "../components/views/View404";
 
 export const AppRouter = () => {
 
@@ -48,6 +52,18 @@ export const AppRouter = () => {
         <>
             <BrowserRouter>
                 <Routes>
+                    <Route path="/" element={
+                        <HomeView />
+                    }
+                    />
+                    <Route path="/about" element={
+                        <AboutView />
+                    }
+                    />
+                    <Route path="/services" element={
+                        <ServicesView />
+                    }
+                    />
                     <Route path="/login" element={
                         <PublicRoute>
                             <Login />
@@ -232,6 +248,9 @@ export const AppRouter = () => {
                         </AdminRoute>
                     }
                     />
+                    <Route path="*" element={
+                        <View404 />
+                    } />
                 </Routes>
             </BrowserRouter>
         </>

@@ -42,4 +42,6 @@ export const types = {
     setDocs: "[docs] setDocs",
 
     loadNotifications: "[notifications] startLoadNotifications",
+
+    loadStats: "[stats] statsLoaded",
 }

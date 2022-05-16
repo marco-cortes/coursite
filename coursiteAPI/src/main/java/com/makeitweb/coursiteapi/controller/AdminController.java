@@ -3,6 +3,7 @@ package com.makeitweb.coursiteapi.controller;
 import com.makeitweb.coursiteapi.dto.CourseDTO;
 import com.makeitweb.coursiteapi.entity.Document;
 import com.makeitweb.coursiteapi.entity.course.Category;
+import com.makeitweb.coursiteapi.entity.course.Course;
 import com.makeitweb.coursiteapi.entity.users.User;
 import com.makeitweb.coursiteapi.service.CategoryService;
 import com.makeitweb.coursiteapi.service.CourseService;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,4 +132,64 @@ public class AdminController {
         return ResponseEntity.ok(Boolean.TRUE);
     }
 
+    @GetMapping("/stats")
+    public ResponseEntity<?> getStats() {
+
+        Integer teachersAccepted = 0;
+        Integer teachersRejected = 0;
+        Integer teachersPending = 0;
+
+        Integer coursesAccepted = 0;
+        Integer coursesRejected = 0;
+        Integer coursesPending = 0;
+
+        List<Integer> coursesByCategory = new ArrayList<>();
+
+        for(User u : userService.getAllTeachers()) {
+            if(u.getStatus() == 1)
+                teachersAccepted++;
+            else if(u.getStatus() == -1)
+                teachersRejected++;
+            else
+                teachersPending++;
+        }
+
+        for(Course c : courseService.getAllCourses()) {
+            if(c.getStatus() == 1)
+                coursesAccepted++;
+            else if(c.getStatus() == -1)
+                coursesRejected++;
+            else
+                coursesPending++;
+
+        }
+        Integer aux = 0;
+        for(Category ca : categoryService.getAllCategories()) {
+            for(Course c : courseService.getAllCourses()) {
+                if (c.getCategory().getId().equals(ca.getId())) {
+                    aux++;
+                }
+            }
+            coursesByCategory.add((aux));
+            aux = 0;
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        Integer[] stats = new Integer[3];
+        stats[0] = teachersAccepted;
+        stats[1] = teachersPending;
+        stats[2] = teachersRejected;
+        response.put("statsTeachers", stats);
+
+        Integer[] statsC = new Integer[3];
+        statsC[0] = coursesAccepted;
+        statsC[1] = coursesPending;
+        statsC[2] = coursesRejected;
+
+
+        response.put("statsCourses", statsC);
+        response.put("coursesCategory", coursesByCategory);
+
+        return ResponseEntity.ok(response);
+    }
 }
