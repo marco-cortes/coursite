@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 export const Register = ({ role }) => {
 
     const navigate = useNavigate();
-    
+
     const [register, setRegister] = useForm({
         name: "",
         lastName: "",
@@ -77,6 +77,7 @@ export const Register = ({ role }) => {
                     <p className="auth-help">¿Ya tienes cuenta?</p>
                     <Link to="/login" className="auth-help-link">Iniciar sesión</Link>
                 </div>
+                <Link to="/" className="auth-help-link mt-2 text-light">Inicio</Link>
             </form>
             <div className="auth-image-container">
                 <div className="auth-logo right">

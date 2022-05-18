@@ -38,7 +38,7 @@ export const Login = () => {
           <label className="auth-label">Tu contraseña:</label>
           <div className="auth-input-div">
             <i className="fa-solid fa-lock auth-icon"></i>
-            <input className="auth-input" placeholder="Tu contraseña aquí" type="password" name="password" value={login.password} onChange={setLogin} required/>
+            <input className="auth-input" placeholder="Tu contraseña aquí" type="password" name="password" value={login.password} onChange={setLogin} required />
           </div>
           <button className="btn auth-btn">Iniciar sesión</button>
         </div>
@@ -46,6 +46,7 @@ export const Login = () => {
           <p className="auth-help">¿No tienes cuenta?</p>
           <Link to="/register" className="auth-help-link">Registrate</Link>
         </div>
+        <Link to="/" className="auth-help-link mt-2 text-light">Inicio</Link>
       </form>
     </div>
   )

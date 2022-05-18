@@ -34,6 +34,7 @@ import { AboutView } from "../components/views/AboutView";
 import { ServicesView } from "../components/views/ServicesView";
 import { View404 } from "../components/views/View404";
 import { CertView } from "../components/ui/CertView";
+import { Loading } from "../components/ui/Loading";
 
 export const AppRouter = () => {
 
@@ -46,7 +47,7 @@ export const AppRouter = () => {
     const { checking } = useSelector(state => state.auth);
 
     if (checking) {
-        return <h5>Espere...</h5>
+        return <Loading />
     }
 
     return (

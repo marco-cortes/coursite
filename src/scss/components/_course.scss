@@ -73,10 +73,12 @@
 .course-units {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .course-btns {
     width: 100%;
+    max-width: 300px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;

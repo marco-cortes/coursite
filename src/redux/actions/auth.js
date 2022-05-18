@@ -65,9 +65,19 @@ export const startChecking = () => {
                 dispatch(getUser(sub));
                 dispatch(checkingFinish()); // para que no se quede en el loading
             } else {
+                if (localStorage.getItem("token")) {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("token-refresh");
+                    localStorage.removeItem("token-init-date");
+                }
                 dispatch(checkingFinish()); // para que no se quede en el loading
             }
         } else {
+            if (localStorage.getItem("token")) {
+                localStorage.removeItem("token");
+                localStorage.removeItem("token-refresh");
+                localStorage.removeItem("token-init-date");
+            }
             dispatch(checkingFinish());
         }
         //  dispatch(startLoadCourses());
@@ -104,7 +114,6 @@ export const getUser = (email) => {
             if (body.user.role === 1) {
                 dispatch(startLoadCoursesStudent());
             } else if (body.user.role === 2) {
-                console.log(body);
                 if (body.user.status === 0 && body.docs.length > 0) {
                     Swal.fire({
                         icon: 'error',

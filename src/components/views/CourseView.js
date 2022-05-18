@@ -50,10 +50,10 @@ export const CourseView = ({ role }) => {
                     <p className="text-body">{active.description}</p>
                 </div>
                 <div>
-                    <h3 className="text-title">Temario</h3>
                     <div className="course-units">
-                        <div>
 
+                        <div className="course-div-units">
+                            <h3 className="text-title">Temario</h3>
                             {
                                 active.units &&
                                 active.units.map((unit, index) => (

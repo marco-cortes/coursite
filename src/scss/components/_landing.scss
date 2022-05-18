@@ -2,12 +2,16 @@
     width: 100%;
     align-self: flex-start;
 }
+
 .footer {
-    height: 100px;
+    min-height: 100px;
+    height: 100%;
+    margin: 0;
     background-color: #2F2E41;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .header {
@@ -55,6 +59,7 @@
     font-weight: 500;
     color: $light-gray-2;
     transition: 0.1s ease-in-out;
+
     &:hover {
         color: $dark;
     }
@@ -80,7 +85,7 @@
 .header-auth-focus {
     background-color: $secondary;
     color: $white;
-    
+
     &:hover {
         background-color: darken($color: $secondary, $amount: 5%);
         color: $white;
@@ -103,7 +108,7 @@
 }
 
 .home-view-content {
-    width: 100%;
+    width: 90%;
     max-width: 500px;
 }
 
@@ -126,6 +131,7 @@
     max-width: 200px;
     color: $light;
     background-color: $secondary;
+
     &:hover {
         background-color: darken($color: $secondary, $amount: 5%);
     }
@@ -141,7 +147,8 @@
 
 .about-title {
     text-align: center;
-    margin: 1rem 0;
+    margin: 1rem auto;
+    width: 90%;
 }
 
 .about-h1 {
@@ -165,7 +172,7 @@
 }
 
 .about-img {
-    width: 100%;
+    width: 90%;
     max-width: 500px;
     margin: 1rem;
 }
@@ -212,7 +219,9 @@
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
+    margin: 0 auto;
     margin-bottom: 5rem;
+    width: 90%;
 }
 
 .mb-1 {
@@ -308,6 +317,7 @@
     font-weight: 500;
     color: $primary;
     cursor: pointer;
+
     &:hover {
         text-decoration: underline;
     }
@@ -335,6 +345,7 @@
     border: $primary 3px solid;
     border-radius: 15px;
     max-width: 520px;
+
     .modal-header {
 
         border: none;
@@ -347,6 +358,109 @@
 
         .btn-modal {
             color: $blue-dark;
+        }
+    }
+}
+
+
+.nav-button {
+    display: none;
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    border: none;
+    color: var(--light);
+    font-size: 2rem;
+}
+
+@media screen and (max-width: 800px) {
+
+    .header-links-active {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .header-links {
+        transition: 0.2s ease-in-out;
+        visibility: hidden;
+        opacity: 0;
+        flex-direction: column;
+        width: 100%;
+        margin: 0;
+        align-items: center;
+        position: absolute;
+        top: 100px;
+        left: 0;
+        z-index: 1;
+        background-color: $light;
+        padding: 2rem 0;
+        border-top: $primary 2px solid;
+        .header-link {
+            margin: 1rem 0;
+        }
+    }
+
+    .home-view {
+        margin: 0;
+        width: 100%;
+    }
+
+    .home-view-content {
+        text-align: center;
+    }
+
+    .btn-home {
+        margin: 1rem auto;
+        margin-bottom: 2rem;
+    }
+
+    .img-home {
+        margin: 2rem 0;
+        width: 80%;
+    }
+
+    .title-h1 {
+        font-size: 2.5rem;
+    }
+
+    .home-text {
+        font-size: 1rem;
+    }
+
+    .nav-button {
+        display: block;
+    }
+
+    .about-h2 {
+        margin-top: 1rem;
+        line-height: 35px;
+    }
+
+    .services-h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .services-text {
+        text-align: center;
+    }
+
+    .services-item {
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .header {
+        margin: 0 auto;
+        width: 90%;
+    }
+
+    .footer {
+        a {
+            width: 100%;
+            text-align: center;
+            margin: 2rem 0;
         }
     }
 }

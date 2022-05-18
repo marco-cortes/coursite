@@ -22,11 +22,12 @@ export const FormSearch = ({ role, setCourses }) => {
 
   return (
     <div className="form-div">
+      
       {
-        role === 2 &&
+        role === 2 ?
         <Link className="btn btn-primary" to={"/teacher/courses/new"}>
           Nuevo Curso <i className="fa-solid fa-plus"></i>
-        </Link>
+        </Link> : <div></div>
       }
       <form className="search" onSubmit={filter}>
         <input className="input-search" placeholder="Ingrese una búsqueda" onChange={handleChange} name="search" value={formSearch.search} />

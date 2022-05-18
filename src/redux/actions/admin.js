@@ -64,7 +64,6 @@ export const startSetTeacherStatus = (teacher) => {
                 const docSnap = await getDoc(docRef);
         
                 if (docSnap.exists) {
-                    console.log(docSnap.data());
                     await setDoc(docRef, {
                         notifications: [notification, ...docSnap.data().notifications]
                     })
@@ -109,14 +108,11 @@ export const startSetCourseStatus = (course) => {
                 icon: course.status === 1 ? "success" : "danger",
                 status: 0
             }
-    
-            console.log(course.teacher.id);
 
             const docRef = doc(db, "notifications", ""+course.teacher.id);
             const docSnap = await getDoc(docRef);
     
             if (docSnap.exists) {
-                console.log(docSnap.data());
                 if(docSnap.data()){
                     await setDoc(docRef, {
                         notifications: [notification, ...docSnap.data().notifications]

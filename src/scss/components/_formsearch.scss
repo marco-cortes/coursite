@@ -1,22 +1,24 @@
 
 .form-div {
     display: flex;
-    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 2rem 0;
     .btn {
         margin: 0;
-        width: 100%;
-        max-width: 200px;
     }
 }
 
 .search {
     width: 100%;
+    max-width: 500px;
     align-self: flex-end;
     display: flex;
-    margin: 2rem auto;
     justify-content: flex-end;
     align-items: center;
 }
+
+ 
 
 .btn-search {
     margin: 0;
@@ -43,4 +45,20 @@
     text-align: center;
     border-radius: 30px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+@media screen and (max-width: 769px) {
+    .form-div {
+        .btn {
+            width: 100%;
+        }
+
+        .search {
+            margin-top: 1rem;
+            max-width: 100%;
+            .btn {
+                width: 100%;
+            }
+        }
+    }
 }

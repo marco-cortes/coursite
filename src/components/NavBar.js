@@ -3,7 +3,7 @@ import { Logo } from "./Logo"
 import { Link } from "./navbar/Link"
 import { setNotifications, startLogout } from "../redux/actions/auth";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase/firebase-config";
 
@@ -35,13 +35,21 @@ export const NavBar = () => {
         unsub();
       }
     }
-
-
   }, [user, dispatch]);
 
 
+
+  const [active, setActive] = useState(false);
+  //<i class="fa-solid fa-x"></i>
+
+  const open = () => {
+    setActive(!active);
+    document.getElementById("navbar-main").classList.toggle("navbar-active");
+  }
+
+
   return (
-    <div className="navbar">
+    <div className="navbar" id="navbar-main">
       <Logo dark />
       <div className="nav-links">
         {
@@ -77,6 +85,7 @@ export const NavBar = () => {
       {
         user && <h2 className="logout" onClick={submitLogout}>Cerrar sesión</h2>
       }
+      <button className="btn-navbar" onClick={open}><i className={active ? "fa-solid fa-x" : "fa-solid fa-chevron-right"}></i></button>
     </div>
   )
 }

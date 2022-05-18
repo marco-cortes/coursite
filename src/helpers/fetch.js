@@ -1,4 +1,5 @@
-const baseUrl = "http://localhost:8080/api";
+//const baseUrl = "http://localhost:8080/api";
+const baseUrl = "https://coursite.herokuapp.com/api";
 
 const noAuthFetch = (endpoint, data, method = "GET") => {
     const url = `${baseUrl}/${endpoint}`;

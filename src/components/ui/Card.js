@@ -1,11 +1,12 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom"
+import { Loading } from "./Loading";
 export const Card = ({ course, dir }) => {
 
     const { user } = useSelector(state => state.auth);
 
     if(!course)
-        return <div>Loading...</div>;
+        return <Loading />;
 
     return (
         <div className="card">
@@ -17,8 +18,8 @@ export const Card = ({ course, dir }) => {
                 <h3 className="course">{course.title}</h3>
                 <p className="teacher">Profesor: {course.teacher.name ? course.teacher.name + " " + course.teacher.lastName : course.teacher}</p>
                 {
-                    user && user.role === 2 ? <span className="status">Status: {course.status}</span>
-                    : user.role === 1 && course.isBought && <span className="status">Progreso: {Math.round(course.progress)}%</span>
+                    user ? user.role === 2 ? <span className="status">Status: {course.status}</span> : null
+                    : course.isBought && <span className="status">Progreso: {Math.round(course.progress)}%</span>
                 }
                 <p className="info">
                     <span className="price">Precio: ${course.price}</span>

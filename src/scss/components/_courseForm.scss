@@ -47,6 +47,7 @@
     width: 100%;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
     .course-form-group {
         width: 100%;
         max-width: 280px;
@@ -201,8 +202,40 @@
     display: flex;
     width: 100%;
     justify-content: center;
+
+    flex-wrap: wrap;
     
     .btn {
         margin: 1rem 0.5rem;
+    }
+}
+
+
+@media screen and (max-width: 879px) {
+    .lesson-btns {
+        margin-top: 1rem;
+    }
+
+    .lesson-info {
+        max-width: 100%;
+    }
+
+    .unit-lessons {
+        width: 100%;
+    }
+    .form-unit {
+        padding: 1rem;
+    }
+}
+
+@media screen and (max-width: 819px) {
+    .unit-btns {
+        margin-top: 1rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .admin-view {
+        width: 100%;
     }
 }

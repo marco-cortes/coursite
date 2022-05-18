@@ -1,0 +1,303 @@
+@media screen and (max-width: 1225px) {
+    .navbar {
+        height: 100%;
+    }
+
+    .container {
+        color: $secondary;
+    }
+
+    .app-container {
+        width: 100%;
+        max-height: 100% !important;
+        height: 100vh;
+    }
+}
+
+@media screen and (max-width: 1176px) {
+
+    .navbar {
+        border-radius: 0;
+    }
+
+    .app {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+    }
+
+    .course-image {
+        border-radius: 0;
+    }
+}
+
+@media screen and (max-width: 1127px) {
+    $navbar-width: 252px;
+
+    .navbar {
+        min-width: $navbar-width;
+    }
+
+    .modal {
+        margin-left: 252px;
+    }
+}
+
+@media screen and (max-width: 1079px) {
+    .navbar {
+        width: 300px;
+        transition: 0.2s ease-in-out;
+        position: absolute;
+        z-index: 1;
+        left: -300px;
+    }
+
+    .navbar-active {
+        left: 0;
+    }
+
+    .modal {
+        margin: 0;
+    }
+
+    .btn-navbar {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 839px) {
+    .div-lesson {
+        justify-content: center;
+    }
+
+    .lesson-text {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .lesson-links {
+        display: flex;
+        flex-direction: row;
+        margin: 1rem 0;
+
+        .btn {
+            margin: 0 1rem !important;
+        }
+    }
+
+    .app-link {
+        margin: 0;
+    }
+
+    .card-admin {
+        width: 280px;
+        height: 500px;
+        flex-direction: column;
+        align-items: flex-start;
+
+        .card-img {
+            width: 100%;
+            height: 180px;
+        }
+
+        .card-btns {
+            width: 80%;
+            height: auto;
+            margin: 1rem auto;
+            align-self: flex-start;
+            display: block;
+
+            .btn {
+                margin: 0;
+            }
+        }
+
+        .card-body {
+            width: calc(100% - 4rem);
+            padding: 1rem 2rem;
+        }
+    }
+
+}
+
+@media screen and (max-width: 820px) {
+    
+
+    .auth-title {
+        font-size: 2rem;
+    }
+
+    .auth-image-container {
+        display: none;
+    }
+
+    .auth-form-container {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 765px) {
+    .course-units {
+        width: 100%;
+
+        .course-div-units {
+            width: 100%;
+        }
+
+        .course-btns {
+            flex-direction: row;
+            max-width: 100%;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    }
+
+    .card-teacher-buttons,
+    .card-teacher-info {
+        max-width: 100%;
+        align-items: center;
+        text-align: center;
+    }
+
+    .teacher-link {
+        margin-bottom: 2rem;
+    }
+}
+
+@media screen and (max-width: 680px) {
+
+    .navbar-active {
+        left: 0;
+
+        .btn-navbar {
+            left: 270px;
+        }
+    }
+
+    .app-links {
+        width: 50%;
+        height: 0;
+        overflow: hidden;
+        visibility: hidden;
+        opacity: 0;
+        flex-direction: column;
+        transition: 0.2s ease-in-out;
+    }
+
+    .course-links {
+        padding: 1rem 0;
+        display: flex;
+    }
+
+    .app-links-active {
+        height: auto;
+        overflow: visible;
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .course-units {
+        .course-btns {
+            .btn {
+                max-width: 100%;
+            }
+        }
+    }
+
+    .app-link {
+        width: 100%;
+    }
+
+    .app-link-group {
+        width: 100%;
+
+        .app-link {
+            width: 100%;
+        }
+    }
+
+    .div-categories {
+        width: 100%;
+        max-width: 200px;
+        left: calc(50% - 100px);
+
+        .app-link {
+            width: 90%;
+            margin: 0 auto;
+        }
+    }
+
+    .btn-mobile {
+        display: flex;
+        width: 90%;
+        justify-content: space-between;
+    }
+}
+
+@media screen and (max-width: 641px) {
+    .student-course-info {
+        padding: 3rem 0;
+        justify-content: center;
+
+        .student-course-names {
+            margin: 0;
+            width: 80%;
+        }
+
+        .student-course-buttons {
+            margin: 0;
+            margin-top: 2rem;
+            width: 80%;
+        }
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .search {
+        flex-wrap: wrap;
+        margin: 1rem 0;
+
+        .input-search {
+            max-width: 100%;
+            margin: 0;
+            margin-bottom: 1rem;
+        }
+
+        .btn-search {
+            max-width: 100%;
+        }
+    }
+}
+
+@media screen and (max-width: 535px) {
+    .lesson-links {
+        flex-direction: column;
+        width: 100%;
+
+        .btn {
+            margin: 0 !important;
+        }
+
+        .mb {
+            margin-bottom: 1rem !important;
+        }
+    }
+}
+
+@media screen and (max-width: 483px) {
+    .teacher-btns {
+        width: 100%;
+
+        .btn {
+            width: 100%;
+            margin-top: 1rem;
+        }
+    }
+}

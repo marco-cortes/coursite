@@ -7,6 +7,7 @@ import { Modal } from "../ui/Modal";
 import { NavBarApp } from "../ui/NavBarApp";
 import { NewCourse } from "../teacher/NewCourse";
 import { startLoadCategories } from "../../redux/actions/admin";
+import { Loading } from "../ui/Loading";
 
 export const CoursesView = ({ role }) => {
 
@@ -74,6 +75,9 @@ export const CoursesView = ({ role }) => {
       }
     });
   }
+
+  if(!list)
+    return <Loading />
 
   return (
     <div className="courses-view animate__animated animate__fadeIn">

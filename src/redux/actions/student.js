@@ -59,7 +59,6 @@ export const startBuyCourse = (id) => {
     return async (dispatch, getState) => {
         const { id: uid } = getState().auth.user;
         id = parseInt(id);
-        console.log(id, uid);
         if (uid) {
             const resp = await authFetch("user/course/save", { courseId: id, userId: uid }, "POST");
             const body = await resp.json();
@@ -79,9 +78,7 @@ export const startSaveLesson = (idLesson, status) => {
         const { id: idUser } = getState().auth.user;
         const { active } = getState().courses;
         const resp = await authFetch("user/lesson/save", { idUser, idCourse: active.id, idLesson, status }, "POST");
-        const body = await resp.json();
-        console.log(resp)
-        console.log(body);
+        await resp.json();
     }
 }
 

@@ -120,12 +120,23 @@ export const AdminDashboard = () => {
 
   return (
     <div className="admin-view">
+      <h1 style={{
+        textAlign: "center",
+        margin: "20px 0",
+        fontSize: "2.5rem"
+      }}>DASHBOARD</h1>
       <Bar data={categoriesData} options={options} />
-      <div className="d-flex">
-        <div className="chart-container">
+      <div className="d-flex" style={{
+        flexWrap: "wrap"
+      }}>
+        <div className="chart-container" style={{
+          margin: "2rem auto"
+        }}>
           <Pie data={coursesData} options={options} />
         </div>
-        <div className="chart-container">
+        <div className="chart-container" style={{
+          margin: "2rem auto"
+        }}>
           <Pie data={teachersData} options={options} />
         </div>
       </div>
