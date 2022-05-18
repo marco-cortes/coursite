@@ -19,31 +19,4 @@ public class CoursiteApiApplication {
 	PasswordEncoder passwordEncoder(){
 		return new BCryptPasswordEncoder();
 	}
-
-	/* *
-	@Bean
-	CommandLineRunner run(CategoryRepository cr, RoleRepository rr){
-		return args -> {
-			Category aux = new Category();
-			aux.setName("TECHNOLOGY");
-			cr.save(aux);
-			aux = new Category();
-			aux.setName("SCIENCE");
-			cr.save(aux);
-			//define categories
-
-			Role role = new Role();
-			role.setName("ROLE_USER");
-			rr.save(role);
-
-			role = new Role();
-			role.setName(("ROLE_TEACHER"));
-			rr.save(role);
-
-			role = new Role();
-			role.setName("ROLE_ADMIN");
-			rr.save(role);
-		};
-	}
-	 */
 }

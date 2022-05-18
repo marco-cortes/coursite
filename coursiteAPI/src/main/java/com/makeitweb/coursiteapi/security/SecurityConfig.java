@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Configuration @EnableWebSecurity @RequiredArgsConstructor
@@ -39,9 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().
                 sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().
 
-                authorizeRequests().antMatchers("/api/**").permitAll().
+                authorizeRequests().antMatchers("/**").permitAll().
 
-                /*antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("ROLE_USER").
+                antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("ROLE_USER").
                 antMatchers(HttpMethod.POST, "/api/user/**").hasAnyAuthority("ROLE_USER").
                 antMatchers(HttpMethod.PUT, "/api/user/**").hasAnyAuthority("ROLE_USER").
                 antMatchers(HttpMethod.DELETE, "/api/user/**").hasAnyAuthority("ROLE_USER").
@@ -54,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 antMatchers(HttpMethod.GET, "/api/admin/**").hasAnyAuthority("ROLE_ADMIN").
                 antMatchers(HttpMethod.POST, "/api/admin/**").hasAnyAuthority("ROLE_ADMIN").
                 antMatchers(HttpMethod.PUT, "/api/admin/**").hasAnyAuthority("ROLE_ADMIN").
-                antMatchers(HttpMethod.DELETE, "/api/admin/**").hasAnyAuthority("ROLE_ADMIN").*/
+                antMatchers(HttpMethod.DELETE, "/api/admin/**").hasAnyAuthority("ROLE_ADMIN").
 
                 anyRequest().authenticated().and().
                 cors().configurationSource(corsConfigurationSource()).
@@ -66,12 +67,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedMethods(List.of(
-                HttpMethod.GET.name(),
-                HttpMethod.PUT.name(),
-                HttpMethod.POST.name(),
-                HttpMethod.DELETE.name()
-        ));
+        List<String> list = new ArrayList<>();
+        list.add(HttpMethod.GET.name());
+        list.add(HttpMethod.PUT.name());
+        list.add(HttpMethod.POST.name());
+        list.add(HttpMethod.DELETE.name());
+
+        configuration.setAllowedMethods(list);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration.applyPermitDefaultValues());

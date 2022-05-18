@@ -4,6 +4,9 @@ export const Card = ({ course, dir }) => {
 
     const { user } = useSelector(state => state.auth);
 
+    if(!course)
+        return <div>Loading...</div>;
+
     return (
         <div className="card">
             <div className={"card-img a" + course.id}>
@@ -14,7 +17,8 @@ export const Card = ({ course, dir }) => {
                 <h3 className="course">{course.title}</h3>
                 <p className="teacher">Profesor: {course.teacher.name ? course.teacher.name + " " + course.teacher.lastName : course.teacher}</p>
                 {
-                    user && user.role === 2 && <span className="status">Status: {course.status}</span>
+                    user && user.role === 2 ? <span className="status">Status: {course.status}</span>
+                    : user.role === 1 && course.isBought && <span className="status">Progreso: {Math.round(course.progress)}%</span>
                 }
                 <p className="info">
                     <span className="price">Precio: ${course.price}</span>

@@ -33,6 +33,7 @@ import { HomeView } from "../components/views/HomeView";
 import { AboutView } from "../components/views/AboutView";
 import { ServicesView } from "../components/views/ServicesView";
 import { View404 } from "../components/views/View404";
+import { CertView } from "../components/ui/CertView";
 
 export const AppRouter = () => {
 
@@ -136,6 +137,10 @@ export const AppRouter = () => {
                                 <StudentCourseView />
                             </Container>
                         </StudentRoute>
+                    }
+                    />
+                    <Route path="/student/cert/:id" element={
+                        <CertView />
                     }
                     />
                     <Route path="/student/profile" element={

@@ -1,0 +1,45 @@
+.card-cert {
+    max-width: calc(300px - 4rem - 10px);
+    max-height: calc(460px - 2rem - 10px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 1rem 2rem;
+    margin: 1rem;
+    border-radius: 30px;
+    border: 5px solid $primary;
+    background-color: $dark;
+    text-align: center;
+}
+
+.card-cert-title {
+    color: $primary;
+}
+
+.card-cert-name {
+    color: $light;
+    font-size: 1.3rem;
+}
+
+.card-cert-teacher {
+    font-weight: 300;
+    font-size: 1rem;
+}
+
+.card-cert-category {
+    font-weight: bold;
+    color: $secondary;
+    text-transform: uppercase;
+}
+
+.card-cert-btns {
+    display: flex;
+    flex-direction: column;
+    .btn {
+        margin: 0;
+    }
+
+    .btn-info {
+        margin-bottom: 1rem;
+    }
+}

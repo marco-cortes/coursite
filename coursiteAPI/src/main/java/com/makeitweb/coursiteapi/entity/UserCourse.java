@@ -22,7 +22,7 @@ public class UserCourse {
     private Float score;
 
     @JoinColumn(name="user_id")
-    @MapsId("studentId")
+    @MapsId("userId")
     @ManyToOne
     private User user;
 

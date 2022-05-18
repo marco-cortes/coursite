@@ -14,7 +14,7 @@ export const startLoadCourses = () => {
 }
 
 export const startLoadCourse = (id) => {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
         const resp = await noAuthFetch("course/" + id, {});
         const body = await resp.json();
         dispatch(setCourse(body));

@@ -1,5 +1,5 @@
 .btn {
-    display: block;    
+    display: block;
     padding: .5rem 2rem;
     border-radius: 30px;
     outline: none;
@@ -43,6 +43,7 @@
     background-color: $info;
     color: $white;
 }
+
 .btn-info:hover {
     background-color: darken($color: $info, $amount: 4);
 }
@@ -50,6 +51,7 @@
 .btn-blue {
     background-color: $blue;
     color: $white;
+
     &:hover {
         background-color: darken($color: $blue, $amount: 4);
     }
@@ -60,9 +62,13 @@
     box-shadow: none;
     background-color: $white;
     color: $primary;
+    &:hover {
+        background-color: $primary;
+        color: $white;
+    }
 }
 
-.btn-link:hover {
+.btn-link-active {
     background-color: $primary;
     color: $white;
 }

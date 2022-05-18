@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { startLoadCourse } from "../../redux/actions/courses";
+import { startLoadUserCourse } from "../../redux/actions/student";
 import { showModal } from "../../redux/actions/ui";
 import { Lesson } from "../ui/Lesson";
 import { Loading } from "../ui/Loading";
@@ -9,16 +9,18 @@ import { Modal } from "../ui/Modal";
 import { RatingCourse } from "../ui/RatingCourse";
 
 export const StudentCourseView = () => {
-    
+
     const dispatch = useDispatch();
     const { id } = useParams();
     const { active } = useSelector(state => state.courses);
+    const { user } = useSelector(state => state.auth);
 
     const [select, setSelect] = useState(0);
 
     useEffect(() => {
-        dispatch(startLoadCourse(id));
-    }, [dispatch, id]);
+        if(user)
+            dispatch(startLoadUserCourse(id, user.id));
+    }, [dispatch, id, user]);
 
     if (!active) {
         return <Loading />;
@@ -64,7 +66,7 @@ export const StudentCourseView = () => {
                             <div className="student-course-lessons">
                                 {
                                     unit && unit.lessons.map((lesson, index) => (
-                                        <Lesson key={index} {...lesson} index={index+1} />
+                                        <Lesson key={index} lesson={lesson} active={active} index={index + 1} />    
                                     ))
                                 }
                             </div>
@@ -75,11 +77,11 @@ export const StudentCourseView = () => {
             <Modal title={select === 0 ? "INFORMACIÓN DE CONTÁCTO" : "CALIFICAR CURSO"}>
                 {
                     select === 0 ?
-                    <>
-                        <h3 className="text-contact"><span className="text-contact-title">Correo:</span> <br/> {active.teacherEmail}</h3>
-                        <h3 className="text-contact"><span className="text-contact-title">Teléfono:</span> <br/> {active.teacherPhone}</h3>
-                    </> :
-                    <RatingCourse />
+                        <>
+                            <h3 className="text-contact"><span className="text-contact-title">Correo:</span> <br /> {active.teacherEmail}</h3>
+                            <h3 className="text-contact"><span className="text-contact-title">Teléfono:</span> <br /> {active.teacherPhone}</h3>
+                        </> :
+                        <RatingCourse />
                 }
             </Modal>
         </div>

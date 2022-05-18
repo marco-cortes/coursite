@@ -39,6 +39,7 @@ export const startLoadCoursesStudent = () => {
                     const rcourses = await noAuthFetch("courses/", {});
                     const rbody = await rcourses.json();
                     rbody.map(course => myCourses.map(myCourse => course.id === myCourse.id ? course.isBought = true : null));
+                    rbody.map(course => myCourses.map(myCourse => course.id === myCourse.id ? course.progress = myCourse.progress : null));
                     dispatch(setCourses(rbody));
                 }
             }
@@ -58,6 +59,7 @@ export const startBuyCourse = (id) => {
     return async (dispatch, getState) => {
         const { id: uid } = getState().auth.user;
         id = parseInt(id);
+        console.log(id, uid);
         if (uid) {
             const resp = await authFetch("user/course/save", { courseId: id, userId: uid }, "POST");
             const body = await resp.json();
@@ -69,6 +71,17 @@ export const startBuyCourse = (id) => {
             }
 
         }
+    }
+}
+
+export const startSaveLesson = (idLesson, status) => {
+    return async (dispatch, getState) => {
+        const { id: idUser } = getState().auth.user;
+        const { active } = getState().courses;
+        const resp = await authFetch("user/lesson/save", { idUser, idCourse: active.id, idLesson, status }, "POST");
+        const body = await resp.json();
+        console.log(resp)
+        console.log(body);
     }
 }
 
@@ -94,16 +107,22 @@ export const startLoadUserCourse = (course, user) => {
         try {
             const resp = await authFetch("user/course/" + course + "/info/" + user, {});
             const body = await resp.json();
+
             if (body.error) {
                 Swal.fire("Error", body.error, "error");
             } else {
-                const { active } = getState().courses;
-                if (active) {
-                    dispatch(setCourse({
-                        ...active,
-                        score: body.score,
-                    }));
-                }
+                const resp2 = await noAuthFetch("course/" + course, {});
+                const body2 = await resp2.json();
+
+                const resp3 = await noAuthFetch("user/course/" + course + "/lessons/" + user, {});
+                const body3 = await resp3.json();
+
+                dispatch(setCourse({
+                    ...body2,
+                    score: body.score,
+                    progress: body.progress,
+                    lessons: body3,
+                }));
             }
         } catch (error) {
             console.log(error);

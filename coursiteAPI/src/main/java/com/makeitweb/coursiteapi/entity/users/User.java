@@ -1,14 +1,9 @@
 package com.makeitweb.coursiteapi.entity.users;
 
-import com.makeitweb.coursiteapi.entity.UserCourse;
-import com.makeitweb.coursiteapi.entity.Notification;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
 @Entity

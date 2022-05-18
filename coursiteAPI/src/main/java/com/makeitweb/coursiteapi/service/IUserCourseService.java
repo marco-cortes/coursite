@@ -4,16 +4,18 @@ package com.makeitweb.coursiteapi.service;
 import com.makeitweb.coursiteapi.dto.UserCourseDTO;
 import com.makeitweb.coursiteapi.entity.UserCourse;
 import com.makeitweb.coursiteapi.entity.UserCoursePK;
+import com.makeitweb.coursiteapi.entity.UserLesson;
+import com.makeitweb.coursiteapi.entity.UserLessonPK;
 import com.makeitweb.coursiteapi.entity.course.Course;
+import com.makeitweb.coursiteapi.entity.course.Lesson;
 import com.makeitweb.coursiteapi.entity.users.User;
 import com.makeitweb.coursiteapi.helpers.Validation;
-import com.makeitweb.coursiteapi.repository.CourseRepository;
-import com.makeitweb.coursiteapi.repository.UserCourseRepository;
-import com.makeitweb.coursiteapi.repository.UserRepository;
+import com.makeitweb.coursiteapi.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -23,6 +25,8 @@ public class IUserCourseService implements UserCourseService {
     private final UserCourseRepository userCourseRepository;
     private final UserRepository userRepository;
     private final CourseRepository courseRepository;
+    private final UserLessonRepository userLessonRepository;
+    private final LessonRepository lessonRepository;
 
     @Override
     public UserCourseDTO save(UserCourseDTO userCourseDTO) {
@@ -56,6 +60,21 @@ public class IUserCourseService implements UserCourseService {
             userCourse.setScore(null);
             userCourse.setId(new UserCoursePK(user.getId(), course.getId()));
             userCourseRepository.save(userCourse);
+
+            List<Lesson> lessons = lessonRepository.getLessonsByCourse_Id(course.getId());
+
+            if(lessons == null)
+                return null;
+
+            for (Lesson aux : lessons) {
+                UserLessonPK ulpk = new UserLessonPK(user.getId(), course.getId(), aux.getId());
+                UserLesson ul = new UserLesson();
+                ul.setId(ulpk);
+                ul.setUser(user);
+                ul.setLesson(aux);
+                ul.setCourse(course);
+                userLessonRepository.save(ul);
+            }
             return userCourseDTO;
         }
 
@@ -103,5 +122,50 @@ public class IUserCourseService implements UserCourseService {
         userCourseDTO.setScore(userCourse.getScore());
 
         return userCourseDTO;
+    }
+
+    @Override
+    public UserLesson setLessonStatus(Long userId, Long courseId, Long lessonId, Boolean status) {
+
+        User u = userRepository.findById(userId).orElse(null);
+        if(u == null)
+            return null;
+        Lesson l = lessonRepository.findById(lessonId).orElse(null);
+        if(l == null)
+            return null;
+        UserLessonPK ulpk = new UserLessonPK(userId, courseId, lessonId);
+        UserLesson ul = userLessonRepository.findById(ulpk).orElse(null);
+
+        if(ul == null)
+            return null;
+
+        if(status != null)
+            ul.setStatus(status);
+
+        ul = userLessonRepository.save(ul);
+
+        List<UserLesson> ulList = getLessonsUser(userId, courseId);
+
+        float c = 0f;
+        for(UserLesson aux:ulList) {
+            if(aux.getStatus())
+                c++;
+        }
+
+        UserCoursePK ucpk = new UserCoursePK(userId, courseId);
+        UserCourse uc = userCourseRepository.findById(ucpk).orElse(null);
+
+        //float value = ;
+        assert uc != null;
+        uc.setProgress(100 * c / ulList.size());
+
+        userCourseRepository.save(uc);
+
+        return ul;
+    }
+
+    @Override
+    public List<UserLesson> getLessonsUser(Long userId, Long courseId) {
+        return userLessonRepository.getUserLessonsByUser_IdAndCourse_Id(userId, courseId);
     }
 }

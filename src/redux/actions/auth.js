@@ -104,8 +104,8 @@ export const getUser = (email) => {
             if (body.user.role === 1) {
                 dispatch(startLoadCoursesStudent());
             } else if (body.user.role === 2) {
-
-                if (body.user.status === 0) {
+                console.log(body);
+                if (body.user.status === 0 && body.docs.length > 0) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -113,7 +113,8 @@ export const getUser = (email) => {
                     });
                     dispatch(startLogout());
                     return;
-                } else if (body.user.status === -1) {
+                }
+                else if (body.user.status === -1) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -125,8 +126,6 @@ export const getUser = (email) => {
 
                 dispatch(setDocuments(body.docs));
                 dispatch(startLoadCoursesTeacher(body.id));
-
-
 
             } else if (body.user.role === 3) {
                 dispatch(startLoadCoursesAdmin());
@@ -203,7 +202,6 @@ export const setDocuments = (docs) => ({
 export const startChangePassword = (user, password, newPassword) => {
     return async (dispatch) => {
         const resp = await noAuthFetch(`login?email=${user.email}&password=${password}`, {}, "POST");
-        console.log(resp);
         if (resp.status === 403) {
             Swal.fire({
                 icon: 'error',
@@ -240,10 +238,6 @@ export const startChangePassword = (user, password, newPassword) => {
     }
 
 }
-
-
-
-
 
 
 export const startLoadNotifications = () => {

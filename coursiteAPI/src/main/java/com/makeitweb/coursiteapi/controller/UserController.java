@@ -1,11 +1,13 @@
 package com.makeitweb.coursiteapi.controller;
 
 import com.makeitweb.coursiteapi.dto.UserCourseDTO;
+import com.makeitweb.coursiteapi.entity.UserLesson;
 import com.makeitweb.coursiteapi.entity.users.User;
 import com.makeitweb.coursiteapi.service.CourseService;
 import com.makeitweb.coursiteapi.service.DocumentService;
 import com.makeitweb.coursiteapi.service.UserCourseService;
 import com.makeitweb.coursiteapi.service.UserService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -115,6 +117,24 @@ public class UserController {
         return ResponseEntity.ok(u);
     }
 
+    @GetMapping("/course/{course}/lessons/{user}")
+    public ResponseEntity<?> getLessonsByUser(@PathVariable Long user, @PathVariable Long course) {
+        return ResponseEntity.ok(userCourseService.getLessonsUser(user, course));
+    }
 
+    @PostMapping("/lesson/save")
+    public ResponseEntity<?> setStatusLesson(@RequestBody statusLesson sl) {
+        UserLesson ul = userCourseService.setLessonStatus(sl.getIdUser(), sl.idCourse, sl.idLesson, sl.getStatus());
+        if(ul == null)
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(ul);
+    }
+}
 
+@Data
+class statusLesson {
+    Long idLesson;
+    Long idUser;
+    Long idCourse;
+    Boolean status;
 }
