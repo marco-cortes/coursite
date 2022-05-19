@@ -5,10 +5,7 @@ import com.makeitweb.coursiteapi.entity.Document;
 import com.makeitweb.coursiteapi.entity.course.Category;
 import com.makeitweb.coursiteapi.entity.course.Course;
 import com.makeitweb.coursiteapi.entity.users.User;
-import com.makeitweb.coursiteapi.service.CategoryService;
-import com.makeitweb.coursiteapi.service.CourseService;
-import com.makeitweb.coursiteapi.service.DocumentService;
-import com.makeitweb.coursiteapi.service.UserService;
+import com.makeitweb.coursiteapi.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -65,7 +62,6 @@ public class AdminController {
     @PutMapping("/teacher/{id}/status/{value}")
     public ResponseEntity<?> changeTeacherStatus(@PathVariable Long id, @PathVariable Integer value) {
         User u = userService.getUserById(id);
-
         Map<String, Object> response = new HashMap<>();
 
         if (u ==  null) {
@@ -84,6 +80,7 @@ public class AdminController {
 
         response.put("status", 500);
         response.put("error", "El usuario no es un profesor");
+
         return ResponseEntity.badRequest().body(response);
     }
 
@@ -138,10 +135,12 @@ public class AdminController {
         Integer teachersAccepted = 0;
         Integer teachersRejected = 0;
         Integer teachersPending = 0;
+        Integer teachersDeleted = 0;
 
         Integer coursesAccepted = 0;
         Integer coursesRejected = 0;
         Integer coursesPending = 0;
+        Integer coursesDeleted = 0;
 
         List<Integer> coursesByCategory = new ArrayList<>();
 
@@ -150,8 +149,10 @@ public class AdminController {
                 teachersAccepted++;
             else if(u.getStatus() == -1)
                 teachersRejected++;
-            else
+            else if(u.getStatus() == 0)
                 teachersPending++;
+            else
+                teachersDeleted++;
         }
 
         for(Course c : courseService.getAllCourses()) {
@@ -159,8 +160,10 @@ public class AdminController {
                 coursesAccepted++;
             else if(c.getStatus() == -1)
                 coursesRejected++;
-            else
+            else if(c.getStatus() == 0)
                 coursesPending++;
+            else
+                coursesDeleted++;
 
         }
         Integer aux = 0;
@@ -175,16 +178,18 @@ public class AdminController {
         }
 
         Map<String, Object> response = new HashMap<>();
-        Integer[] stats = new Integer[3];
+        Integer[] stats = new Integer[4];
         stats[0] = teachersAccepted;
         stats[1] = teachersPending;
         stats[2] = teachersRejected;
+        stats[3] = teachersDeleted;
         response.put("statsTeachers", stats);
 
-        Integer[] statsC = new Integer[3];
+        Integer[] statsC = new Integer[4];
         statsC[0] = coursesAccepted;
         statsC[1] = coursesPending;
         statsC[2] = coursesRejected;
+        statsC[3] = coursesDeleted;
 
 
         response.put("statsCourses", statsC);

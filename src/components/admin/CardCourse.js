@@ -40,8 +40,8 @@ export const CardCourse = ({ course }) => {
                             </button>
                         </>
                         : 
-                        <p className={"profile-teacher-status s" + course.status}>
-                            {course.status === 1 ? "Aprobado" : "Rechazado"}
+                        <p className={ course.status === -2 ? "profile-teacher-status s-1" : "profile-teacher-status s" + course.status}>
+                            {course.status === 1 ? "Aprobado" : course.status === -2 ? "Eliminado" : "Rechazado"}
                         </p>
                 }
             </div>

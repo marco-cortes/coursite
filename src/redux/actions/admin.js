@@ -2,8 +2,7 @@ import Swal from "sweetalert2";
 import { authFetch } from "../../helpers/fetch";
 import { types } from "../types/types";
 import { setCourses } from "./courses";
-import { db } from "../../firebase/firebase-config";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { sendNotification } from "../../helpers/firebase";
 
 export const startLoadCategories = () => {
     return async (dispatch) => {
@@ -50,33 +49,17 @@ export const startSetTeacherStatus = (teacher) => {
         if (body.status === 200) {
             dispatch(updateTeacher(teacher));
 
+            if(teacher.status === -1)
+                return;
+                //senEmail
 
-            if(teacher.status === 1) {
-                const notification = {
-                    title: "¡Bienvenido!",
-                    message: "¡Saludos! " + teacher.name + " " + teacher.lastName + ". " + teacher.status === 1 && "¡Has sido aceptado como profesor de Coursite!.",
-                    type: "success",
-                    icon: "success",
-                    status: 0
-                }
-        
-                const docRef = doc(db, "notifications", ""+teacher.id);
-                const docSnap = await getDoc(docRef);
-        
-                if (docSnap.exists) {
-                    await setDoc(docRef, {
-                        notifications: [notification, ...docSnap.data().notifications]
-                    })
-                    return;
-                }
-                
-                await setDoc(docRef, { notifications: [notification] });
-            } else {
-                /**
-                 * Send email for teacher rejection
-                 */
-            }
-
+            sendNotification({
+                title: "¡Bienvenido!",
+                message: "¡Saludos! " + teacher.name + " " + teacher.lastName + ". ¡Has sido aceptado como profesor de Coursite!.",
+                type: "success",
+                icon: "success",
+                status: 0
+            }, teacher.id);
             
 
             Swal.fire("Success", "¡Status actualizado!", "success");
@@ -100,30 +83,13 @@ export const startSetCourseStatus = (course) => {
         
         if (body.status === 200) {
             dispatch(updateCourse(course));
-
-            const notification = {
+            sendNotification({
                 title: "Status de tu curso",
                 message: "¡Saludos! " + course.teacher.name + " " + course.teacher.lastName + ", tu curso llamado '" + course.title + "' ha sido " + (course.status === 1 ? "aprobado" : "rechazado"),
                 type: course.status === 1 ? "success" : "danger",
                 icon: course.status === 1 ? "success" : "danger",
                 status: 0
-            }
-
-            const docRef = doc(db, "notifications", ""+course.teacher.id);
-            const docSnap = await getDoc(docRef);
-    
-            if (docSnap.exists) {
-                if(docSnap.data()){
-                    await setDoc(docRef, {
-                        notifications: [notification, ...docSnap.data().notifications]
-                    })
-                } else {
-                    await setDoc(docRef, { notifications: [notification] });
-                }
-            }
-            
-            
-            
+            }, course.teacher.id);
 
             Swal.fire("Success", "¡Status actualizado!", "success");
         } else {

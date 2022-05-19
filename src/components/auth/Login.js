@@ -4,8 +4,13 @@ import { Link } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
 import { useDispatch } from "react-redux";
 import { startLogin } from "../../redux/actions/auth";
+import { useState } from "react";
+import { Loading } from "../ui/Loading";
 
 export const Login = () => {
+
+  const [loading, setLoading] = useState(false);
+
 
   const [login, setLogin] = useForm({
     email: "",
@@ -16,7 +21,8 @@ export const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    dispatch(startLogin(login.email, login.password));
+    setLoading(true);
+    dispatch(startLogin(login.email, login.password, setLoading));
   }
 
   return (
@@ -40,7 +46,17 @@ export const Login = () => {
             <i className="fa-solid fa-lock auth-icon"></i>
             <input className="auth-input" placeholder="Tu contraseña aquí" type="password" name="password" value={login.password} onChange={setLogin} required />
           </div>
-          <button className="btn auth-btn">Iniciar sesión</button>
+          {
+            loading ? 
+            <div className="auth-input-div" style={{
+              border: "none",
+            }}>
+              <Loading />
+            </div>
+             : <button className="btn auth-btn">Iniciar sesión</button>
+          }
+
+          
         </div>
         <div className="auth-help-container">
           <p className="auth-help">¿No tienes cuenta?</p>

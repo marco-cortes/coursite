@@ -8,7 +8,7 @@
 
 .card {
     width: 280px;
-    height: 500px;
+    max-height: 500px;
     box-shadow: 0 0 5px rgba(0, 0, 0, .2);
     border-radius: 40px;
     margin: 1rem 0;
@@ -17,9 +17,14 @@
     justify-content: space-between;
 }
 
+.card-t {
+    max-height: 600px;
+}
+
 .card-admin {
     width: 90%;
-    height: 200px;
+    min-height: 200px;
+    max-height: 200px !important;
     flex-direction: row;
     align-items: center;
 

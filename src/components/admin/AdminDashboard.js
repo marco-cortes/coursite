@@ -26,14 +26,14 @@ export const AdminDashboard = () => {
   const categories = useSelector(state => state.courses.categories);
 
   const [coursesData, setCoursesData] = useState({
-    labels: ["Cursos activos", "Cursos pendientes", "Cursos cancelados"],
+    labels: ["Cursos activos", "Cursos pendientes", "Cursos cancelados", "Cursos eliminados"],
     datasets: [
       {
         label: "Cursos",
-        backgroundColor: ["#00bcd4", "#ff9800", "#f44336"],
-        borderColor: ["#00bcd4", "#ff9800", "#f44336"],
-        hoverBackgroundColor: ["#00bcd4", "#ff9800", "#f44336"],
-        hoverBorderColor: ["#00bcd4", "#ff9800", "#f44336"],
+        backgroundColor: ["#00bcd4", "#ff9800", "#f44336", "#9e9e9e"],
+        borderColor: ["#00bcd4", "#ff9800", "#f44336", "#9e9e9e"],
+        hoverBackgroundColor: ["#00bcd4", "#ff9800", "#f44336", "#9e9e9e"],
+        hoverBorderColor: ["#00bcd4", "#ff9800", "#f44336", "#9e9e9e"],
         data: stats && stats.statsCourses
       }
     ]
@@ -42,14 +42,14 @@ export const AdminDashboard = () => {
   useEffect(() => {
     if (stats)
       setCoursesData({
-        labels: ["Cursos activos", "Cursos pendientes", "Cursos rechazados"],
+        labels: ["Cursos activos", "Cursos pendientes", "Cursos rechazados", "Cursos eliminados"],
         datasets: [
           {
             label: "Cursos",
-            backgroundColor: ["#00bcd4", "#ff9800", "#f44336"],
-            borderColor: ["#00bcd4", "#ff9800", "#f44336"],
-            hoverBackgroundColor: ["#00bcd4", "#ff9800", "#f44336"],
-            hoverBorderColor: ["#00bcd4", "#ff9800", "#f44336"],
+            backgroundColor: ["#00bcd4", "#ff9800", "#f44336", "#9e9e9e"],
+            borderColor: ["#00bcd4", "#ff9800", "#f44336", "#9e9e9e"],
+            hoverBackgroundColor: ["#00bcd4", "#ff9800", "#f44336", "#9e9e9e"],
+            hoverBorderColor: ["#00bcd4", "#ff9800", "#f44336", "#9e9e9e"],
             data: stats && stats.statsCourses
           }
         ]
@@ -57,7 +57,7 @@ export const AdminDashboard = () => {
   }, [stats]);
 
   const [teachersData, setTeachersData] = useState({
-    labels: ["Profesores activos", "Profesores pendientes", "Profesores rechazados"],
+    labels: ["Profesores activos", "Profesores pendientes", "Profesores rechazados", "Profesores eliminados"],
     datasets: [
       {
         label: "Profesores",
@@ -73,14 +73,14 @@ export const AdminDashboard = () => {
   useEffect(() => {
     if (stats)
       setTeachersData({
-        labels: ["Profesores activos", "Profesores pendientes", "Profesores cancelados"],
+        labels: ["Profesores activos", "Profesores pendientes", "Profesores cancelados", "Profesores eliminados"],
         datasets: [
           {
             label: "Profesores",
-            backgroundColor: ["#00bcd4", "#ff9800", "#f44336"],
-            borderColor: ["#00bcd4", "#ff9800", "#f44336"],
-            hoverBackgroundColor: ["#00bcd4", "#ff9800", "#f44336"],
-            hoverBorderColor: ["#00bcd4", "#ff9800", "#f44336"],
+            backgroundColor: ["#00bcd4", "#ff9800", "#f44336", "#9c27b0"],
+            borderColor: ["#00bcd4", "#ff9800", "#f44336", "#9c27b0"],
+            hoverBackgroundColor: ["#00bcd4", "#ff9800", "#f44336", "#9c27b0"],
+            hoverBorderColor: ["#00bcd4", "#ff9800", "#f44336", "#9c27b0"],
             data: stats && stats.statsTeachers
           }
         ]
@@ -117,7 +117,7 @@ export const AdminDashboard = () => {
         ]
       })
   }, [stats, categories]);
-
+  
   return (
     <div className="admin-view">
       <h1 style={{

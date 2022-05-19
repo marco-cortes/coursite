@@ -31,10 +31,11 @@
 }
 
 .teacher-div-img {
-    max-width: 140px;
-    max-height: 140px;
+    width: 140px;
+    height: 140px;
     overflow: hidden;
     margin-bottom: 1rem;
+    border-radius: 50%;
 }
 
 .teacher-img {

@@ -5,10 +5,13 @@ import { startRegister } from '../../redux/actions/auth';
 import { Logo } from '../Logo';
 import img from "../../image/register.svg";
 import Swal from 'sweetalert2';
+import { useState } from 'react';
+import { Loading } from '../ui/Loading';
 
 export const Register = ({ role }) => {
 
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const [register, setRegister] = useForm({
         name: "",
@@ -24,13 +27,14 @@ export const Register = ({ role }) => {
     const handleRegister = (e) => {
         e.preventDefault();
         if (register.password === register.confirmPassword) {
+            setLoading(true);
             dispatch(startRegister({
                 name: register.name,
                 lastName: register.lastName,
                 email: register.email,
                 password: register.password,
                 role: register.role
-            }));
+            }, setLoading));
             navigate("/teacher/register/finish");
         } else {
             Swal.fire({
@@ -71,7 +75,15 @@ export const Register = ({ role }) => {
                         <i className="fa-solid fa-lock auth-icon"></i>
                         <input className="auth-input" placeholder="Repetir contraseña" type="password" name="confirmPassword" value={register.confirmPassword} onChange={setRegister} required />
                     </div>
-                    <button className="btn auth-btn">Registrarse</button>
+                    {
+                        loading ?
+                            <div className="auth-input-div" style={{
+                                border: "none",
+                            }}>
+                                <Loading />
+                            </div>
+                            : <button className="btn auth-btn">Registrarse</button>
+                    }
                 </div>
                 <div className="auth-help-container">
                     <p className="auth-help">¿Ya tienes cuenta?</p>

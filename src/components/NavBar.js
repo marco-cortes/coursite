@@ -25,10 +25,10 @@ export const NavBar = () => {
 
     if (user) {
       const ref = doc(db, "notifications", "" + user.id);
-
       const unsub = onSnapshot(ref, (doc) => {
-        if (doc.data())
+        if (doc.data()){
           dispatch(setNotifications(doc.data().notifications));
+        }
       })
 
       return () => {

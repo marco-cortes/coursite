@@ -225,7 +225,7 @@ export const AppRouter = () => {
                     <Route path="/admin/courses/:id" element={
                         <AdminRoute>
                             <Container>
-                                <StudentCourseView />
+                                <StudentCourseView  role={2} />
                             </Container>
                         </AdminRoute>
                     }

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { startSaveLesson } from "../../redux/actions/student";
 
-export const Lesson = ({ lesson, active }) => {
+export const Lesson = ({ lesson, active, role }) => {
 
 
     const { index, title, description, linkDoc, linkVideo } = lesson;
@@ -12,6 +12,9 @@ export const Lesson = ({ lesson, active }) => {
     const dispatch = useDispatch();
 
     const handleClick = (string, e) => {
+
+        if(role) return;
+
         e.target.classList.add("btn-link-active");
         if (string === "doc" && !completed) {
             if (counter === 0)
@@ -30,15 +33,17 @@ export const Lesson = ({ lesson, active }) => {
     }
 
     useEffect(() => {
+        if(role) return;
         if (active.lessons)
             active.lessons.map(l => l.lesson.id === lesson.id ? setCompleted(l.status) : null);
-    }, [completed, active, lesson]);
+    }, [completed, active, lesson, role]);
 
     useEffect(() => {
+        if(role) return;
         if (counter === 2 && !completed) {
             dispatch(startSaveLesson(lesson.id, true));
         }
-    }, [counter, completed, dispatch, lesson]);
+    }, [counter, completed, dispatch, lesson, role]);
 
     return (
         <div className="div-lesson">

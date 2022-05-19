@@ -29,19 +29,19 @@ export const AdminTeacher = () => {
         <div className="teacher-div-img">
           {
             active.teacher.image ?
-              <img src={active.teacher.img} alt={active.teacher.name} className="teacher-img" />
+              <img src={active.teacher.image} alt={active.teacher.name} className="teacher-img" />
               : <img src={defaultImg} alt={active.teacher.name} className="teacher-img" />
           }
         </div>
         <h2 className="profile-teacher-name">{active.teacher.name + " " + active.teacher.lastName}</h2>
         <p className="profile-teacher-info">{active.teacher.email}</p>
         <p className="profile-teacher-info">{active.teacher.phone}</p>
-        <p className={"profile-teacher-status s" + active.teacher.status}>
+        <p className={ active.teacher.status === -2 ? "profile-teacher-status s-1" : "profile-teacher-status s" + active.teacher.status}>
           {active.teacher.status === 0
             ? "Status: Pendiente"
             : active.teacher.status === 1
               ? "Status: Activo"
-              : "Status: Rechazado"}
+              :  active.teacher.status === -1 ? "Status: Rechazado" : "Status: Eliminado"}
         </p>
       </div>
       <div className="teacher-docs">

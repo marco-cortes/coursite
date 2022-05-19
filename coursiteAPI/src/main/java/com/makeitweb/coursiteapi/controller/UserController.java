@@ -62,7 +62,7 @@ public class UserController {
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         if(user.getId() == null || user.getId() <= 0)
             return ResponseEntity.badRequest().build();
-        if(userService.getUserByEmail(user.getEmail()) == null)
+        if(userService.getUserById(user.getId()) == null)
             return ResponseEntity.notFound().build();
        return ResponseEntity.ok(userService.saveUser(user));
     }

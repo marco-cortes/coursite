@@ -94,9 +94,9 @@ public class ICourseService implements CourseService {
     @Override
     public Boolean deleteCourse(Long id) {
         Course c = courseRepository.findById(id).orElse(null);
-        if(c == null)
-            return Boolean.FALSE;
-        courseRepository.delete(c);
+        assert c != null;
+            c.setStatus(-2);
+        courseRepository.save(c);
         return Boolean.TRUE;
     }
 

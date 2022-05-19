@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { startLoadCourse } from "../../redux/actions/courses";
 import { startLoadUserCourse } from "../../redux/actions/student";
 import { showModal } from "../../redux/actions/ui";
 import { Lesson } from "../ui/Lesson";
@@ -8,7 +9,7 @@ import { Loading } from "../ui/Loading";
 import { Modal } from "../ui/Modal";
 import { RatingCourse } from "../ui/RatingCourse";
 
-export const StudentCourseView = () => {
+export const StudentCourseView = ({ role }) => {
 
     const dispatch = useDispatch();
     const { id } = useParams();
@@ -18,9 +19,10 @@ export const StudentCourseView = () => {
     const [select, setSelect] = useState(0);
 
     useEffect(() => {
-        if(user)
-            dispatch(startLoadUserCourse(id, user.id));
-    }, [dispatch, id, user]);
+        if (user)
+            if(role) dispatch(startLoadCourse(id));
+            else dispatch(startLoadUserCourse(id, user.id));
+    }, [dispatch, id, user, role]);
 
     if (!active) {
         return <Loading />;
@@ -49,7 +51,9 @@ export const StudentCourseView = () => {
                         <h4 className="student-course-teacher">{active.teacher}</h4>
                         <div className="flex space-between align-items-center">
                             <h6 className="student-course-category">{active.category}</h6>
-                            <button className="btn btn-success no-margin" onClick={showScore}>Calificar</button>
+                            {
+                                role ? "" : <button className="btn btn-success no-margin" onClick={showScore}>Calificar</button>
+                            }
                         </div>
                     </div>
                     <div className="student-course-buttons">
@@ -66,7 +70,7 @@ export const StudentCourseView = () => {
                             <div className="student-course-lessons">
                                 {
                                     unit && unit.lessons.map((lesson, index) => (
-                                        <Lesson key={index} lesson={lesson} active={active} index={index + 1} />    
+                                        <Lesson key={index} lesson={lesson} active={active} index={index + 1} role={role} />
                                     ))
                                 }
                             </div>

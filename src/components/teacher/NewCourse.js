@@ -8,8 +8,9 @@ import { InputLesson } from "./InputLesson";
 import { TeacherUnit } from "./TeacherUnit";
 import { startLoadCategories } from "../../redux/actions/admin";
 import { cleanUnit, startAddCourse } from "../../redux/actions/teachers";
+import Swal from "sweetalert2";
 
-export const NewCourse = ({active}) => {
+export const NewCourse = ({ active }) => {
 
   const { categories, unitActive, lessonActive } = useSelector(state => state.courses);
   const { id } = useSelector(state => state.auth.user);
@@ -54,31 +55,74 @@ export const NewCourse = ({active}) => {
 
   const submitCourse = (e) => {
     e.preventDefault();
+
+    if (validateCourse()) {
+      return;
+    }
     dispatch(startAddCourse(course, id));
   }
+
+  const validateCourse = () => {
+    let error = false;
+
+    course.units.length <= 0 && (error = true);
+
+    if (error) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Por favor, agregue unidades al curso',
+        icon: 'error',
+      });
+      return true;
+    }
+
+    course.units.map(u => u.lessons.length === 0 ? error = true : null);
+
+    if (error) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Las unidades deben tener al menos una lección',
+        icon: 'error',
+      });
+      return true;
+    }
+
+    if(course.idCategory === "Seleccione una categoría") {
+      Swal.fire({
+        title: 'Error',
+        text: 'Por favor, seleccione una categoría',
+        icon: 'error',
+      });
+      return true;
+    }
+
+    return error;
+
+  }
+
 
   const back = (e) => {
     e.preventDefault();
     window.history.back();
   }
 
-  useEffect(()=>{
+  useEffect(() => {
 
-    if(lessonActive) {
+    if (lessonActive) {
       lessonActive.uuid ?
-      document.getElementById(lessonActive.uuid).scrollIntoView({ behavior: 'smooth' }) :
-      document.getElementById(lessonActive.id).scrollIntoView({ behavior: 'smooth' })
+        document.getElementById(lessonActive.uuid).scrollIntoView({ behavior: 'smooth' }) :
+        document.getElementById(lessonActive.id).scrollIntoView({ behavior: 'smooth' })
     }
-    else if(unitActive) {
-      unitActive.uuid ? 
-      document.getElementById(unitActive.uuid) ? 
-      document.getElementById(unitActive.uuid).scrollIntoView({ behavior: 'smooth' }) : 
-      document.getElementById(unitActive.id) ? 
-      document.getElementById(unitActive.id).scrollIntoView({ behavior: 'smooth' }) :
-      <></> :
-      <></>
+    else if (unitActive) {
+      unitActive.uuid ?
+        document.getElementById(unitActive.uuid) ?
+          document.getElementById(unitActive.uuid).scrollIntoView({ behavior: 'smooth' }) :
+          document.getElementById(unitActive.id) ?
+            document.getElementById(unitActive.id).scrollIntoView({ behavior: 'smooth' }) :
+            <></> :
+        <></>
     }
-    else if(document.getElementById("units-end"))
+    else if (document.getElementById("units-end"))
       document.getElementById("units-end").scrollIntoView({ behavior: 'smooth' });
   }, [course.units, unitActive, lessonActive]);
 
@@ -89,27 +133,27 @@ export const NewCourse = ({active}) => {
   return (
     <div className="admin-view">
       <form className="new-course-form" onSubmit={submitCourse}>
-        <h2 className="form-title">Solicitud para nuevo curso</h2>
+        <h2 className="form-title">{active ? "Editar curso" : "Solicitud para nuevo curso"}</h2>
         <div className="course-form-group">
           <label htmlFor="title">Título</label>
-          <input type="text" className="form-control" id="title" placeholder="Título" name="title" value={course.title} onChange={setCourseData} />
+          <input type="text" className="form-control" id="title" placeholder="Título" name="title" value={course.title} onChange={setCourseData} required />
         </div>
         <div className="course-form-group">
           <label htmlFor="description">Descripción</label>
-          <textarea className="form-control" id="description" rows="5" placeholder="Descripción" name="description" value={course.description} onChange={setCourseData} />
+          <textarea className="form-control" id="description" rows="5" placeholder="Descripción" name="description" value={course.description} onChange={setCourseData} required />
         </div>
         <div className="course-form-group">
           <label htmlFor="image">Imagen</label>
-          <input type="text" className="form-control" id="image" placeholder="Imagen" name="image" value={course.image} onChange={setCourseData} />
+          <input type="text" className="form-control" id="image" placeholder="Imagen" name="image" value={course.image} onChange={setCourseData} required />
         </div>
         <div className="group-flex">
           <div className="course-form-group">
             <label htmlFor="price">Precio</label>
-            <input type="number" className="form-control" id="price" placeholder="Precio" name="price" value={course.price} onChange={setCourseData} />
+            <input type="number" className="form-control" id="price" placeholder="Precio" name="price" value={course.price} onChange={setCourseData} required />
           </div>
           <div className="course-form-group">
             <label htmlFor="category">Categoría</label>
-            <select className="form-control" id="category" value={course.idCategory} name="idCategory" onChange={setCourseData}>
+            <select className="form-control" id="category" value={course.idCategory} name="idCategory" onChange={setCourseData} required>
               <option>Seleccione una categoría</option>
               {
                 categories.map(category => (

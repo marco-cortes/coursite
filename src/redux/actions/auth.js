@@ -9,9 +9,10 @@ import { startLoadCategories, startLoadCoursesAdmin, startLoadStats, startLoadTe
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db, storage } from "../../firebase/firebase-config";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { closeModal } from "./ui";
 
 
-export const startLogin = (email, password) => {
+export const startLogin = (email, password, setLoading) => {
     return async (dispatch) => {
         const resp = await noAuthFetch(`login?email=${email}&password=${password}`, {}, "POST");
         if (resp.status === 403) {
@@ -20,10 +21,11 @@ export const startLogin = (email, password) => {
                 title: 'Oops...',
                 text: 'Correo o contraseña incorrectos',
             });
+            setLoading(false);
         } else {
             const body = await resp.json();
             if (body.error) {
-                Swal.fire("Error", body.error, "error");
+                Swal.fire("Error", "Correo o contraseña incorrectos", "error");
             }
             if (body.access_token) {
                 localStorage.setItem("token", body.access_token);
@@ -31,11 +33,12 @@ export const startLogin = (email, password) => {
                 localStorage.setItem("token-init-date", new Date().getTime());
                 dispatch(getUser(body.email));
             }
+            setLoading(false);
         }
     }
 }
 
-export const startRegister = (user) => {
+export const startRegister = (user, setLoading) => {
     return async (dispatch) => {
         try {
             const resp = await noAuthFetch("register", user, "POST");
@@ -43,11 +46,13 @@ export const startRegister = (user) => {
             if (body.error) {
                 Swal.fire("Error", body.error, "error");
             } else {
-                dispatch(startLogin(user.email, user.password));
+                dispatch(startLogin(user.email, user.password, setLoading));
                 dispatch(getUser(user.email));
             }
+            setLoading(false);
         } catch (error) {
             console.log(error);
+            setLoading(false);
         }
     }
 }
@@ -110,9 +115,19 @@ export const getUser = (email) => {
         try {
             const response = await authFetch("user/" + email, {});
             const body = await response.json();
+            if (body.user.status === -2) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Cuenta eliminada',
+                });
+                return dispatch(startLogout());
+            }
             dispatch(setUser(body.user));
+
             if (body.user.role === 1) {
                 dispatch(startLoadCoursesStudent());
+
             } else if (body.user.role === 2) {
                 if (body.user.status === 0 && body.docs.length > 0) {
                     Swal.fire({
@@ -150,7 +165,7 @@ export const getUser = (email) => {
     }
 }
 
-export const saveUser = (user) => {
+export const saveUser = (user, flag) => {
     return async (dispatch) => {
         try {
             const resp = await authFetch("user/update", user, "PUT");
@@ -158,11 +173,14 @@ export const saveUser = (user) => {
             if (body.error) {
                 Swal.fire("Error", body.error, "error");
             } else {
+                if (flag)
+                    return dispatch(startLogout());
                 dispatch(setUser(body));
                 Swal.fire("Exito", "Se actualizo correctamente", "success");
             }
         } catch (error) {
             console.log(error);
+            Swal.fire("Error", "Error en el servidor", "error");
         }
     }
 };
@@ -172,7 +190,7 @@ export const setUser = (user) => ({
     payload: user
 });
 
-export const startUploadImage = (user, image) => {
+export const startUploadImage = (user, image, setLoading, setValues, course) => {
     return async (dispatch) => {
 
         const filePath = `profileImages/${user.id}/${image.name}`;
@@ -193,8 +211,17 @@ export const startUploadImage = (user, image) => {
             () => {
                 // Handle successful uploads on complete
                 getDownloadURL(task.snapshot.ref).then(async url => {
-                    user.image = url;
-                    dispatch(saveUser(user));
+                    if (course) {
+                        setValues({
+                            ...course,
+                            image: url
+                        })
+                    } else {
+                        user.image = url;
+                        dispatch(saveUser(user));
+                        dispatch(closeModal());
+                        setLoading(false);
+                    }
                 })
             })
 

@@ -25,14 +25,15 @@ export const CardTeacher = ({ teacher }) => {
                     <h2 className="teacher-status warning">Pendiente</h2>
                     : teacher.status === 1 ?
                         <h2 className="teacher-status success">Aprobado</h2>
-                        : teacher.status === -1 &&
+                        : teacher.status === -1 ?
                         <h2 className="teacher-status danger">Rechazado</h2>
+                        : <h2 className="teacher-status danger">Eliminado</h2>
             }
             <div className="card-teacher-buttons">
                 <div className="teacher-div-img">
                     {
                         teacher.image ?
-                            <img src={teacher.img} alt={teacher.name} className="teacher-img" />
+                            <img src={teacher.image} alt={teacher.name} className="teacher-img" />
                             : <img src={defaultImg} alt={teacher.name} className="teacher-img" />
                     }
                 </div>

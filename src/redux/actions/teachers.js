@@ -39,14 +39,16 @@ export const startLoadCoursesTeacher = () => {
             const { id } = user;
             const resp = await authFetch("teacher/courses/" + id, {});
             const body = await resp.json();
-            if (body.status === 200)
-                dispatch(setCourses(body.courses));
+            if (body.status === 200) {
+                const courses = body.courses.filter(course => course.status !== -2);
+                dispatch(setCourses(courses));
+            }
         }
     }
 }
 
 
-export const startAddCourse = (course, teacher) => {
+export const startAddCourse = (course, del) => {
     return async (dispatch) => {
         course.idCategory = parseInt(course.idCategory);
         course.units = course.units.map(u => ({
@@ -63,9 +65,24 @@ export const startAddCourse = (course, teacher) => {
         if (body.error) {
             Swal.fire("Error", "Error :CCC", "error");
         } else {
+            if(del){
+                return dispatch(startLoadCoursesTeacher());
+            }
             Swal.fire("Success", "¡Curso agregado!", "success");
-            dispatch(startLoadCoursesTeacher(teacher));
+            dispatch(startLoadCoursesTeacher());
         }
+    }
+}
+
+export const startDeleteCourse = (id) => {
+    return async (dispatch) => {
+        const resp = await authFetch("teacher/course/delete/" + id, {}, "DELETE");
+        const body = await resp.json();
+        if (body.error) {
+            return Swal.fire("Error", "Error :CCC", "error");
+        } 
+        Swal.fire("Success", "¡Curso eliminado!", "success");
+        dispatch(startLoadCoursesTeacher());
     }
 }
 

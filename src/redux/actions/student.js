@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
 import { authFetch, noAuthFetch } from "../../helpers/fetch";
+import { sendNotification } from "../../helpers/firebase";
 import { types } from "../types/types";
 import { setCourse, setCourses } from "./courses";
 
@@ -78,7 +79,20 @@ export const startSaveLesson = (idLesson, status) => {
         const { id: idUser } = getState().auth.user;
         const { active } = getState().courses;
         const resp = await authFetch("user/lesson/save", { idUser, idCourse: active.id, idLesson, status }, "POST");
-        await resp.json();
+        const body = await resp.json();
+
+        const resp2 = await authFetch("user/course/" + body.course.id + "/info/" + body.user.id, {});
+        const body2 = await resp2.json();
+
+        if(body2.progress === 100) {
+            sendNotification({
+                title: "Curso finalizado",
+                message: "¡Saludos! " + body.user.name + " " + body.user.lastName + ". Has sido finalizado el curso llamado: '" + body.course.title +"'.",
+                type: "success",
+                icon: "success",
+                status: 0
+            }, body.user.id);
+        }
     }
 }
 
@@ -104,7 +118,6 @@ export const startLoadUserCourse = (course, user) => {
         try {
             const resp = await authFetch("user/course/" + course + "/info/" + user, {});
             const body = await resp.json();
-
             if (body.error) {
                 Swal.fire("Error", body.error, "error");
             } else {

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 import { useForm } from "../../hooks/useForm";
 import { saveUser } from "../../redux/actions/auth";
 import { ChangePasswordForm } from "../profile/ChangePasswordForm";
@@ -15,7 +16,11 @@ export const ProfileView = ({ role }) => {
 
   const [select, setSelect] = useState(0);
 
-  const [userForm, setUserForm] = useForm(user);
+  const [userForm, setUserForm] = useForm({
+    ...user,
+    phone: user.phone || "",
+    image: user.image || "",
+  });
 
   const { name, email, lastName, phone, image } = userForm;
 
@@ -25,13 +30,29 @@ export const ProfileView = ({ role }) => {
     e.preventDefault();
     user.name = name;
     user.lastName = lastName;
-    user.email = email;
     if(image)
       user.image = image;
     if (phone)
       user.phone = phone;
-    dispatch(saveUser(user));
-    disable();
+    if(user.email !== email){
+      Swal.fire({
+        title: 'Actualización de correo electrónico',
+        text: "Al cambiar el correo se cerrará la sesión actual",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Actualizar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          user.email = email;
+          return dispatch(saveUser(user, true));
+        }
+      })
+    } else {
+      dispatch(saveUser(user, false));
+      disable();
+    }
   }
 
   const enable = (e, i) => {
@@ -117,7 +138,7 @@ export const ProfileView = ({ role }) => {
       <Modal title={select === 1 ? "ELIMINAR CUENTA" : select === 0 ? "CAMBIAR CONTRASEÑA" : "ACTUALIZAR FOTO"}>
         {
           select ===  1 ?
-            <DeleteAccount />
+            <DeleteAccount user={user} />
             : select === 0 ?
               <ChangePasswordForm />
               : <UploadPhoto />

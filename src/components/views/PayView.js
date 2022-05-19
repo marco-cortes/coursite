@@ -27,7 +27,7 @@ export const PayView = () => {
 
   return (
     <div className="pay-view animate__animated animate__fadeIn">
-      <div className="d-flex">
+      <div className="pay-container">
         <div className="div-pay">
           <h2 className="pay-view-title">Datos de pago</h2>
           <FormPay id={id} />

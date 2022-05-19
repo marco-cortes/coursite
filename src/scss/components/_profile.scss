@@ -70,21 +70,19 @@
 }
 
 .user-form {
-    width: 100%;
     background-color: $light;
-    padding: 2rem 0;
+    padding: 2rem 3rem;
     border-radius: 30px;
 }
 
 .user-form-title {
-    margin-left: 10%;
     color: $info;
     font-size: 15px;
     margin-bottom: 0.5rem;
 }
 
 .input-button {
-    width: 70%;
+    width: 100%;
     background-color: #d8d1fe;
     display: flex;
     justify-content: space-between;

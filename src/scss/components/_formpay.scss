@@ -1,25 +1,48 @@
 .pay-view {
-    justify-content: center;
-    .d-flex {
-        align-items: center;
-    }
+    display: block;
+    margin-top: 1rem;
 }
 
 .form-pay {
     display: flex;
     flex-direction: column;
+    width: 100%;
+}
+
+.pay-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 2rem;
 }
 
 .form-group {
     display: flex;
     justify-content: space-between;
-
+    flex-wrap: wrap;
     button {
         padding: 1rem 2rem;
         margin: 0;
     }
-
     margin-bottom: .5rem;
+}
+
+.g-f {
+    flex-wrap: wrap-reverse;
+    margin-bottom: 2rem;
+}
+
+@media screen and (max-width: 493px) {
+    .form-group {
+        .input-pay, .check-div, .btn {
+            width: 100%;
+        }
+    }
+
+    .div-pay {
+        .btn {
+            width: 100%;
+        }
+    }
 }
 
 .check-div {
@@ -37,7 +60,7 @@
     border-radius: 10px;
     outline: none;
     border: 2px $primary solid;
-    margin: .5rem;
+    margin: .5rem 0;
     padding: 1rem;
     font-family: 'Nunito', sans-serif;
     font-size: 15px;
@@ -98,9 +121,12 @@ table {
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-width: 450px;
+    width: 100%;
+    margin: auto;
+    text-align: center;
     .btn-info {
         padding: 1rem 3rem;
-        margin-top: 5rem;
-        align-self: flex-start;
+        align-self: flex-end;
     }
 }

@@ -84,7 +84,7 @@ export const FormPay = ({ id }) => {
                 <input type="text" placeholder="MM/AA" className="input-pay" required name="expiry" onChange={validateDate} value={card.expiry} onKeyDown={deleteSlide} />
                 <input type="text" placeholder="CVV/CVC" className="input-pay" required name="cvc" onChange={validateCvc} value={card.cvc} />
             </div>
-            <div className="form-group">
+            <div className="form-group g-f">
                 <div className="check-div">
                     <input type="checkbox" id="check" className="check-pay" checked={checked} onChange={handleChecked} />
                     <label htmlFor="check"> Guardar tarjeta</label>
