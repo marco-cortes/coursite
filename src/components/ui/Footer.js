@@ -8,7 +8,7 @@ export const Footer = () => {
                 <span className="t4">site</span>
             </Link>
             <p className="text-gray">Todos los derechos reservados</p>
-            <Link to={"/teacher/register"} className="text-gray">¿Quieres enseñar?</Link>
+            <Link to={"/teacher/register"} className="text-gray link-hover">¿Quieres enseñar?</Link>
         </div>
     )
 }

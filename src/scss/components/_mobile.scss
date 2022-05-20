@@ -250,6 +250,7 @@
         .student-course-names {
             margin: 0;
             width: 80%;
+            padding: 0;
         }
 
         .student-course-buttons {
@@ -257,6 +258,13 @@
             margin-top: 2rem;
             width: 80%;
         }
+    }
+
+    .notifications {
+        left: 0;
+        top: 83px;
+        border-radius: 0;
+        z-index: 99;
     }
 }
 
@@ -274,6 +282,31 @@
         .btn-search {
             max-width: 100%;
         }
+    }
+    
+    .profile-btns {
+
+        margin: 1rem 0;
+
+        .btn {
+            width: 100%;
+            margin: 0;
+            margin-top: 0.5rem;
+        }
+    }
+
+    .user-image-container {
+        bottom: 66px;
+        left: calc(50% - 75px - 2rem);
+        padding: 1rem;
+        background-color: $light-gray;
+        border-radius: 50%;
+        z-index: -1;
+    }
+
+    .user-top-container {
+        margin-top: calc(100px + 2rem);
+        margin-bottom: 2rem;
     }
 }
 

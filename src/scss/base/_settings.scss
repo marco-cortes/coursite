@@ -308,3 +308,7 @@ a {
 .text-light {
   color: $light !important;
 }
+
+.link-hover:hover {
+    text-decoration: underline;
+}

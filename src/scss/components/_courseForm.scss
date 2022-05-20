@@ -102,8 +102,10 @@
 }
 
 .units {
-    font-size: 1.5rem;
+    font-size: 2rem;
     color: $primary;
+    text-align: center;
+    margin: 2rem 0;
 }
 
 .unit-header {
@@ -228,6 +230,14 @@
     }
 }
 
+@media screen and (max-width: 714px) {
+    .group-flex {
+        .course-form-group {
+            max-width: 100%;
+        }
+    }
+}
+
 @media screen and (max-width: 819px) {
     .unit-btns {
         margin-top: 1rem;
@@ -237,5 +247,15 @@
 @media screen and (max-width: 600px) {
     .admin-view {
         width: 100%;
+    }
+}
+
+@media screen and (max-width: 572px) {
+    .new-course-btns {
+        .btn {
+            width: 100%;
+            margin: 0;
+            margin-top: 1rem;
+        }
     }
 }
