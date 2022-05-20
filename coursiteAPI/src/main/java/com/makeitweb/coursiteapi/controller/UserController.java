@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = "https://coursite-api.web.app/")
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {

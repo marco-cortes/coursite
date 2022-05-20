@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = "https://coursite-api.web.app/")
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AdminController {

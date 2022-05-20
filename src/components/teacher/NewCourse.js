@@ -59,7 +59,8 @@ export const NewCourse = ({ active }) => {
     if (validateCourse()) {
       return;
     }
-    dispatch(startAddCourse(course, id));
+    console.log(course);
+    dispatch(startAddCourse(course));
   }
 
   const validateCourse = () => {

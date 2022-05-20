@@ -60,6 +60,7 @@ public class IUserService implements UserService, UserDetailsService {
 
     @Override
     public User saveUser(User user) {
+
         if(user.getPassword() != null && user.getId() == null)
             user.setPassword(passwordEncoder.encode(user.getPassword()));
 
@@ -79,7 +80,7 @@ public class IUserService implements UserService, UserDetailsService {
         if(old == null) {
             if(user.getRole() == null)
                 user.setRole(1);
-            else if(user.getRole() == 2)
+            else if(user.getRole().equals(2))
                 user.setStatus(0);
             return userRepository.save(user);
         }
@@ -87,27 +88,27 @@ public class IUserService implements UserService, UserDetailsService {
         if(user.getImage() != null)
             old.setImage(user.getImage());
 
-        if(user.getStatus() != null)
+        if(user.getStatus() != null) {
+            if(old.getRole().equals(2) && !user.getStatus().equals(old.getStatus())) {
+                SimpleMailMessage message = new SimpleMailMessage();
+                message.setFrom("coursite.app@gmail.com");
+                message.setTo(user.getEmail());
+                message.setSubject("Status de su solicitud de Coursite");
+                if(user.getStatus() == -1)
+                    message.setText("Su solicitud para ser profesor de Coursite fue rechazada :(");
+                else
+                    message.setText("Su solicitud para ser profesor de Coursite fue aprobada :)");
+                mailSender.send(message);
+            }
             old.setStatus(user.getStatus());
-
-        if(user.getStatus().equals(-2))
-            deleteCoursesTeacher(user.getId());
-
-        if(!user.getEmail().equals(old.getEmail()))
-            old.setStatus(1);
-
-        if(old.getRole() == 2) {
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("coursite.app@gmail.com");
-            message.setTo(user.getEmail());
-            message.setSubject("Status de su solicitud de Coursite");
-            if(user.getStatus() == -1)
-                message.setText("Su solicitud para ser profesor de Coursite fue rechazada :(");
-            else
-                message.setText("Su solicitud para ser profesor de Coursite fue aprobada :)");
-            mailSender.send(message);
         }
 
+        if(user.getStatus() != null && user.getStatus().equals(-2))
+            deleteCoursesTeacher(user.getId());
+
+        System.out.println(old.getRole());
+        System.out.println(old.getStatus());
+        System.out.println(user.getStatus());
         Validation.validateUser(old, user.getName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getPhone());
         return userRepository.save(old);
     }

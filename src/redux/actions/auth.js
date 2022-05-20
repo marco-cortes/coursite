@@ -190,7 +190,7 @@ export const setUser = (user) => ({
     payload: user
 });
 
-export const startUploadImage = (user, image, setLoading, setValues, course) => {
+export const startUploadImage = (user, image, setLoading) => {
     return async (dispatch) => {
 
         const filePath = `profileImages/${user.id}/${image.name}`;
@@ -211,17 +211,10 @@ export const startUploadImage = (user, image, setLoading, setValues, course) => 
             () => {
                 // Handle successful uploads on complete
                 getDownloadURL(task.snapshot.ref).then(async url => {
-                    if (course) {
-                        setValues({
-                            ...course,
-                            image: url
-                        })
-                    } else {
-                        user.image = url;
-                        dispatch(saveUser(user));
-                        dispatch(closeModal());
-                        setLoading(false);
-                    }
+                    user.image = url;
+                    dispatch(saveUser(user));
+                    dispatch(closeModal());
+                    setLoading(false);
                 })
             })
 
