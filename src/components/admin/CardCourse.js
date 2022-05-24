@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom"
 import { startSetCourseStatus } from "../../redux/actions/admin";
+import image from "../../image/icon.png";
 
 export const CardCourse = ({ course }) => {
 
@@ -11,10 +12,14 @@ export const CardCourse = ({ course }) => {
         dispatch(startSetCourseStatus(course))
     }
 
+    const errorImage = (e) => {
+        e.target.src = image;
+    }
+
     return (
         <div className="card card-admin">
             <div className={"card-img a" + course.id}>
-                <img className="image" src={course.image} alt={course.title} />
+                <img className="image" src={course.image} alt={course.title} onError={errorImage} />
             </div>
             <div className="card-body">
                 <h2 className="category">{course.category.name}</h2>

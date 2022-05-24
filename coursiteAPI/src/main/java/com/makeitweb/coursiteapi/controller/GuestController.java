@@ -43,6 +43,7 @@ public class GuestController {
     private final CourseService courseService;
     private final UserService userService;
     private final CategoryService categoryService;
+    private final Keys keys;
 
     @GetMapping("/courses")
     public ResponseEntity<List<Course>> getAvailableCourses() {
@@ -77,11 +78,10 @@ public class GuestController {
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-
-        if(authorizationHeader != null && authorizationHeader.startsWith(Keys.start)) {
+        if(authorizationHeader != null && authorizationHeader.startsWith(keys.getStart())) {
             try {
-                String refresh_token = authorizationHeader.substring(Keys.start.length());
-                Algorithm algorithm = Algorithm.HMAC256(Keys.secret.getBytes());
+                String refresh_token = authorizationHeader.substring(keys.getStart().length());
+                Algorithm algorithm = Algorithm.HMAC256(keys.getSecret().getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(refresh_token);
                 String email = decodedJWT.getSubject();
@@ -89,14 +89,14 @@ public class GuestController {
 
                 String access_token = JWT.create()
                         .withSubject(user.getEmail())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + Keys.jwtDuration))
+                        .withExpiresAt(new Date(System.currentTimeMillis() + keys.getJwtDuration()))
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("roles", setRoles(user.getRole()))
                         .sign(algorithm);
 
                 Map<String, String> tokens = new HashMap<>();
-                tokens.put("access_token", Keys.start + access_token);
-                tokens.put("refresh_token", Keys.start + refresh_token);
+                tokens.put("access_token", keys.getStart() + access_token);
+                tokens.put("refresh_token", keys.getStart() + refresh_token);
 
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);

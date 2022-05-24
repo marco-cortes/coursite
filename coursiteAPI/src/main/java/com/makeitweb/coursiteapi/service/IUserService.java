@@ -5,10 +5,9 @@ import com.makeitweb.coursiteapi.entity.users.User;
 import com.makeitweb.coursiteapi.helpers.Validation;
 import com.makeitweb.coursiteapi.repository.CourseRepository;
 import com.makeitweb.coursiteapi.repository.UserRepository;
+import com.makeitweb.coursiteapi.util.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,9 +16,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import com.sendgrid.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +32,7 @@ public class IUserService implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final CourseRepository courseRepository;
-    private final JavaMailSender mailSender;
+    private final Keys keys;
 
 
     @Override
@@ -90,15 +92,29 @@ public class IUserService implements UserService, UserDetailsService {
 
         if(user.getStatus() != null) {
             if(old.getRole().equals(2) && !user.getStatus().equals(old.getStatus())) {
-                SimpleMailMessage message = new SimpleMailMessage();
-                message.setFrom("coursite.app@gmail.com");
-                message.setTo(user.getEmail());
-                message.setSubject("Status de su solicitud de Coursite");
-                if(user.getStatus() == -1)
-                    message.setText("Su solicitud para ser profesor de Coursite fue rechazada :(");
+                Email from = new Email(keys.getSendgridEmail());
+                String subject = "Status de su solicitud en Coursite";
+                Email to = new Email(old.getEmail());
+
+                Content content;
+
+                if(user.getStatus() == 1)
+                     content = new Content("text/plain", "Felicitaciones.\nSu solicitud para ser profesor de Coursite fue aprobada :)\nInicie sesión en:\n https://coursite-api.web.app/login");
                 else
-                    message.setText("Su solicitud para ser profesor de Coursite fue aprobada :)");
-                mailSender.send(message);
+                     content = new Content("text/plain", "Lo sentimos.\nSu solicitud para ser profesor de Coursite fue rechazada :(");
+
+                Mail mail = new Mail(from, subject, to, content);
+
+                SendGrid sg = new SendGrid(keys.getSendgridApiKey());
+                Request request = new Request();
+                try {
+                    request.setMethod(Method.POST);
+                    request.setEndpoint("mail/send");
+                    request.setBody(mail.build());
+                    Response response = sg.api(request);
+                } catch (IOException ex) {
+                    System.out.println(ex.toString());
+                }
             }
             old.setStatus(user.getStatus());
         }

@@ -1,9 +1,10 @@
 import Swal from "sweetalert2";
 import { authFetch } from "../../helpers/fetch";
 import { types } from "../types/types";
-import { setCourse, setCourses } from "./courses";
+import { setCourses } from "./courses";
 import { storage } from "../../firebase/firebase-config";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { getUser } from "./auth";
 
 export const setUnitActive = (unit) => {
     return {
@@ -65,7 +66,7 @@ export const startAddCourse = (course, del) => {
         if (body.error) {
             Swal.fire("Error", "Error :CCC", "error");
         } else {
-            if(del){
+            if (del) {
                 return dispatch(startLoadCoursesTeacher());
             }
             Swal.fire("Success", "¡Curso agregado!", "success");
@@ -80,7 +81,7 @@ export const startDeleteCourse = (id) => {
         const body = await resp.json();
         if (body.error) {
             return Swal.fire("Error", "Error :CCC", "error");
-        } 
+        }
         Swal.fire("Success", "¡Curso eliminado!", "success");
         dispatch(startLoadCoursesTeacher());
     }
@@ -117,44 +118,34 @@ export const startDeleteLesson = (lesson) => {
     }
 }
 
-export const startUploadFile = (user, files) => {
+export const startUploadFile = (user, files, setLoading) => {
     return async (dispatch) => {
         try {
-            files.map(async file => {
-                const filePath = `docs/${user.id}/${file.name}`;
-                const fileRef = ref(storage, filePath)
-                const task = uploadBytesResumable(fileRef, file);
+            const urls = await Promise.all(
+                files.map(async file => {
+                    const filePath = `docs/${user.id}/${file.name}`;
+                    const fileRef = ref(storage, filePath)
+                    await uploadBytesResumable(fileRef, file);
+                    const url = await getDownloadURL(fileRef);
+                    return {
+                        url,
+                        name: file.name
+                    };
+                })
+            )
 
-                task.on("state_changed",
-                    (snapshot) => {
-                        // Observe state change events such as progress, pause, and resume
-                        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-                        //const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        //console.log("Upload is " + progress + "% done");
-                    },
-                    (error) => {
-                        // Handle unsuccessful uploads
-                        console.log(error);
-                    },
-                    () => {
-                        // Handle successful uploads on complete
-                        getDownloadURL(task.snapshot.ref).then(async url => {
-                            const resp = await authFetch("teacher/document/save", {
-                                url: url,
-                                name: file.name,
-                                teacher: user
-                            }, "POST");
-                            const body = await resp.json();
-                            if (body.status === 200) {
-                                dispatch(setCourse({true: true}));
-                            } else {
-                                dispatch(setCourse({true: false}));
-                            }
+            await Promise.all(
+                urls.map(async url => {
+                    await authFetch("teacher/document/save", {
+                        url: url.url,
+                        name: url.name,
+                        teacher: user
+                    }, "POST");
+                })
+            );
 
-                        })
-                    })
-
-            })
+            setLoading(false);
+            dispatch(getUser(user.email));
 
         } catch (error) {
             console.log(error);

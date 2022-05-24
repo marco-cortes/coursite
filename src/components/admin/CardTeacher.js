@@ -12,6 +12,10 @@ export const CardTeacher = ({ teacher }) => {
         dispatch(startSetTeacherStatus(teacher));
     }
 
+    const errorImage = (e) => {
+        e.target.src = defaultImg;
+    }
+
     return (
         <div className="card-teacher">
             <div className="card-teacher-info">
@@ -33,7 +37,7 @@ export const CardTeacher = ({ teacher }) => {
                 <div className="teacher-div-img">
                     {
                         teacher.image ?
-                            <img src={teacher.image} alt={teacher.name} className="teacher-img" />
+                            <img src={teacher.image} alt={teacher.name} className="teacher-img" onError={errorImage} />
                             : <img src={defaultImg} alt={teacher.name} className="teacher-img" />
                     }
                 </div>

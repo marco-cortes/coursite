@@ -3,6 +3,8 @@ import { Link } from "react-router-dom"
 import Swal from "sweetalert2";
 import { startDeleteCourse } from "../../redux/actions/teachers";
 import { Loading } from "./Loading";
+import image from "../../image/icon.png";
+
 export const Card = ({ course, dir }) => {
 
     const { user } = useSelector(state => state.auth);
@@ -27,10 +29,14 @@ export const Card = ({ course, dir }) => {
         });
     }
 
+    const errorImage = (e) => {
+        e.target.src = image;
+    }
+
     return (
         <div className={user && user.role === 2 ? "card card-t" : "card"} >
             <div className={"card-img a" + course.id}>
-                <img className="image" src={course.image} alt={course.title} />
+                <img className="image" src={course.image} alt={course.title} onError={errorImage} />
             </div>
             <div className="card-body">
                 <h2 className="category">{course.category.name ? course.category.name : course.category}</h2>

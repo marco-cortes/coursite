@@ -2,6 +2,7 @@ package com.makeitweb.coursiteapi.security;
 
 import com.makeitweb.coursiteapi.filter.CustomAuthenticationFilter;
 import com.makeitweb.coursiteapi.filter.CustomAuthorizationFilter;
+import com.makeitweb.coursiteapi.util.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final Keys keys;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -35,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean(), keys);
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
         http.csrf().disable().
                 sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().
@@ -61,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 cors().configurationSource(corsConfigurationSource()).
                 and().
                 addFilter(customAuthenticationFilter).
-                addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+                addFilterBefore(new CustomAuthorizationFilter(keys), UsernamePasswordAuthenticationFilter.class);
 
     }
 
@@ -74,7 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         list.add(HttpMethod.POST.name());
         list.add(HttpMethod.DELETE.name());
         List<String> origins = new ArrayList<>();
-        origins.add("https://coursite-api.web.app/");
+        origins.add("http://localhost:3000");
 
         configuration.setAllowedMethods(list);
         configuration.setAllowedOrigins(origins);

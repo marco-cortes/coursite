@@ -13,10 +13,10 @@ export const Notification = ({ notification, i }) => {
     let icon = "";
 
     let read = notification.status === 1 ? "read" : "";
-
+    
     if(notification.type === "success") {
         icon = "fa-solid fa-check-circle";
-    } else if(notification.type === "error") {
+    } else if(notification.type === "danger") {
         icon = "fa-solid fa-exclamation-circle";
     } else if(notification.type === "warning") {
         icon = "fa-solid fa-info-circle";

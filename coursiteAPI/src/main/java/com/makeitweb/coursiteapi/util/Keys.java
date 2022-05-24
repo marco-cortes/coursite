@@ -1,8 +1,36 @@
 package com.makeitweb.coursiteapi.util;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+@Component
+@Service
 public class Keys {
-    public static String secret = "ldasji@o@1djknmalñdj10'sucxzh8czx!!!@@slaknmd-as.d_---.awsd.op`sd9y912njdlñabnsdhasund!!$%·@@@@%·/%$/%$·";
-    public static String start = "Bearer ";
-    public static int jwtDuration = 24 * 60 * 60  * 1000;
-    public static int jwtRefreshDuration = 2 * 24 * 60 * 60  * 1000;
+    @Value("${security.jwt.secret}")
+    private String secret;
+    @Value("${security.jwt.start}")
+    private String start;
+    @Value("${security.jwt.jwtDuration}")
+    private int jwtDuration;
+    @Value("${send.grid.api.key}")
+    private String sendgridApiKey;
+    @Value("${send.grid.email}")
+    private String sendgridEmail;
+
+    public String getSecret() {
+        return secret;
+    }
+    public String getStart() {
+        return start;
+    }
+    public int getJwtDuration() {
+        return jwtDuration;
+    }
+    public String getSendgridApiKey() {
+        return sendgridApiKey;
+    }
+    public String getSendgridEmail() {
+        return sendgridEmail;
+    }
 }

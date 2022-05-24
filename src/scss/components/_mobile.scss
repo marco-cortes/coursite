@@ -296,16 +296,15 @@
     }
 
     .user-image-container {
-        bottom: 66px;
+        bottom: 85px;
         left: calc(50% - 75px - 2rem);
         padding: 1rem;
         background-color: $light-gray;
         border-radius: 50%;
-        z-index: -1;
     }
 
     .user-top-container {
-        margin-top: calc(100px + 2rem);
+        margin-top: calc(100px + 3rem);
         margin-bottom: 2rem;
     }
 }

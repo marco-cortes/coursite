@@ -28,9 +28,11 @@ import java.util.stream.Collectors;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
+    private final Keys keys;
 
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager){
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, Keys keys){
         this.authenticationManager = authenticationManager;
+        this.keys = keys;
     }
 
     @Override
@@ -46,21 +48,21 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         User user = (User) authentication.getPrincipal();
-        Algorithm algorithm = Algorithm.HMAC256(Keys.secret.getBytes());
+        Algorithm algorithm = Algorithm.HMAC256(keys.getSecret().getBytes());
         String access_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + Keys.jwtDuration))
+                .withExpiresAt(new Date(System.currentTimeMillis() + keys.getJwtDuration()))
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority :: getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
         String refresh_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + Keys.jwtRefreshDuration))
+                .withExpiresAt(new Date(System.currentTimeMillis() + keys.getJwtDuration()))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
         Map<String, String> tokens = new HashMap<>();
-        tokens.put("access_token", Keys.start + access_token);
-        tokens.put("refresh_token", Keys.start + refresh_token);
+        tokens.put("access_token", keys.getStart() + access_token);
+        tokens.put("refresh_token", keys.getStart() + refresh_token);
         tokens.put("email", user.getUsername());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);

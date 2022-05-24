@@ -160,11 +160,11 @@
 }
 
 .notification-success {
-    color: $success;
+    color: rgb(20, 121, 20);
 }
 
-.notification-error {
-    color: $danger;
+.notification-danger {
+    color: rgb(182, 41, 41);
 }
 
 .notification-warning {

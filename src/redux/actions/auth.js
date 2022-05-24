@@ -71,17 +71,13 @@ export const startChecking = () => {
                 dispatch(checkingFinish()); // para que no se quede en el loading
             } else {
                 if (localStorage.getItem("token")) {
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("token-refresh");
-                    localStorage.removeItem("token-init-date");
+                    dispatch(startLogout());
                 }
                 dispatch(checkingFinish()); // para que no se quede en el loading
             }
         } else {
             if (localStorage.getItem("token")) {
-                localStorage.removeItem("token");
-                localStorage.removeItem("token-refresh");
-                localStorage.removeItem("token-init-date");
+                dispatch(startLogout());
             }
             dispatch(checkingFinish());
         }
@@ -131,8 +127,8 @@ export const getUser = (email) => {
             } else if (body.user.role === 2) {
                 if (body.user.status === 0 && body.docs.length > 0) {
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
+                        icon: 'warning',
+                        title: 'Aviso',
                         text: 'Su solicitud de registro está en proceso de aprobación...',
                     });
                     dispatch(startLogout());
