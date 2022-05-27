@@ -17,6 +17,8 @@ public class Keys {
     private String sendgridApiKey;
     @Value("${send.grid.email}")
     private String sendgridEmail;
+    @Value("${app.url}")
+    private String appUrl;
 
     public String getSecret() {
         return secret;
@@ -32,5 +34,8 @@ public class Keys {
     }
     public String getSendgridEmail() {
         return sendgridEmail;
+    }
+    public String getAppUrl() {
+        return appUrl;
     }
 }

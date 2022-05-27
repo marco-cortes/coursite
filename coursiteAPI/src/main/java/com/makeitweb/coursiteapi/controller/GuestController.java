@@ -27,18 +27,11 @@ import java.net.URI;
 import java.util.*;
 
 @RestController
-@CrossOrigin(origins = "https://coursite-api.web.app/")
+@CrossOrigin(origins = "https://app-coursite.web.app/")
 @RequestMapping("/api")
 @RequiredArgsConstructor
+
 public class GuestController {
-    /*
-     *
-     * Get available courses
-     * view course details
-     * login
-     * register
-     *
-     */
 
     private final CourseService courseService;
     private final UserService userService;

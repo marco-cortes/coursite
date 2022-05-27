@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().
                 sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().
 
-                authorizeRequests().antMatchers("/**").permitAll().
+                authorizeRequests().antMatchers("/api/**").permitAll().
 
                 antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("ROLE_USER").
                 antMatchers(HttpMethod.POST, "/api/user/**").hasAnyAuthority("ROLE_USER").
@@ -76,7 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         list.add(HttpMethod.POST.name());
         list.add(HttpMethod.DELETE.name());
         List<String> origins = new ArrayList<>();
-        origins.add("http://localhost:3000");
+        origins.add(keys.getAppUrl());
 
         configuration.setAllowedMethods(list);
         configuration.setAllowedOrigins(origins);

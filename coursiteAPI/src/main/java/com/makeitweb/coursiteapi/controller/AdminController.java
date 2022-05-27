@@ -16,23 +16,10 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "https://coursite-api.web.app/")
+@CrossOrigin(origins = "https://app-coursite.web.app/")
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AdminController {
-
-    /*
-    *
-    * Change status of courses
-    * Change status of teachers
-    * view all courses
-    * view all teachers
-    * view stats of app
-    * add categories
-    * remove categories
-    * get categories
-    *
-    */
 
     private final CourseService courseService;
     private final UserService userService;
@@ -130,8 +117,7 @@ public class AdminController {
     }
 
     @GetMapping("/stats")
-    public ResponseEntity<?> getStats() {
-
+    public ResponseEntity<?> getStats() {   
         Integer teachersAccepted = 0;
         Integer teachersRejected = 0;
         Integer teachersPending = 0;

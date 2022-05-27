@@ -15,20 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "https://coursite-api.web.app/")
+@CrossOrigin(origins = "https://app-coursite.web.app/")
 @RequestMapping("/api/teacher")
 @RequiredArgsConstructor
 public class TeacherController {
-
-    /*
-    *
-    * Create new course
-    * update courses
-    * delete courses
-    * upload documents
-    * get his courses
-    *
-    */
 
     private final CourseService courseService;
     private final UserService userService;
@@ -38,7 +28,6 @@ public class TeacherController {
     public ResponseEntity<?> addCourse(@RequestBody CourseDTO course) {
         Map<String, Object> response = new HashMap<>();
         course = courseService.saveCourse(course);
-        System.out.println(course);
         if(course == null) {
             response.put("status", 500);
             response.put("error", "Error al guardar el curso. Verifique sus datos.");

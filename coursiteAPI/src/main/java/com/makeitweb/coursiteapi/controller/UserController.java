@@ -14,22 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@CrossOrigin(origins = "https://coursite-api.web.app/")
+@CrossOrigin(origins = "https://app-coursite.web.app/")
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
-
-    /*
-    *
-    * Update data user
-    * Get data user
-    * Delete user
-    * Buy a new Course
-    * Get info of course bought
-    * Get bought courses
-    * Change password
-    *
-    */
 
     private final UserService userService;
     private final CourseService courseService;
@@ -37,11 +25,8 @@ public class UserController {
     private final DocumentService documentService;
 
     @GetMapping("/{email}")
-    public ResponseEntity<?> getUserById(@PathVariable String email) {
+    public ResponseEntity<?> getUserByEmail(@PathVariable String email) {
         Map<String, Object> response = new HashMap<>();
-
-
-
         User u = userService.getUserByEmail(email);
         if(u == null)
             return ResponseEntity.notFound().build();
@@ -54,10 +39,12 @@ public class UserController {
 
         return ResponseEntity.ok(response);
     }
+
     @PostMapping("/new")
     public ResponseEntity<User> newUser(@RequestBody User user) {
         return ResponseEntity.ok(userService.saveUser(user));
     }
+    
     @PutMapping("/update")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         if(user.getId() == null || user.getId() <= 0)

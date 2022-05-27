@@ -11,9 +11,7 @@ import { db } from "../firebase/firebase-config";
 export const NavBar = () => {
 
   const { user } = useSelector(state => state.auth);
-
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   const submitLogout = () => {
@@ -22,7 +20,6 @@ export const NavBar = () => {
   }
 
   useEffect(() => {
-
     if (user) {
       const ref = doc(db, "notifications", "" + user.id);
       const unsub = onSnapshot(ref, (doc) => {
@@ -37,10 +34,7 @@ export const NavBar = () => {
     }
   }, [user, dispatch]);
 
-
-
   const [active, setActive] = useState(false);
-  //<i class="fa-solid fa-x"></i>
 
   const open = () => {
     setActive(!active);
